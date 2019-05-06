@@ -6,6 +6,7 @@ var logger = require("morgan");
 const mongoose = require("mongoose");
 const fs = require("fs");
 var request = require("request");
+var ftpClient = require("ftp");
 var extract = require("extract-zip");
 
 var indexRouter = require("./routes/index");
@@ -22,17 +23,36 @@ connection.once("open", () => {
 });
 
 // Pull parking meter data and save to data directory
-let writeStream = fs.createWriteStream("../data/parking_meters.kmz", {
+var writeStream = fs.createWriteStream("../data/parking_meters.kmz", {
   flags: "w"
 });
 writeStream.on("open", () => {
-  console.log("Saving parking meter data");
+  console.log("Pulling parking meter data...");
   request
     .get(
       "https://data.vancouver.ca/download/kml/parking_meter_rates_and_time_limits.kmz"
     )
     .pipe(writeStream);
+  console.log("Parking meter data saved!");
 });
+
+// Pull and save crime data to the data directory
+var c = new ftpClient();
+console.log("Pulling crime data...");
+c.on("ready", function() {
+  c.get(
+    "ftp://webftp.vancouver.ca/opendata/json/crime_json_all_years.zip",
+    function(err, stream) {
+      if (err) throw err;
+      stream.once("close", function() {
+        c.end();
+      });
+      stream.pipe(fs.createWriteStream("../data/crime_data.zip"));
+      console.log("Crime data saved!");
+    }
+  );
+});
+console.log("Crime data saved!");
 
 app.use(logger("dev"));
 app.use(express.json());
