@@ -1,17 +1,49 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var meterSchema = new Schema({
-  head_type: { type: String },
-  time_limit: { type: String },
-  rate: { type: String },
-  pay_by_phone: { type: String },
-  in_effect: { type: String },
-  lat: { type: Number },
-  lng: { type: Number },
-  date_updated: { type: Date, default: Date.now }
+const meterSchema = new Schema({
+  meter_type: String,
+  meter_id: String,
+  limits_and_rates: {
+    weekdays: [
+      {
+        start: String,
+        end: String,
+        rate: String,
+        hour_limit: String
+      }
+    ],
+    saturday: [
+      {
+        start: String,
+        end: String,
+        rate: String,
+        hour_limit: String
+      }
+    ],
+    sunday: [
+      {
+        start: String,
+        end: String,
+        rate: String,
+        hour_limit: String
+      }
+    ],
+    time_misc: String,
+    rate_misc: String
+  },
+  pay_by_phone_num: String,
+  in_effect: {
+    start: String,
+    end: String
+  },
+  credit_card: String,
+  prohibitions: String,
+  lat: Number,
+  lng: Number,
+  date_updated: String
 });
 
-var Meter = mongoose.model("Meters", meterSchema);
+var Meter = mongoose.model("meters", meterSchema);
 
 module.exports = Meter;
