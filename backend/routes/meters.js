@@ -2,15 +2,15 @@
 
 var Express = require("express");
 const router = Express.Router();
-var User = require("../models/user.model");
+var Meter = require("../models/meter.model");
 
 /* GET users listing. */
 router.get("/", (req, res, next) => {
-  User.find((err, users) => {
+  Meter.find((err, meters) => {
     if (err) {
       console.log(err);
     } else {
-      res.json(users);
+      res.json(meters);
     }
   });
 });
