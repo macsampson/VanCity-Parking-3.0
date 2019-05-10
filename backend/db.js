@@ -11,7 +11,8 @@ var meter = require("./models/meter.model");
 // Connect to Mongo on start
 mongoose.connect("mongodb://localhost/parker", {
   useNewUrlParser: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  autoIndex: false
 });
 
 const db = mongoose.connection;
@@ -369,5 +370,22 @@ async function loadMeters() {
   }
   console.log("Parking meters saved to Mongo in GeoJSON format");
 }
-
 loadMeters();
+
+// Create an index on location parameter so we can run geospatial queries on the parking meter dataset
+db.collection("meters").createIndex({ geometry: "2dsphere" });
+
+// For testing purposes
+//     Meter.find()
+//       .where("location")
+//       .near({
+//         center: {
+//           type: "Point",
+//           coordinates: [-123.098183432967, 49.2721460029592]
+//         },
+//         maxDistance: 1000
+//       })
+//       .find((err, res) => {
+//         if (err) console.log(err);
+//         console.log(JSON.stringify(res, 0, 2));
+//       });
