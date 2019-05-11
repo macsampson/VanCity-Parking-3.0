@@ -3,18 +3,27 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "frontend": "cd ../frontend && npm start",
+    "backend": "npm start",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
   },
   "dependencies": {
+    "@tmcw/togeojson": "^3.0.0",
+    "concurrently": "^4.1.0",
     "cookie-parser": "~1.4.4",
     "csvtojson": "^2.0.8",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "fstream": "^1.0.11",
+    "ftp": "^0.3.10",
     "http-errors": "~1.6.3",
     "mongoose": "^5.5.5",
     "morgan": "~1.9.1",
+    "nodemon": "^1.19.0",
     "request": "^2.88.0",
     "unzip": "^0.1.11",
-    "zlib": "^1.0.5"
+    "xml-js": "^1.6.11",
+    "xmldom": "^0.1.27"
   }
 }
