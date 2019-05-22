@@ -4,7 +4,7 @@ var Express = require("express");
 const router = Express.Router();
 var Meter = require("../models/meter.model");
 
-/* GET users listing. */
+/* GET meters listing. */
 router.get("/", (req, res, next) => {
   Meter.find((err, meters) => {
     if (err) {

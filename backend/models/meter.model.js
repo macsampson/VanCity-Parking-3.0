@@ -5,7 +5,10 @@ const meterSchema = new Schema({
   type: { type: String },
   geometry: {
     type: { type: String },
-    coordinates: { type: [Number], index: "2dsphere", required: true }
+    coordinates: {
+      type: [Number],
+      required: true
+    }
   },
   properties: {
     meter_type: String,
