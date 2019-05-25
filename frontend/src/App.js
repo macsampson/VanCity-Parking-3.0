@@ -1,76 +1,45 @@
 import React, { Component } from "react";
-import GoogleMap from "google-map-react";
+import "./App.css";
+import GoogleMap from "./components/GoogleMap";
 
 const dotenv = require("dotenv");
 dotenv.config();
 
 const key = process.env.REACT_APP_MAPS_API;
 
-const mapStyles = {
-  width: "100%",
-  height: "100%"
-};
-
-const markerStyle = {
-  height: "50px",
-  width: "50px",
-  marginTop: "-50px"
-};
-
-const imgStyle = {
-  height: "100%"
-};
-
-const Marker = ({ title }) => (
-  <div style={markerStyle}>
-    <img
-      style={imgStyle}
-      src="https://res.cloudinary.com/og-tech/image/upload/s--OpSJXuvZ--/v1545236805/map-marker_hfipes.png"
-      alt={title}
-    />
-    <h3>{title}</h3>
-  </div>
-);
-
 class App extends Component {
   state = { meters: [] };
+
+  // Load Google API when the app component is mounted
   componentDidMount() {
-    fetch("/meters")
-      .then(res => res.json())
-      .then(meters => this.setState({ meters }));
+    this.loadScript(
+      "https://maps.googleapis.com/maps/api/js?key=" +
+        key +
+        "&callback=initMap&libraries=places"
+    );
+    // fetch("/meters")
+    //   .then(res => res.json())
+    //   .then(meters => this.setState({ meters }));
   }
 
-  // render() {
-  //   return (
-  //     <div className="App">
-  //       <h1>Meters</h1>
-  //       {this.state.meters.map(meter => (
-  //         <div key={meter.properties.meter_id}>
-  //           {meter.properties.meter_type}
-  //           {meter.properties.credit_card}
-  //         </div>
-  //       ))}
-  //     </div>
-  //   );
-  // }
+  loadScript(url) {
+    var index = window.document.getElementsByTagName("script")[0];
+    var script = window.document.createElement("script");
+    script.src = url;
+    script.async = true;
+    script.defer = true;
+    index.parentNode.insertBefore(script, index);
+  }
+
   render() {
     return (
-      <div>
-        <GoogleMap
-          style={mapStyles}
-          bootstrapURLKeys={{ key: key }}
-          center={{ lat: 49.246292, lng: -123.116226 }}
-          zoom={14}
-        >
-          <Marker
-            title={"Current Location"}
-            lat={49.246292}
-            lng={-123.116226}
-          />
-        </GoogleMap>
-      </div>
+      <main>
+        <GoogleMap />
+      </main>
     );
   }
 }
+
+//
 
 export default App;
