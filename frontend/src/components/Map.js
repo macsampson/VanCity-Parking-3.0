@@ -17,19 +17,6 @@ class Map extends Component {
     this.renderMap();
   }
 
-  addMarker = meter => {
-    var latLng = new window.google.maps.LatLng(
-      meter.geometry.coordinates[1],
-      meter.geometry.coordinates[0]
-    );
-    var marker = new window.google.maps.Marker({
-      position: latLng,
-      map: map
-    });
-
-    markers.push(marker);
-  };
-
   render() {
     return (
       <div>
@@ -47,17 +34,17 @@ class Map extends Component {
     );
   }
 
-  renderMap = () => {
+  renderMap() {
     window.initMap = this.initMap;
-  };
+  }
 
-  initMap = () => {
+  initMap() {
     map = new window.google.maps.Map(document.getElementById("map"), {
       center: { lat: 49.24966, lng: -123.11934 },
       zoom: 13
     });
 
-    this.setState({ map: map });
+    // this.setState({ map: map });
 
     // Declare Options For Autocomplete
     var options = {
@@ -105,21 +92,19 @@ class Map extends Component {
         url.searchParams.append(key, params[key])
       );
 
-      // Fetch meters from the backend within a specified distance from the searched location
-      fetch(url)
-        .then(response => response.json())
-        .then(meters => {
-          console.log(meters);
-          for (var i = 0; i < meters.length; i++) {
-            var meter = meters[i];
-            addMarker(meter, map);
-          }
-        })
-        .catch(error => {
-          console.log("Fetch Error : -S", error);
-        });
+      getMeters(url).catch(err => console.log("Fetch Error : -S", err));
     });
-  };
+  }
+}
+
+// Fetch meters using given url and add each one to the map
+async function getMeters(url) {
+  let response = await fetch(url);
+  let meters = await response.json();
+
+  for (let meter of meters) {
+    addMarker(meter, map);
+  }
 }
 
 // Function to add info window to a marker
