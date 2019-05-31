@@ -5,6 +5,7 @@ import { Navbar, Form, FormControl } from "react-bootstrap";
 
 var map;
 var markers = [];
+var activeInfoWindow; // Keeps track of the last active info window (used for closing when a new one is opened)
 
 class Map extends Component {
   constructor() {
@@ -80,6 +81,15 @@ class Map extends Component {
       inputNode,
       options
     );
+
+    // Allows user to press enter to select the places autocomplete option and perform search
+    window.google.maps.event.addDomListener(inputNode, "keydown", function(
+      event
+    ) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+      }
+    });
 
     // Set the autocomplate to bias towards locations within the maps current viewport
     autocomplete.bindTo("bounds", map);
@@ -180,7 +190,6 @@ function addInfoWindow(marker, json) {
   );
 
   // Attaching a click event to the current marker
-  var activeInfoWindow;
   var infowindow = new window.google.maps.InfoWindow({
     content: contentString
   });
