@@ -184,8 +184,9 @@ function addInfoWindow(marker, json) {
       saturdays={json.limits_and_rates.saturday}
       sundays={json.limits_and_rates.sunday}
       meter_type={json.meter_type}
-      pay_by_phone={json.pay_by_phone}
+      pay_by_phone={json.pay_by_phone_num}
       credit_card={json.credit_card}
+      extras={json.prohibitions}
     />
   );
 
