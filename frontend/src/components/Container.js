@@ -61,6 +61,7 @@ class Container extends Component {
       }
     );
     map = new window.google.maps.Map(node, mapConfig);
+
     // Declare Options For Autocomplete
     var options = {
       types: []
@@ -73,6 +74,15 @@ class Container extends Component {
     );
     // Set the autocomplate to bias towards locations within the maps current viewport
     autocomplete.bindTo("bounds", map);
+
+    // Prevent form from getting submitted when the enter key is pressed
+    window.google.maps.event.addDomListener(inputNode, "keydown", function(
+      event
+    ) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+      }
+    });
   };
 
   // Conduct search using parameters given from user
