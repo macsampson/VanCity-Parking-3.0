@@ -117,7 +117,7 @@ class InfoWindow extends Component {
             <td>{this.props.meter_type}</td>
           </tr>
           <th>
-            <b>Extras: </b>
+            <b>Additional Info: </b>
           </th>
           <td>{this.props.extras}</td>
         </div>

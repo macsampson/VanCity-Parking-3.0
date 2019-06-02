@@ -31,3 +31,40 @@
     transform: rotate(360deg);
   }
 }
+
+#map {
+  height: 100vh;
+}
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.infowindow-days {
+  padding: 5px 12px 5px 5px;
+}
+
+.infowindow-hours {
+  padding-bottom: 3px;
+}
+
+.section-info-icon {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+th[rowspan],
+td[rowspan] {
+  vertical-align: top;
+}
+
+td {
+  padding-right: 10px;
+}
+
+.limit {
+  padding-bottom: 5px;
+}

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import "./App.css";
-import GoogleMap from "./components/GoogleMap";
+import Container from "./components/Container";
 
 const dotenv = require("dotenv");
 dotenv.config();
 
-const key = process.env.REACT_APP_MAPS_API;
+var key = process.env.REACT_APP_MAPS_API;
 
 class App extends Component {
-  state = { meters: [] };
+  state = { map: null, meters: [], rate: 0, distance: 0 };
 
   // Load Google API when the app component is mounted
   componentDidMount() {
@@ -17,9 +17,6 @@ class App extends Component {
         key +
         "&callback=initMap&libraries=places"
     );
-    // fetch("/meters")
-    //   .then(res => res.json())
-    //   .then(meters => this.setState({ meters }));
   }
 
   loadScript(url) {
@@ -34,12 +31,10 @@ class App extends Component {
   render() {
     return (
       <main>
-        <GoogleMap />
+        <Container />
       </main>
     );
   }
 }
-
-//
 
 export default App;

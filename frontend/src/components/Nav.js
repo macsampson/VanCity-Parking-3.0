@@ -1,26 +1,16 @@
 import { Navbar, Form, FormControl, Button } from "react-bootstrap";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-// import { search } from "./Map";
-
 import React, { Component } from "react";
 
-var autocomplete;
-
 export default class Nav extends Component {
-  state = {
-    location: null,
-    rate: 0,
-    distance: 0,
-    meter_type: "Any",
-    query: {
-      location: null,
-      distance: 0
-    }
-  };
-
-  componentDidUpdate() {
-    this.initNav();
+  constructor(props) {
+    super(props);
+    this.state = {
+      rate: 0,
+      distance: 0,
+      meter_type: "Any"
+    };
   }
 
   onDistanceChange = distance => {
@@ -37,47 +27,15 @@ export default class Nav extends Component {
     this.props.rate(rate);
   };
 
-  handleLocationChange = e => {
-    this.setState({
-      location: e.target.value
-    });
-  };
-
-  handleSearch = () => {
-    // search();
-  };
-
   onTypeChange = e => {
     this.setState({
       meter_type: e.target.value
     });
-    this.props.meter_type(e.target.value);
+    this.props.type(e.target.value);
   };
 
-  handleQuery = () => {
-    this.setState(
-      {
-        query: {
-          location: autocomplete.value,
-          distance: this.state.distance
-        }
-      },
-      this.props.query(this.state.query)
-    );
-  };
-
-  initNav = () => {
-    const { google } = this.props;
-    const maps = google.maps;
-    // Declare Options For Autocomplete
-    var options = {
-      types: []
-    };
-    // Set the search bar to use Googles Place Autocomplete library
-    let inputNode = document.getElementById("autocomplete");
-    autocomplete = new maps.places.Autocomplete(inputNode, options);
-    // Set the autocomplate to bias towards locations within the maps current viewport
-    autocomplete.bindTo("bounds", this.props.map);
+  onSearch = e => {
+    this.props.search(e);
   };
 
   render() {
@@ -123,11 +81,10 @@ export default class Nav extends Component {
               type="text"
               placeholder="Search..."
               className="mr-sm-2"
-              onChange={this.handleLocationChange}
               style={style}
             />
           </Form>
-          <Button onClick={this.handleSearch} variant="primary" type="submit">
+          <Button onClick={this.onSearch} variant="primary" type="submit">
             Search
           </Button>
         </Navbar>
