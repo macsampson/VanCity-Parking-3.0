@@ -3,7 +3,6 @@
 var Express = require("express");
 const router = Express.Router();
 var Meter = require("../models/meter.model");
-var dbOperations = require("../db");
 
 /* GET meters listing. */
 router.get("/", (req, res) => {
@@ -11,13 +10,7 @@ router.get("/", (req, res) => {
   var lng = req.query.lng;
   var distance = req.query.distance;
 
-  // dbOperations.fetchNearestMeters([lng, lat], distance, function(
-  //   results
-  // ) {
-  //   // Return the results of the db qeury back in JSON form
-  //   res.json(results);
-  // });
-
+  // Use coordinates in [lat,lng] format, a distance in meters, to query the db and returns meters within the distance radius from the given coordinates
   Meter.find({
     geometry: {
       $near: {
@@ -29,9 +22,15 @@ router.get("/", (req, res) => {
       }
     }
   }).find((err, results) => {
-    if (err) console.log(err);
-    res.json(results);
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
   });
 });
+
+// TODO: Write query to get unique rates from db
+router.get("/rates", (req, res) => {});
 
 module.exports = router;

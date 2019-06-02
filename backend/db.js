@@ -25,9 +25,11 @@ db.once("open", () => {
 // Create an index on location parameter so we can run geospatial queries on the parking meter dataset
 db.collection("meters").createIndex({ geometry: "2dsphere" });
 
+// Do all the meter things
 initMeters();
 
 // TODO: Add function to only pull once a week
+function checkLastUpdate() {}
 // Pull data from remote source and save to local destination
 function pullData(source, dest) {
   var writeStream = fs.createWriteStream(dest, {
