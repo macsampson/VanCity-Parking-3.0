@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import ReactDOMServer from "react-dom/server";
 import InfoWindow from "./InfoWindow";
 import PropTypes from "prop-types";
+import toaster from "toasted-notes";
 import Nav from "./Nav";
+
+import "../App.css";
 
 var map;
 var markers = [];
@@ -151,7 +154,9 @@ async function getMeters(url) {
 
   // If no meters are returned, show an alert and return
   if (meters.length === 0) {
-    alert("No parking meters found within specified distance.");
+    toaster.notify("There are no meters within the specified distance.", {
+      duration: 2000
+    });
     return;
   }
   // Else begin adding markers to the map
