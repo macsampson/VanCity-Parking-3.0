@@ -1,8 +1,5 @@
-To start the db:
-run ```mongod``` in terminal
-
-To start the backend and frontend concurrently:
-run ```npm run dev``` in backend
+To start the app:
+run ```npm run dev``` in backend folder
 
 # TODO
 
