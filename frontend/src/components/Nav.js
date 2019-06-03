@@ -2,6 +2,7 @@ import { Navbar, Form, FormControl, Button } from "react-bootstrap";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import React, { Component } from "react";
+import Switch from "react-switch";
 
 export default class Nav extends Component {
   constructor(props) {
@@ -9,7 +10,8 @@ export default class Nav extends Component {
     this.state = {
       rate: 0,
       distance: 0,
-      meter_type: "Any"
+      meter_type: "Any",
+      crime: false
     };
   }
 
@@ -36,6 +38,10 @@ export default class Nav extends Component {
 
   onSearch = e => {
     this.props.search(e);
+  };
+
+  handleChange = crime => {
+    this.setState({ crime });
   };
 
   render() {
@@ -118,6 +124,14 @@ export default class Nav extends Component {
             </label>
             <Slider onChange={this.onRateChange} min={0} max={10} step={1} />
           </div>
+          <label style={labelStyle}>
+            <span>Crime Overlay</span>
+            <Switch
+              onChange={this.handleChange}
+              checked={this.state.crime}
+              onColor={"#007bff"}
+            />
+          </label>
         </Navbar>
       </div>
     );
