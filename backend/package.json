@@ -6,7 +6,8 @@
     "start": "nodemon ./bin/www",
     "frontend": "cd ../frontend && npm start",
     "backend": "npm start",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+    "db": "mongod",
+    "dev": "concurrently \"npm run db\" \"npm run backend\" \"npm run frontend\""
   },
   "dependencies": {
     "@tmcw/togeojson": "^3.0.0",
@@ -15,18 +16,22 @@
     "cors": "^2.8.5",
     "csvtojson": "^2.0.8",
     "debug": "~2.6.9",
+    "dotenv": "^8.0.0",
     "express": "~4.16.1",
     "fstream": "^1.0.12",
     "ftp": "^0.3.10",
     "http-errors": "~1.6.3",
     "mongoose": "^5.5.5",
     "morgan": "~1.9.1",
+    "node-fetch": "^2.6.0",
     "request": "^2.88.0",
+    "uid": "0.0.2",
     "unzip": "^0.1.11",
     "xml-js": "^1.6.11",
     "xmldom": "^0.1.27"
   },
   "devDependencies": {
+    "jslint": "^0.12.1",
     "nodemon": "^1.19.1"
   }
 }
