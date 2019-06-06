@@ -11,6 +11,7 @@ const crimeSchema = new Schema({
     }
   },
   properties: {
+    id: { type: String },
     type: { type: String },
     year: { type: Number },
     address: { type: String },
@@ -18,6 +19,6 @@ const crimeSchema = new Schema({
   }
 });
 
-var Crime = mongoose.model("crimes", meterSchema);
+var Crime = mongoose.model("crimes", crimeSchema);
 
 module.exports = Crime;

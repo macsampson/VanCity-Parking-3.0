@@ -5,11 +5,15 @@ var ftpClient = require("ftp");
 var unzip = require("unzip");
 var fstream = require("fstream");
 var convert = require("xml-js");
+var uid = require("uid");
+
+const fetch = require("node-fetch");
 
 const tj = require("@tmcw/togeojson");
 const DOMParser = require("xmldom").DOMParser;
 
 var Meter = require("./models/meter.model");
+var Crime = require("./models/crime.model");
 
 // Connect to Mongo on start
 mongoose.connect("mongodb://localhost/parker", {
@@ -19,26 +23,107 @@ mongoose.connect("mongodb://localhost/parker", {
 });
 
 const db = mongoose.connection;
+db.on("error", err => console.log(err));
 db.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
-// Create an index on location parameter so we can run geospatial queries on the parking meter dataset
+// Create an index on location parameter so we can run geospatial queries on the parking meter and crime dataset
 db.collection("meters").createIndex({ geometry: "2dsphere" });
+db.collection("crimes").createIndex({ geometry: "2dsphere" });
 
-// Do all the meter things
-initMeters();
+// initMeters();
+// initCrimes();
 
-// TODO: Add function to only pull once a week
-function checkLastUpdate() {}
+// TODO: Add function to only pull once a month
+function checkLastUpdate() {
+  // Do all the crime things
+  initCrimes();
+  // Do all the meter things
+  initMeters();
+}
+
+function initCrimes() {
+  var crime_string = fs.readFileSync("./data/crime_json_all_years.json");
+  var crimes_json = JSON.parse(crime_string);
+  var auto_crimes = cleanCrimes(crimes_json);
+  // var auto_crime_string = JSON.stringify(auto_crimes);
+  saveJSON(auto_crimes, "./data/crime_recent.json");
+  // updateCrimes(auto_crimes);
+}
+
+// Clean up crime file to only include this and last years data
+function cleanCrimes(crimes_json) {
+  var auto_crimes = {
+    type: "FeatureCollection",
+    features: []
+  };
+  var crime_lat;
+  var crime_lng;
+
+  var crimes = crimes_json.features;
+  var count = 0;
+
+  for (let crime of crimes) {
+    if (count === 1000) {
+      break;
+    }
+    if (
+      crime.properties.YEAR === 2019 &&
+      /\sVehicle/.test(crime.properties.TYPE)
+    ) {
+      // Geocode the addresses from the crime data
+      fetch(
+        "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+          crime.properties.HUNDRED_BLOCK +
+          "," +
+          crime.properties.NEIGHBOURHOOD +
+          ",Vancouver Canada&key=" +
+          process.env.REACT_APP_MAPS_API
+      )
+        .then(res => {
+          console.log("Got response");
+          return res.json();
+        })
+        .then(json => {
+          crime_lng = json.results[0].geometry.location.lng;
+          crime_lat = json.results[0].geometry.location.lat;
+          console.log(crime_lat + "," + crime_lng);
+        })
+        .catch(err => {
+          console.log("No geocode response due to: " + err);
+          err = true;
+        });
+      var crime_id = uid(10);
+      auto_crimes.features.push({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [crime_lng, crime_lat]
+        },
+        properties: {
+          id: crime_id,
+          type: crime.properties.TYPE,
+          year: crime.properties.YEAR,
+          address: crime.properties.HUNDRED_BLOCK,
+          neighbourhood: crime.properties.NEIGHBOURHOOD
+        }
+      });
+      count++;
+    }
+  }
+  return auto_crimes;
+}
+
 // Pull data from remote source and save to local destination
 function pullData(source, dest) {
   var writeStream = fs.createWriteStream(dest, {
     flags: "w"
   });
+  writeStream.on("error", err => {
+    console.log(err);
+  });
   writeStream.on("open", () => {
-    console.log("Pulling data...");
     request.get(source).pipe(writeStream);
-    console.log("Data saved!");
   });
 }
 
@@ -52,8 +137,10 @@ function unzipData(source, dest) {
 function saveJSON(json, dest) {
   // Write json to file
   fs.writeFile(dest, JSON.stringify(json), "utf8", function(err) {
-    if (err) throw err;
-    console.log("JSON written to file successfully.");
+    if (err) {
+      console.log(err);
+      throw err;
+    }
   });
 }
 
@@ -263,7 +350,7 @@ function parseMeters(metersJSON) {
 }
 
 // Function to check if a meter exists with a given id...if it does, update record with newly pulled info, otherwise create it
-function updateDBMeters(parking_meters) {
+function updateMeters(parking_meters) {
   for (let new_meter of parking_meters.features) {
     Meter.updateOne(
       { "properties.meter_id": new_meter.properties.meter_id },
@@ -301,7 +388,34 @@ function updateDBMeters(parking_meters) {
       console.log(err);
     });
   }
-  console.log("Parking meters saved to Mongo in GeoJSON format");
+}
+
+function updateCrimes(crime_data) {
+  for (let new_crime of crime_data.features) {
+    Crime.updateOne(
+      { "properties.id": new_crime.properties.id },
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [
+            new_crime.geometry.coordinates[0],
+            new_crime.geometry.coordinates[1]
+          ]
+        },
+        properties: {
+          id: new_crime.properties.id,
+          type: new_crime.properties.type,
+          year: new_crime.properties.year,
+          address: new_crime.properties.address,
+          neighbourhood: new_crime.properties.neighbourhood
+        }
+      },
+      { upsert: true, multi: true }
+    ).catch(err => {
+      console.log(err);
+    });
+  }
 }
 
 function initMeters() {
@@ -313,7 +427,7 @@ function initMeters() {
 
   // node doesn't have xml parsing or a dom. use xmldom
   const kml = new DOMParser().parseFromString(
-    fs.readFileSync("./data/parking_meter_rates_and_time_limits.kml", "utf8")
+    fs.readFileSync("./data/parking_meter_rates_and_time_limits.kml")
   );
 
   const dirtyjson = tj.kml(kml, { styles: true });
@@ -321,48 +435,71 @@ function initMeters() {
 
   const geo_parking_meters = parseMeters(dirtyjson);
   // Turn the json object into a string to get ready for writing to a file
-  const geojsonstring = JSON.stringify(geo_parking_meters);
+  // const geojsonstring = JSON.stringify(geo_parking_meters);
 
-  saveJSON(geojsonstring, "./data/parking_meters_clean.json");
-  updateDBMeters(geo_parking_meters);
+  saveJSON(geo_parking_meters, "./data/parking_meters_clean.json");
+  updateMeters(geo_parking_meters);
 }
 
 // TODO: Figure out this crime data ftp stuff
 // Pull and save crime data to the data directory
-// var c = new ftpClient();
 
-// c.on("ready", function() {
-//   console.log("Pulling crime data...");
-//   c.get(
-//     "ftp://webftp.vancouver.ca/opendata/json/crime_json_all_years.zip",
-//     (err, stream) => {
-//       if (err) {
+// pullFtpData();
+
+// var ftps = {
+//   host: "webftp.vancouver.ca",
+//   protocol: "ftp"
+// };
+
+// function pullFtp() {
+//   var c = new ftpClient();
+//   c.on("ready", function() {
+//     c.get("opendata/json/crime_json_all_years.zip", function(err, stream) {
+//       if (err) throw err;
+//       stream.once("close", function() {
 //         c.end();
-//         return reject(err);
+//       });
+//       stream.pipe(fs.createWriteStream("./data/crime_data.zip"));
+//     });
+//   });
+
+//   c.connect(ftps);
+// }
+
+// async function pullFtpData() {
+//   console.log("calling ftp");
+//   var c = new ftpClient();
+//   console.log(c);
+//   c.on("ready", function() {
+//     console.log("Pulling crime data...");
+//     c.get(
+//       "ftp://webftp.vancouver.ca/opendata/json/crime_json_all_years.zip",
+//       (err, stream) => {
+//         if (err) throw err;
+
+//         var writeStream = fs.createWriteStream("./data/crime_data.zip", {
+//           flags: "w"
+//         });
+
+//         writeStream.on("finish", result => {
+//           c.end();
+//           console.log("Crime data saved!");
+//         });
+
+//         writeStream.on("close", result => {
+//           // handling close
+//           c.end();
+//           console.log("Crime data saved!");
+//         });
+
+//         stream.pipe(writeStream);
 //       }
+//     );
+//   });
 
-//       var writeStream = fs.createWriteStream("./data/crime_data.zip", {
-//         flags: "w"
-//       });
-
-//       writeStream.on("finish", result => {
-//         c.end();
-//         console.log("Crime data saved!");
-//       });
-
-//       writeStream.on("close", result => {
-//         // handling close
-//         c.end();
-//         console.log("Crime data saved!");
-//       });
-
-//       stream.pipe(writeStream);
-//     }
-//   );
-// });
-
-// c.on("close", () => {
-//   fs.createReadStream("./data/crime_data.zip").pipe(
-//     unzip.Extract({ path: "./data/" })
-//   );
-// });
+//   c.on("close", () => {
+//     fs.createReadStream("./data/crime_data.zip").pipe(
+//       unzip.Extract({ path: "./data/" })
+//     );
+//   });
+// }
