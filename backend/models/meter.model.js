@@ -46,6 +46,7 @@ const meterSchema = new Schema({
       start: String,
       end: String
     },
+    rates: { type: [Number] },
     credit_card: String,
     prohibitions: String,
     date_updated: String

@@ -9,11 +9,11 @@ var uid = require("uid");
 
 const fetch = require("node-fetch");
 
-const tj = require("@tmcw/togeojson");
-const DOMParser = require("xmldom").DOMParser;
+const toGeo = require("@tmcw/togeojson");
+var DOMParser = require("xmldom").DOMParser;
 
 var Meter = require("./models/meter.model");
-var Crime = require("./models/crime.model");
+// var Crime = require("./models/crime.model");
 
 // Connect to Mongo on start
 mongoose.connect("mongodb://localhost/parker", {
@@ -28,90 +28,23 @@ db.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
 // Create an index on location parameter so we can run geospatial queries on the parking meter and crime dataset
-db.collection("meters").createIndex({ geometry: "2dsphere" });
-db.collection("crimes").createIndex({ geometry: "2dsphere" });
+db.collection("meters").createIndex({
+  geometry: "2dsphere",
+  "properties.rates": 1
+});
+// db.collection("meters").createIndex({ "properties.rates": 1 });
 
-// initMeters();
+// db.collection("crimes").createIndex({ geometry: "2dsphere" });
+
+initMeters();
 // initCrimes();
 
 // TODO: Add function to only pull once a month
 function checkLastUpdate() {
   // Do all the crime things
-  initCrimes();
+  // initCrimes();
   // Do all the meter things
   initMeters();
-}
-
-function initCrimes() {
-  var crime_string = fs.readFileSync("./data/crime_json_all_years.json");
-  var crimes_json = JSON.parse(crime_string);
-  var auto_crimes = cleanCrimes(crimes_json);
-  // var auto_crime_string = JSON.stringify(auto_crimes);
-  saveJSON(auto_crimes, "./data/crime_recent.json");
-  // updateCrimes(auto_crimes);
-}
-
-// Clean up crime file to only include this and last years data
-function cleanCrimes(crimes_json) {
-  var auto_crimes = {
-    type: "FeatureCollection",
-    features: []
-  };
-  var crime_lat;
-  var crime_lng;
-
-  var crimes = crimes_json.features;
-  var count = 0;
-
-  for (let crime of crimes) {
-    if (count === 1000) {
-      break;
-    }
-    if (
-      crime.properties.YEAR === 2019 &&
-      /\sVehicle/.test(crime.properties.TYPE)
-    ) {
-      // Geocode the addresses from the crime data
-      fetch(
-        "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-          crime.properties.HUNDRED_BLOCK +
-          "," +
-          crime.properties.NEIGHBOURHOOD +
-          ",Vancouver Canada&key=" +
-          process.env.REACT_APP_MAPS_API
-      )
-        .then(res => {
-          console.log("Got response");
-          return res.json();
-        })
-        .then(json => {
-          crime_lng = json.results[0].geometry.location.lng;
-          crime_lat = json.results[0].geometry.location.lat;
-          console.log(crime_lat + "," + crime_lng);
-        })
-        .catch(err => {
-          console.log("No geocode response due to: " + err);
-          err = true;
-        });
-      var crime_id = uid(10);
-      auto_crimes.features.push({
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [crime_lng, crime_lat]
-        },
-        properties: {
-          id: crime_id,
-          type: crime.properties.TYPE,
-          year: crime.properties.YEAR,
-          address: crime.properties.HUNDRED_BLOCK,
-          neighbourhood: crime.properties.NEIGHBOURHOOD
-        }
-      });
-      count++;
-    }
-  }
-  return auto_crimes;
 }
 
 // Pull data from remote source and save to local destination
@@ -175,7 +108,7 @@ function parseMeters(metersJSON) {
     const sat_regex = /Sat/;
     const sun_regex = /Sun/;
 
-    const rate_regex = /(\$\s?.*)/gm;
+    const rate_regex = /(?<=\$\s?).*/gm;
 
     var desc = pm.properties.description;
 
@@ -185,6 +118,7 @@ function parseMeters(metersJSON) {
     var weekday_info = [];
     var sat_info = [];
     var sun_info = [];
+    var rates = new Set();
     var time_misc = "";
     var rate_misc = "";
 
@@ -239,6 +173,8 @@ function parseMeters(metersJSON) {
           } else if (rate_regex.test(rate_day_array[i])) {
             // console.log(rate_day_array[i]);
             rate = rate_day_array[i].match(rate_regex)[0];
+            // Save rate as a float
+            rates.add(parseFloat(rate));
           }
         }
         var info = {
@@ -340,6 +276,7 @@ function parseMeters(metersJSON) {
           start: start,
           end: end
         },
+        rates: Array.from(rates),
         credit_card: credit,
         prohibitions: prohibitions,
         date_updated: Date()
@@ -378,6 +315,7 @@ function updateMeters(parking_meters) {
             start: new_meter.properties.in_effect.start,
             end: new_meter.properties.in_effect.end
           },
+          rates: new_meter.properties.rates,
           credit_card: new_meter.properties.credit_card,
           prohibitions: new_meter.properties.prohibitions,
           date_updated: Date()
@@ -388,6 +326,101 @@ function updateMeters(parking_meters) {
       console.log(err);
     });
   }
+}
+
+function initMeters() {
+  pullData(
+    "https://data.vancouver.ca/download/kml/parking_meter_rates_and_time_limits.kmz",
+    "./data/parking_meters.kmz"
+  );
+  unzipData("./data/parking_meters.kmz", "./data/");
+
+  // node doesn't have xml parsing or a dom. use xmldom
+  var kml = new DOMParser().parseFromString(
+    fs.readFileSync("./data/parking_meter_rates_and_time_limits.kml", "utf8")
+  );
+
+  var dirtyjson = toGeo.kml(kml, { styles: true });
+  saveJSON(dirtyjson, "./data/parking_meters_dirty.json");
+
+  var geo_parking_meters = parseMeters(dirtyjson);
+  // Turn the json object into a string to get ready for writing to a file
+  var geojsonstring = JSON.stringify(geo_parking_meters);
+
+  saveJSON(geojsonstring, "./data/parking_meters_clean.json");
+  updateMeters(geo_parking_meters);
+}
+
+function initCrimes() {
+  var crime_string = fs.readFileSync("./data/crime_json_all_years.json");
+  var crimes_json = JSON.parse(crime_string);
+  var auto_crimes = cleanCrimes(crimes_json);
+  // var auto_crime_string = JSON.stringify(auto_crimes);
+  saveJSON(auto_crimes, "./data/crime_recent.json");
+  // updateCrimes(auto_crimes);
+}
+
+// Clean up crime file to only include this and last years data
+function cleanCrimes(crimes_json) {
+  var auto_crimes = {
+    type: "FeatureCollection",
+    features: []
+  };
+  var crime_lat;
+  var crime_lng;
+
+  var crimes = crimes_json.features;
+  var count = 0;
+
+  for (let crime of crimes) {
+    if (count === 1000) {
+      break;
+    }
+    if (
+      crime.properties.YEAR === 2019 &&
+      /\sVehicle/.test(crime.properties.TYPE)
+    ) {
+      // Geocode the addresses from the crime data
+      fetch(
+        "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+          crime.properties.HUNDRED_BLOCK +
+          "," +
+          crime.properties.NEIGHBOURHOOD +
+          ",Vancouver Canada&key=" +
+          process.env.REACT_APP_MAPS_API
+      )
+        .then(res => {
+          console.log("Got response");
+          return res.json();
+        })
+        .then(json => {
+          crime_lng = json.results[0].geometry.location.lng;
+          crime_lat = json.results[0].geometry.location.lat;
+          console.log(crime_lat + "," + crime_lng);
+        })
+        .catch(err => {
+          console.log("No geocode response due to: " + err);
+          err = true;
+        });
+      var crime_id = uid(10);
+      auto_crimes.features.push({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [crime_lng, crime_lat]
+        },
+        properties: {
+          id: crime_id,
+          type: crime.properties.TYPE,
+          year: crime.properties.YEAR,
+          address: crime.properties.HUNDRED_BLOCK,
+          neighbourhood: crime.properties.NEIGHBOURHOOD
+        }
+      });
+      count++;
+    }
+  }
+  return auto_crimes;
 }
 
 function updateCrimes(crime_data) {
@@ -416,29 +449,6 @@ function updateCrimes(crime_data) {
       console.log(err);
     });
   }
-}
-
-function initMeters() {
-  pullData(
-    "https://data.vancouver.ca/download/kml/parking_meter_rates_and_time_limits.kmz",
-    "./data/parking_meters.kmz"
-  );
-  unzipData("./data/parking_meters.kmz", "./data/");
-
-  // node doesn't have xml parsing or a dom. use xmldom
-  const kml = new DOMParser().parseFromString(
-    fs.readFileSync("./data/parking_meter_rates_and_time_limits.kml")
-  );
-
-  const dirtyjson = tj.kml(kml, { styles: true });
-  saveJSON(dirtyjson, "./data/parking_meters_dirty.json");
-
-  const geo_parking_meters = parseMeters(dirtyjson);
-  // Turn the json object into a string to get ready for writing to a file
-  // const geojsonstring = JSON.stringify(geo_parking_meters);
-
-  saveJSON(geo_parking_meters, "./data/parking_meters_clean.json");
-  updateMeters(geo_parking_meters);
 }
 
 // TODO: Figure out this crime data ftp stuff

@@ -9,28 +9,52 @@ router.get("/", (req, res) => {
   var lat = req.query.lat;
   var lng = req.query.lng;
   var distance = req.query.distance;
+  var rate = req.query.rate;
 
   // Use coordinates in [lat,lng] format, a distance in meters, to query the db and returns meters within the distance radius from the given coordinates
-  Meter.find({
-    geometry: {
-      $near: {
-        $geometry: {
-          type: "Point",
-          coordinates: [lng, lat]
-        },
-        $maxDistance: distance
+  if (rate === "0") {
+    Meter.find({
+      geometry: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [lng, lat]
+          },
+          $maxDistance: distance
+        }
       }
-    }
-  }).find((err, results) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.json(results);
-    }
-  });
+    }).find((err, results) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(results);
+      }
+    });
+  } else {
+    Meter.find({
+      geometry: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [lng, lat]
+          },
+          $maxDistance: distance
+        }
+      },
+      "properties.rates": {
+        $lte: rate
+      }
+    }).find((err, results) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(results);
+      }
+    });
+  }
 });
 
 // TODO: Write query to get unique rates from db
-router.get("/rates", (req, res) => {});
+// router.get("/rates", (req, res) => {});
 
 module.exports = router;
