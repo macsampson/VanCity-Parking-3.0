@@ -128,6 +128,7 @@ class Container extends Component {
         rate: this.state.rate,
         type: this.state.meter_type
       };
+
     Object.keys(params).forEach(key =>
       url.searchParams.append(key, params[key])
     );
@@ -156,9 +157,12 @@ async function getMeters(url) {
 
   // If no meters are returned, show an alert and return
   if (meters.length === 0) {
-    toaster.notify("There are no meters within the specified distance.", {
-      duration: 2000
-    });
+    toaster.notify(
+      "No meters found with specified filters. Adjust filters and try again.",
+      {
+        duration: 2000
+      }
+    );
     return;
   }
   // Else begin adding markers to the map
