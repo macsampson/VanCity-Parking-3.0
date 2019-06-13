@@ -17,7 +17,7 @@ class Container extends Component {
     super(props);
     this.state = {
       location: null,
-      rate: 0,
+      rate: "Any",
       distance: 0,
       meter_type: "Any"
     };
@@ -124,7 +124,9 @@ class Container extends Component {
       params = {
         lat: search_lat,
         lng: search_lng,
-        distance: this.state.distance
+        distance: this.state.distance,
+        rate: this.state.rate,
+        type: this.state.meter_type
       };
     Object.keys(params).forEach(key =>
       url.searchParams.append(key, params[key])

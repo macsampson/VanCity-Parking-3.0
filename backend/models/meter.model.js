@@ -11,7 +11,7 @@ const meterSchema = new Schema({
     }
   },
   properties: {
-    meter_type: String,
+    meter_type: { type: [String] },
     meter_id: String,
     limits_and_rates: {
       weekdays: [

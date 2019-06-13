@@ -10,9 +10,10 @@ router.get("/", (req, res) => {
   var lng = req.query.lng;
   var distance = req.query.distance;
   var rate = req.query.rate;
+  // var type = req.query.type;
 
   // Use coordinates in [lat,lng] format, a distance in meters, to query the db and returns meters within the distance radius from the given coordinates
-  if (rate === "0") {
+  if (rate === "Any") {
     Meter.find({
       geometry: {
         $near: {
@@ -44,6 +45,9 @@ router.get("/", (req, res) => {
       "properties.rates": {
         $lte: rate
       }
+      // "properties.meter_type": {
+      //   $in: type
+      // }
     }).find((err, results) => {
       if (err) {
         res.send(err);

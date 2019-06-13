@@ -2,13 +2,14 @@ import { Navbar, Form, FormControl, Button } from "react-bootstrap";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import React, { Component } from "react";
-import Switch from "react-switch";
+// import Switch from "react-switch";
 
 export default class Nav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rate: 0,
+      rate: "Any",
+      dollarRate: "Any",
       distance: 0,
       meter_type: "Any",
       crime: false
@@ -23,8 +24,17 @@ export default class Nav extends Component {
   };
 
   onRateChange = rate => {
+    var dollars;
+    if (rate === 10) {
+      dollars = "Any";
+      rate = "Any";
+    } else {
+      dollars = "$" + rate + ".00";
+    }
+
     this.setState({
-      rate
+      dollarRate: dollars,
+      rate: rate
     });
     this.props.rate(rate);
   };
@@ -104,12 +114,13 @@ export default class Nav extends Component {
             <option>Any</option>
             <option>Single</option>
             <option>Twin</option>
-            <option>Motorcycle</option>
+            <option>Motorbike</option>
+            <option>Pay Station</option>
             <option>Disability</option>
           </Form.Control>
           <div style={sliderStyle}>
             <label style={labelStyle}>
-              Search Distance: {this.state.distance} meters
+              Max Search Distance: {this.state.distance} meters
             </label>
             <Slider
               onChange={this.onDistanceChange}
@@ -120,18 +131,24 @@ export default class Nav extends Component {
           </div>
           <div style={sliderStyle}>
             <label style={labelStyle}>
-              Max Hourly Rate: ${this.state.rate}.00
+              Max Hourly Rate: {this.state.dollarRate}
             </label>
-            <Slider onChange={this.onRateChange} min={0} max={10} step={1} />
+            <Slider
+              onChange={this.onRateChange}
+              defaultValue={10}
+              min={1}
+              max={10}
+              step={1}
+            />
           </div>
-          <label style={labelStyle}>
-            <span>Crime Overlay</span>
+          {/* <label style={labelStyle}>
+            <span>Vehicle Theft Overlay</span>
             <Switch
               onChange={this.handleChange}
               checked={this.state.crime}
               onColor={"#007bff"}
             />
-          </label>
+          </label> */}
         </Navbar>
       </div>
     );

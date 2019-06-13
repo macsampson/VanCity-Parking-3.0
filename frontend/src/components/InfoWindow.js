@@ -16,7 +16,7 @@ class InfoWindow extends Component {
             <td>
               {this.props.weekdays[0].start} - {this.props.weekdays[0].end}
             </td>
-            <td>{this.props.weekdays[0].rate}/hr</td>
+            <td>${this.props.weekdays[0].rate}/hr</td>
           </tr>
           <tr>
             <td className="limit">
@@ -27,7 +27,7 @@ class InfoWindow extends Component {
             <td>
               {this.props.weekdays[1].start} - {this.props.weekdays[1].end}
             </td>
-            <td>{this.props.weekdays[1].rate}/hr</td>
+            <td>${this.props.weekdays[1].rate}/hr</td>
           </tr>
           <tr>
             <td className="limit">
@@ -42,7 +42,7 @@ class InfoWindow extends Component {
             <td>
               {this.props.saturdays[0].start} - {this.props.saturdays[0].end}
             </td>
-            <td>{this.props.saturdays[0].rate}/hr</td>
+            <td>${this.props.saturdays[0].rate}/hr</td>
           </tr>
           <tr>
             <td className="limit">
@@ -53,7 +53,7 @@ class InfoWindow extends Component {
             <td>
               {this.props.saturdays[1].start} - {this.props.saturdays[1].end}
             </td>
-            <td>{this.props.saturdays[1].rate}/hr</td>
+            <td>${this.props.saturdays[1].rate}/hr</td>
           </tr>
           <tr>
             <td className="limit">
@@ -68,7 +68,7 @@ class InfoWindow extends Component {
             <td>
               {this.props.sundays[0].start} - {this.props.sundays[0].end}
             </td>
-            <td>{this.props.sundays[0].rate}/hr</td>
+            <td>${this.props.sundays[0].rate}/hr</td>
           </tr>
           <tr>
             <td className="limit">
@@ -79,7 +79,7 @@ class InfoWindow extends Component {
             <td>
               {this.props.sundays[1].start} - {this.props.sundays[1].end}
             </td>
-            <td>{this.props.sundays[1].rate}/hr</td>
+            <td>${this.props.sundays[1].rate}/hr</td>
           </tr>
           <tr>
             <td className="limit">
