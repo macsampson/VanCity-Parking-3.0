@@ -95,9 +95,10 @@ function parseMeters(metersJSON) {
     var type_exists = type_regex.test(head_type);
 
     if (type_exists) {
-      type = head_type.match(type_regex)[0];
+      string_type = head_type.match(type_regex)[0];
+      type = string_type.match(/Pay Station|[^\s\/]+/g);
     } else {
-      type = "N/A";
+      type = ["N/A"];
     }
 
     // Set some regex for use later on
