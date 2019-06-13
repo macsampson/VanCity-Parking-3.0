@@ -18,7 +18,7 @@ class Container extends Component {
     this.state = {
       location: null,
       rate: "Any",
-      distance: 0,
+      distance: 250,
       meter_type: "Any"
     };
   }

@@ -10,7 +10,7 @@ export default class Nav extends Component {
     this.state = {
       rate: "Any",
       dollarRate: "Any",
-      distance: 0,
+      distance: 250,
       meter_type: "Any",
       crime: false
     };
@@ -124,9 +124,10 @@ export default class Nav extends Component {
             </label>
             <Slider
               onChange={this.onDistanceChange}
+              defaultValue={250}
               min={0}
               max={250}
-              step={1}
+              step={5}
             />
           </div>
           <div style={sliderStyle}>
