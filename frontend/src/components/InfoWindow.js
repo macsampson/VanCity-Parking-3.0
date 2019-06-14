@@ -7,7 +7,7 @@ class InfoWindow extends Component {
       <table className="infoWindow">
         <div>
           <tr>
-            <td rowSpan="12">
+            <td rowSpan="12" id="time-image-col">
               <img alt="time" src="/images/baseline-access_time-24px.svg" />
             </td>
             <th rowSpan="4">
@@ -114,7 +114,13 @@ class InfoWindow extends Component {
             <th>
               <b>Meter Type: </b>
             </th>
-            <td>{this.props.meter_type}</td>
+            <td>
+              {this.props.meter_type
+                .map(type => {
+                  return type;
+                })
+                .join("/")}
+            </td>
           </tr>
           <th>
             <b>Additional Info: </b>

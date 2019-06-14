@@ -55,93 +55,121 @@ export default class Nav extends Component {
   };
 
   render() {
-    const style = {
-      width: "100%"
-    };
-    const brandStyle = {
-      margin: "0px 15px 0px 0px"
-    };
+    // const searchStyle = {
+    //   flex: "5",
+    //   display: "flex"
+    // };
+    // const brandStyle = {
+    //   margin: "0px 15px 0px 0px",
+    //   flex: "1"
+    // };
     const sliderStyle = {
-      width: "15rem",
-      marginRight: "3rem"
+      flex: "1",
+      padding: "1rem 1rem",
+      whiteSpace: "nowrap"
     };
     const labelStyle = {
-      minWidth: "60px",
+      // minWidth: "60px",
       display: "inline-block",
-      color: "#fff"
+      color: "#fff",
+      padding: "0rem 0.5rem"
+    };
+    const typeLabelStyle = {
+      // minWidth: "60px",
+      display: "inline-block",
+      color: "#fff",
+      padding: "1rem 1.5rem 1rem 0rem"
     };
     const typeStyle = {
-      width: "auto",
-      marginRight: "3rem"
+      flex: "1",
+      padding: "0rem 1rem",
+      flexFlow: "row",
+      whiteSpace: "nowrap"
     };
-    const searchNavStyle = {
-      padding: "0rem 0rem 1rem 16.5rem"
+    const navStyle = {
+      display: "flex"
+    };
+    const boxStyle = {
+      width: "85%",
+      flex: "10"
+    };
+    const buttonStyle = {
+      margin: "0rem 0.5rem",
+      flex: "1"
     };
     return (
       <div>
-        <Navbar bg="dark" variant="dark">
+        <Navbar
+          collapseOnSelect
+          expand="xl"
+          style={navStyle}
+          bg="dark"
+          variant="dark"
+          fixed="top"
+        >
           <Navbar.Brand href="#home">
             <img
-              alt=""
+              alt="parking logo"
               src="/parking-favicon-96.png"
               width="42"
               height="42"
               className="d-inline-block align-top"
-              style={brandStyle}
+              id="brand-logo"
             />
-            Parking Spot Finder
+            <div id="brand-text">{"Parking Spot Finder"}</div>
           </Navbar.Brand>
-          <Form inline style={style}>
-            <FormControl
-              id="autocomplete"
-              type="text"
-              placeholder="Search..."
-              className="mr-sm-2"
-              style={style}
-            />
-          </Form>
-          <Button onClick={this.onSearch} variant="primary" type="submit">
+          <FormControl
+            id="autocomplete"
+            type="text"
+            placeholder="Search..."
+            style={boxStyle}
+          />
+          <Button
+            onClick={this.onSearch}
+            variant="primary"
+            type="submit"
+            style={buttonStyle}
+          >
             Search
           </Button>
-        </Navbar>
-        <Navbar style={searchNavStyle} bg="dark" variant="dark">
-          <label style={labelStyle}>Meter Type:</label>
-          <Form.Control
-            style={typeStyle}
-            as="select"
-            onChange={this.onTypeChange}
-          >
-            <option>Any</option>
-            <option>Single</option>
-            <option>Twin</option>
-            <option>Motorbike</option>
-            <option>Pay Station</option>
-            <option>Disability</option>
-          </Form.Control>
-          <div style={sliderStyle}>
-            <label style={labelStyle}>
-              Max Search Distance: {this.state.distance} meters
-            </label>
-            <Slider
-              onChange={this.onDistanceChange}
-              defaultValue={250}
-              min={0}
-              max={250}
-              step={5}
-            />
-          </div>
-          <div style={sliderStyle}>
-            <label style={labelStyle}>
-              Max Hourly Rate: {this.state.dollarRate}
-            </label>
-            <Slider
-              onChange={this.onRateChange}
-              defaultValue={10}
-              min={1}
-              max={10}
-              step={1}
-            />
-          </div>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Form inline style={typeStyle}>
+              <label style={typeLabelStyle}>Meter Type:</label>
+              <FormControl as="select" onChange={this.onTypeChange}>
+                <option>Any</option>
+                <option>Single</option>
+                <option>Twin</option>
+                <option>Motorbike</option>
+                <option>Pay Station</option>
+                <option>Disability</option>
+              </FormControl>
+            </Form>
+            <div style={sliderStyle}>
+              <label style={labelStyle}>
+                Max Search Distance: {this.state.distance} meters
+              </label>
+              <Slider
+                onChange={this.onDistanceChange}
+                defaultValue={250}
+                min={0}
+                max={250}
+                step={5}
+              />
+            </div>
+            <div style={sliderStyle}>
+              <label style={labelStyle}>
+                Max Hourly Rate: {this.state.dollarRate}
+              </label>
+              <Slider
+                onChange={this.onRateChange}
+                defaultValue={10}
+                min={1}
+                max={10}
+                step={1}
+              />
+            </div>
+          </Navbar.Collapse>
           {/* <label style={labelStyle}>
             <span>Vehicle Theft Overlay</span>
             <Switch
