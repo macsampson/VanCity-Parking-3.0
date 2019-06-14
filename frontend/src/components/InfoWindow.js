@@ -108,8 +108,8 @@ class InfoWindow extends Component {
           </tr>
 
           <tr>
-            <td rowSpan="2">
-              <img alt="info" src="/images/round-info-24px.svg" />
+            <td>
+              <img alt="meter" src="/images/baseline-local_parking-24px.svg" />
             </td>
             <th>
               <b>Meter Type: </b>
@@ -122,10 +122,15 @@ class InfoWindow extends Component {
                 .join("/")}
             </td>
           </tr>
-          <th>
-            <b>Additional Info: </b>
-          </th>
-          <td>{this.props.extras}</td>
+          <tr>
+            <td>
+              <img alt="info" src="/images/round-info-24px.svg" />
+            </td>
+            <th>
+              <b>Additional Info: </b>
+            </th>
+            <td>{this.props.extras}</td>
+          </tr>
         </div>
       </table>
     );
