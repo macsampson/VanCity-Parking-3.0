@@ -136,6 +136,10 @@ class Container extends Component {
   };
 
   render() {
+    // const mapStyle = {
+    //   height: "90vh",
+    //   marginTop: "70px"
+    // };
     return (
       <div>
         <Nav
@@ -228,16 +232,28 @@ function addInfoWindow(marker, json) {
     />
   );
 
-  // Attaching a click event to the current marker
-  var infowindow = new window.google.maps.InfoWindow({
-    content: contentString
-  });
+  var infowindow = new window.google.maps.InfoWindow({});
+
+  var street = map.getStreetView();
+
+  bindInfoWindow(marker, map, infowindow, contentString);
+  bindInfoWindow(marker, street, infowindow, contentString);
+
+  // Close active infowindow if another one is clicked
   marker.addListener("click", function() {
     if (activeInfoWindow) {
       activeInfoWindow.close();
     }
     infowindow.open(map, marker);
     activeInfoWindow = infowindow;
+  });
+}
+
+// Function to attach a click event to the current marker
+function bindInfoWindow(marker, mapOrStreetViewObject, infoWindowObject, html) {
+  window.google.maps.event.addListener(marker, "click", function() {
+    infoWindowObject.setContent(html);
+    infoWindowObject.open(mapOrStreetViewObject, marker);
   });
 }
 
