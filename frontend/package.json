@@ -17,7 +17,7 @@
     "react-switch": "^5.0.0",
     "toasted-notes": "^2.1.5"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://parker-back:3001",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

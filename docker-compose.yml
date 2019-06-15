@@ -1,0 +1,25 @@
+version: "3"
+services:
+  backend:
+    container_name: parker-back
+    restart: always
+    build: ./backend
+    ports:
+      - "3001:3001"
+    links:
+      - mongo
+    volumes:
+      - ./backend:/usr/src/app/backend
+  frontend:
+    container_name: parker-front
+    restart: always
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/usr/src/app/frontend
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
