@@ -12,7 +12,8 @@ export default class Nav extends Component {
       dollarRate: "Any",
       distance: 250,
       meter_type: "Any",
-      crime: false
+      crime: false,
+      navExpanded: false
     };
   }
 
@@ -48,10 +49,19 @@ export default class Nav extends Component {
 
   onSearch = e => {
     this.props.search(e);
+    this.closeNav();
   };
 
   handleChange = crime => {
     this.setState({ crime });
+  };
+
+  setNavExpanded = expanded => {
+    this.setState({ navExpanded: expanded });
+  };
+
+  closeNav = () => {
+    this.setState({ navExpanded: false });
   };
 
   render() {
@@ -100,14 +110,15 @@ export default class Nav extends Component {
     return (
       <div>
         <Navbar
-          collapseOnSelect
+          onToggle={this.setNavExpanded}
+          expanded={this.state.navExpanded}
           expand="xl"
           style={navStyle}
           bg="dark"
           variant="dark"
           fixed="top"
         >
-          <Navbar.Brand href="#home">
+          <Navbar.Brand>
             <img
               alt="parking logo"
               src="/parking-favicon-96.png"
@@ -120,7 +131,7 @@ export default class Nav extends Component {
           </Navbar.Brand>
           <FormControl
             id="autocomplete"
-            type="text"
+            type="search"
             placeholder="Search..."
             style={boxStyle}
           />
@@ -129,6 +140,7 @@ export default class Nav extends Component {
             variant="primary"
             type="submit"
             style={buttonStyle}
+            id="search-button-web"
           >
             Search
           </Button>
@@ -142,6 +154,7 @@ export default class Nav extends Component {
                 <option>Twin</option>
                 <option>Motorbike</option>
                 <option>Pay Station</option>
+                <option>Bay</option>
                 <option>Disability</option>
               </FormControl>
             </Form>
@@ -169,6 +182,15 @@ export default class Nav extends Component {
                 step={1}
               />
             </div>
+            <Button
+              onClick={this.onSearch}
+              variant="primary"
+              type="submit"
+              style={buttonStyle}
+              id="search-button-mobile"
+            >
+              Search
+            </Button>
           </Navbar.Collapse>
           {/* <label style={labelStyle}>
             <span>Vehicle Theft Overlay</span>

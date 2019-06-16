@@ -149,6 +149,10 @@ td {
   flex: 1;
 }
 
+#search-button-mobile {
+  display: none;
+}
+
 /*TODO clean up*/
 @media only screen and (max-width: 600px) {
   .navbar {
@@ -165,6 +169,19 @@ td {
 
   #time-image-col {
     display: none;
+  }
+
+  #search-button-web {
+    display: none;
+  }
+
+  #autocomplete {
+    margin-right: 1rem;
+  }
+
+  #search-button-mobile {
+    display: block;
+    margin: 0.5rem auto !important;
   }
 }
 
