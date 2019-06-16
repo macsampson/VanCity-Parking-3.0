@@ -36,8 +36,15 @@ db.collection("meters").createIndex({
 
 // db.collection("crimes").createIndex({ geometry: "2dsphere" });
 
-initMeters();
+// initMeters();
 // initCrimes();
+minMeterInit();
+
+function minMeterInit() {
+  var json = JSON.parse(fs.readFileSync("./data/parking_meters_clean.json"));
+  // Populate mongo
+  updateMeters(json);
+}
 
 // TODO: Add function to only pull once a month
 function checkLastUpdate() {
