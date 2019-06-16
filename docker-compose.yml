@@ -1,7 +1,7 @@
 version: "3"
 services:
   backend:
-    container_name: parker-back
+    container_name: api
     restart: always
     build: ./backend
     ports:
@@ -11,13 +11,15 @@ services:
     volumes:
       - ./backend:/usr/src/app/backend
   frontend:
-    container_name: parker-front
+    container_name: client
     restart: always
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "80:3000"
     volumes:
       - ./frontend:/usr/src/app/frontend
+    depends_on:
+      - backend
   mongo:
     container_name: mongo
     image: mongo
