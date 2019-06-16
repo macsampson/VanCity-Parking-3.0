@@ -124,18 +124,30 @@ class Container extends Component {
     var search_lng = place.geometry.location.lng();
 
     // TODO: Change the domain and port before deploying to prod
-    var url = new URL("http://localhost:3001/meters"),
-      params = {
-        lat: search_lat,
-        lng: search_lng,
-        distance: this.state.distance,
-        rate: this.state.rate,
-        type: this.state.meter_type
-      };
+    // var url = new URL("http://localhost:3001/meters"),
+    //   params = {
+    //     lat: search_lat,
+    //     lng: search_lng,
+    //     distance: this.state.distance,
+    //     rate: this.state.rate,
+    //     type: this.state.meter_type
+    //   };
 
-    Object.keys(params).forEach(key =>
-      url.searchParams.append(key, params[key])
-    );
+    var url =
+      "/meters?lat=" +
+      search_lat +
+      "&lng=" +
+      search_lng +
+      "&distance=" +
+      this.state.distance +
+      "&rate=" +
+      this.state.rate +
+      "&type=" +
+      this.state.meter_type;
+
+    // Object.keys(params).forEach(key =>
+    //   url.searchParams.append(key, params[key])
+    // );
     getMeters(url).catch(err => console.log("Fetch Error : -S", err));
   };
 
