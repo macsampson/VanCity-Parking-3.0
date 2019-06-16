@@ -75,17 +75,20 @@ class Container extends Component {
       inputNode,
       options
     );
+
+    autocomplete.addListener("place_changed", this.search);
+
     // Set the autocomplate to bias towards locations within the maps current viewport
     autocomplete.bindTo("bounds", map);
 
     // Prevent form from getting submitted when the enter key is pressed
-    window.google.maps.event.addDomListener(inputNode, "keydown", function(
-      event
-    ) {
-      if (event.keyCode === 13) {
-        event.preventDefault();
-      }
-    });
+    // window.google.maps.event.addDomListener(inputNode, "keydown", function(
+    //   event
+    // ) {
+    //   if (event.keyCode === 13) {
+    //     event.preventDefault();
+    //   }
+    // });
   };
 
   // Conduct search using parameters given from user
@@ -96,6 +99,7 @@ class Container extends Component {
     }
     markers = [];
     var place = autocomplete.getPlace();
+    console.log(place);
     console.log(place);
     // Do nothing is there is no place
     if (!place) {
