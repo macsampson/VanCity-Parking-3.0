@@ -2,12 +2,14 @@
   "name": "parker-frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "bootstrap": "^4.3.1",
     "dotenv": "^8.0.0",
     "google-map-react": "^1.1.4",
+    "http-proxy-middleware": "^0.19.1",
     "rc-slider": "^8.6.11",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.8",
@@ -15,9 +17,10 @@
     "react-load-script": "0.0.6",
     "react-scripts": "3.0.0",
     "react-switch": "^5.0.0",
+    "serve": "^11.0.1",
     "toasted-notes": "^2.1.5"
   },
-  "proxy": "http://api:3001",
+  "proxy": "http://localhost:3001",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

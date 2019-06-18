@@ -99,8 +99,8 @@ class Container extends Component {
     }
     markers = [];
     var place = autocomplete.getPlace();
-    console.log(place);
-    console.log(place);
+    // console.log(place);
+    // console.log(place);
     // Do nothing is there is no place
     if (!place) {
       return;
@@ -124,30 +124,30 @@ class Container extends Component {
     var search_lng = place.geometry.location.lng();
 
     // TODO: Change the domain and port before deploying to prod
-    // var url = new URL("http://localhost:3001/meters"),
-    //   params = {
-    //     lat: search_lat,
-    //     lng: search_lng,
-    //     distance: this.state.distance,
-    //     rate: this.state.rate,
-    //     type: this.state.meter_type
-    //   };
+    var url = new URL("http://localhost:3001/meters"),
+      params = {
+        lat: search_lat,
+        lng: search_lng,
+        distance: this.state.distance,
+        rate: this.state.rate,
+        type: this.state.meter_type
+      };
 
-    var url =
-      "/meters?lat=" +
-      search_lat +
-      "&lng=" +
-      search_lng +
-      "&distance=" +
-      this.state.distance +
-      "&rate=" +
-      this.state.rate +
-      "&type=" +
-      this.state.meter_type;
+    // var url =
+    //   "/meters?lat=" +
+    //   search_lat +
+    //   "&lng=" +
+    //   search_lng +
+    //   "&distance=" +
+    //   this.state.distance +
+    //   "&rate=" +
+    //   this.state.rate +
+    //   "&type=" +
+    //   this.state.meter_type;
 
-    // Object.keys(params).forEach(key =>
-    //   url.searchParams.append(key, params[key])
-    // );
+    Object.keys(params).forEach(key =>
+      url.searchParams.append(key, params[key])
+    );
     getMeters(url).catch(err => console.log("Fetch Error : -S", err));
   };
 
@@ -185,9 +185,18 @@ async function getMeters(url) {
     );
     return;
   }
+
+  var icons = {
+    parking: {
+      icon: "/images/meter.svg"
+    },
+    ev: {
+      icon: "/images/ev-station.png"
+    }
+  };
   // Else begin adding markers to the map
   for (let meter of meters) {
-    addMarker(meter, map);
+    addMarker(meter, map, icons.parking.icon);
   }
 
   // Fit the map to the coordinates of all the markers
@@ -218,7 +227,7 @@ async function getMeters(url) {
 // }
 
 // Function to add markers to the map
-function addMarker(meter, map) {
+function addMarker(meter, map, icon) {
   var latLng = new window.google.maps.LatLng(
     meter.geometry.coordinates[1],
     meter.geometry.coordinates[0]
