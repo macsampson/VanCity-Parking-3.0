@@ -4,7 +4,7 @@ import InfoWindow from "./InfoWindow";
 import PropTypes from "prop-types";
 import toaster from "toasted-notes";
 import Nav from "./Nav";
-import axios from "axios";
+// import axios from "axios";
 
 import "../App.css";
 
@@ -173,8 +173,8 @@ class Container extends Component {
 
 // Fetch meters from the given endpoint and add each one to the map
 async function getMeters(url) {
-  let meters = await axios.get(url);
-  // let meters = await response.json();
+  let response = await fetch(url);
+  let meters = await response.json();
 
   // If no meters are returned, show an alert and return
   if (meters.length === 0) {
