@@ -1,25 +1,24 @@
 version: "3"
 services:
-  backend:
-    container_name: api
+  server:
     restart: always
     build: ./backend
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT}
     ports:
-      - "3001:3001"
+      - ${PORT}:${PORT}
     links:
       - mongo
-    volumes:
-      - ./backend:/usr/src/app/backend
-  frontend:
-    container_name: client
+  client:
     restart: always
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "80:80"
     depends_on:
-      - backend
+      - server
   mongo:
     container_name: mongo
     image: mongo
     ports:
-      - "27017:27017"
+      - ${MONGO_PORT}:${MONGO_PORT}

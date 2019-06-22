@@ -16,7 +16,7 @@ var Meter = require("./models/meter.model");
 // var Crime = require("./models/crime.model");
 
 // Connect to Mongo on start
-mongoose.connect("mongodb://mongo:27017/parker", {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
   autoIndex: false
