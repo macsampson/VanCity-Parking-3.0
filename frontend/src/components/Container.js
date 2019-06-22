@@ -189,7 +189,7 @@ async function getMeters(url) {
 
   var icons = {
     parking: {
-      icon: "/images/meter.svg"
+      icon: "/images/parking-meter.png"
     },
     ev: {
       icon: "/images/ev-station.png"
@@ -236,6 +236,7 @@ function addMarker(meter, map, icon) {
 
   var marker = new window.google.maps.Marker({
     position: latLng,
+    icon: icon,
     map: map
   });
 
