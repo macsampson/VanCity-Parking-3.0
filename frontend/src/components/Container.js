@@ -4,6 +4,7 @@ import InfoWindow from "./InfoWindow";
 import PropTypes from "prop-types";
 import toaster from "toasted-notes";
 import Nav from "./Nav";
+import axios from "axios";
 
 import "../App.css";
 
@@ -124,30 +125,30 @@ class Container extends Component {
     var search_lng = place.geometry.location.lng();
 
     // TODO: Change the domain and port before deploying to prod
-    var url = new URL("http://localhost:3001/meters"),
-      params = {
-        lat: search_lat,
-        lng: search_lng,
-        distance: this.state.distance,
-        rate: this.state.rate,
-        type: this.state.meter_type
-      };
+    // var url = new URL("http://localhost:3001/meters"),
+    //   params = {
+    //     lat: search_lat,
+    //     lng: search_lng,
+    //     distance: this.state.distance,
+    //     rate: this.state.rate,
+    //     type: this.state.meter_type
+    //   };
 
-    // var url =
-    //   "/meters?lat=" +
-    //   search_lat +
-    //   "&lng=" +
-    //   search_lng +
-    //   "&distance=" +
-    //   this.state.distance +
-    //   "&rate=" +
-    //   this.state.rate +
-    //   "&type=" +
-    //   this.state.meter_type;
+    var url =
+      "/api/meters?lat=" +
+      search_lat +
+      "&lng=" +
+      search_lng +
+      "&distance=" +
+      this.state.distance +
+      "&rate=" +
+      this.state.rate +
+      "&type=" +
+      this.state.meter_type;
 
-    Object.keys(params).forEach(key =>
-      url.searchParams.append(key, params[key])
-    );
+    // Object.keys(params).forEach(key =>
+    //   url.searchParams.append(key, params[key])
+    // );
     getMeters(url).catch(err => console.log("Fetch Error : -S", err));
   };
 
@@ -172,8 +173,8 @@ class Container extends Component {
 
 // Fetch meters from the given endpoint and add each one to the map
 async function getMeters(url) {
-  let response = await fetch(url);
-  let meters = await response.json();
+  let meters = await axios.get(url);
+  // let meters = await response.json();
 
   // If no meters are returned, show an alert and return
   if (meters.length === 0) {

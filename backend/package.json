@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "dev-start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "frontend": "cd ../frontend && npm start",
-    "backend": "npm start",
+    "backend": "npm run dev-start",
     "db": "mongod",
     "dev": "concurrently \"npm run db\" \"npm run backend\" \"npm run frontend\""
   },

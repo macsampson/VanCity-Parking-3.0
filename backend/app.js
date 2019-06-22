@@ -27,7 +27,7 @@ app.use(cors());
 
 // app.use("/", indexRouter);
 // Refer to the meters route file for /meters
-app.use("/meters", meterRouter);
+app.use("/api/meters", meterRouter);
 // app.use("/crimes", crimeRouter);
 
 // catch 404 and forward to error handler
