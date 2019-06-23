@@ -124,6 +124,9 @@ class Container extends Component {
     var search_lat = place.geometry.location.lat();
     var search_lng = place.geometry.location.lng();
 
+
+    
+
     // TODO: Change the domain and port before deploying to prod
     // var url = new URL("http://localhost:3001/meters"),
     //   params = {
@@ -149,7 +152,7 @@ class Container extends Component {
     // Object.keys(params).forEach(key =>
     //   url.searchParams.append(key, params[key])
     // );
-    getMeters(url).catch(err => console.log("Fetch Error : -S", err));
+    getMeters(url, search_location).catch(err => console.log("Fetch Error : -S", err));
   };
 
   render() {
@@ -172,7 +175,7 @@ class Container extends Component {
 }
 
 // Fetch meters from the given endpoint and add each one to the map
-async function getMeters(url) {
+async function getMeters(url, search_loc) {
   let response = await fetch(url);
   let meters = await response.json();
 
@@ -195,6 +198,8 @@ async function getMeters(url) {
       icon: "/images/ev-station.png"
     }
   };
+
+
   // Else begin adding markers to the map
   for (let meter of meters) {
     addMarker(meter, map, icons.parking.icon);
