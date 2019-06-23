@@ -125,6 +125,11 @@ class Container extends Component {
     var search_lng = place.geometry.location.lng();
 
 
+    var searchLatlng = new window.google.maps.LatLng(search_lat, search_lng);
+    var search_location = new window.google.maps.Marker({
+      position: searchLatlng,
+      map: map
+    })
     
 
     // TODO: Change the domain and port before deploying to prod
