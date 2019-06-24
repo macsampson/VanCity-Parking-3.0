@@ -21,7 +21,7 @@
     "serve": "^11.0.1",
     "toasted-notes": "^2.1.5"
   },
-  "proxy": "http://server:3001",
+  "proxy": "http://server-dev:3001",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
