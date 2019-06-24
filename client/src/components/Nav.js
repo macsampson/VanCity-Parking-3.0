@@ -127,7 +127,7 @@ export default class Nav extends Component {
               className="d-inline-block align-top"
               id="brand-logo"
             />
-            <div id="brand-text">{"Parking Spot Finder"}</div>
+            <div id="brand-text">{"VanCity Parking"}</div>
           </Navbar.Brand>
           <FormControl
             id="autocomplete"
@@ -135,7 +135,7 @@ export default class Nav extends Component {
             placeholder="Search..."
             style={boxStyle}
           />
-          <Button
+          {/* <Button
             onClick={this.onSearch}
             variant="primary"
             type="submit"
@@ -143,7 +143,7 @@ export default class Nav extends Component {
             id="search-button-web"
           >
             Search
-          </Button>
+          </Button> */}
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Form inline style={typeStyle}>
@@ -183,13 +183,20 @@ export default class Nav extends Component {
               />
             </div>
             <Button
+            onClick={this.onSearch}
+            variant="primary"
+            type="submit"
+            style={buttonStyle}
+            id="search-button-web"
+          >Filter</Button>
+            <Button
               onClick={this.onSearch}
               variant="primary"
               type="submit"
               style={buttonStyle}
               id="search-button-mobile"
             >
-              Search
+              Filter
             </Button>
           </Navbar.Collapse>
           {/* <label style={labelStyle}>
