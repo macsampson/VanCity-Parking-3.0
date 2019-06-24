@@ -61,7 +61,8 @@ class Container extends Component {
         center: center,
         zoom: zoom,
         gestureHandling: "greedy",
-        fullscreenControl: false
+        fullscreenControl: false,
+        zoomControl: false
       }
     );
     map = new window.google.maps.Map(node, mapConfig);
@@ -195,7 +196,7 @@ async function getMeters(url, search_loc) {
     toaster.notify(
       "No meters found with specified filters. Adjust filters and try again.",
       {
-        duration: 2000
+        duration: 3000
       }
     );
     return;
