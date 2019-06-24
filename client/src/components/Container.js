@@ -66,6 +66,11 @@ class Container extends Component {
     );
     map = new window.google.maps.Map(node, mapConfig);
 
+    // Close info window when the map is clicked
+    window.google.maps.event.addListener(map, "click", e => {
+      activeInfoWindow.close()
+    });
+
     // Declare Options For Autocomplete
     var options = {
       types: []
