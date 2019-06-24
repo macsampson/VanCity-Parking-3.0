@@ -19,6 +19,6 @@ services:
       - server
   mongo:
     container_name: mongo
-    image: 431949748449.dkr.ecr.us-west-2.amazonaws.com/parking-spot-finder:backend
+    image: mongo
     ports:
       - ${MONGO_PORT}:${MONGO_PORT}
