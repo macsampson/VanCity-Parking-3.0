@@ -43,7 +43,7 @@ minMeterInit();
 function minMeterInit() {
   var json = JSON.parse(fs.readFileSync("./data/parking_meters_clean.json"));
   // Populate mongo
-  updateMeters(json);
+  saveMeters(json);
 }
 
 // TODO: Add function to only pull once a month
@@ -295,10 +295,9 @@ function parseMeters(metersJSON) {
 }
 
 // Function to check if a meter exists with a given id...if it does, update record with newly pulled info, otherwise create it
-function updateMeters(parking_meters) {
+function saveMeters(parking_meters) {
   for (let new_meter of parking_meters.features) {
-    Meter.updateOne(
-      { "properties.meter_id": new_meter.properties.meter_id },
+    var meter = new Meter(
       {
         type: "Feature",
         geometry: {
@@ -328,20 +327,19 @@ function updateMeters(parking_meters) {
           prohibitions: new_meter.properties.prohibitions,
           date_updated: Date()
         }
-      },
-      { upsert: true, multi: true }
-    ).catch(err => {
-      console.log(err);
-    });
+      }
+    );
+
+    meter.save();
   }
 }
 
 function initMeters() {
-  pullData(
-    "https://data.vancouver.ca/download/kml/parking_meter_rates_and_time_limits.kmz",
-    "./data/parking_meters.kmz"
-  );
-  unzipData("./data/parking_meters.kmz", "./data/");
+  // pullData(
+  //   "https://data.vancouver.ca/download/kml/parking_meter_rates_and_time_limits.kmz",
+  //   "./data/parking_meters.kmz"
+  // );
+  // unzipData("./data/parking_meters.kmz", "./data/");
 
   // node doesn't have xml parsing or a dom. use xmldom
   var kml = new DOMParser().parseFromString(
@@ -349,14 +347,26 @@ function initMeters() {
   );
 
   var dirtyjson = toGeo.kml(kml, { styles: true });
-  saveJSON(dirtyjson, "./data/parking_meters_dirty.json");
+  
+  // saveJSON(dirtyjson, "./data/parking_meters_dirty.json");
 
-  var geo_parking_meters = parseMeters(dirtyjson);
+  var clean_meters = parseMeters(dirtyjson);
+  // console.log(clean_meters)
   // Turn the json object into a string to get ready for writing to a file
-  var geojsonstring = JSON.stringify(geo_parking_meters);
+  // var geojsonstring = JSON.stringify(geo_parking_meters);
 
-  saveJSON(geojsonstring, "./data/parking_meters_clean.json");
-  updateMeters(geo_parking_meters);
+  console.log("starting write")
+  fs.writeFileSync("./data/parking_meters_clean.json", JSON.stringify(clean_meters), function(err) {
+    if (err) {
+      console.log(err);
+      throw err;
+    } else {
+      console.log("Saved json")
+    }
+  });
+  console.log("done write")
+  
+  // updateMeters(clean_meters);
 }
 
 function initCrimes() {
