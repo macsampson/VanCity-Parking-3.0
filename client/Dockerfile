@@ -28,7 +28,7 @@ FROM nginx
 
 # Set our custom nginx.conf in the container
 RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./data/nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Copy the react build from the build container
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html
