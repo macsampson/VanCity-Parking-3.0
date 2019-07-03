@@ -1,12 +1,13 @@
 FROM node:11.8.0-alpine
-RUN mkdir -p /usr/src/app/backend
 
 # Create app directory
-WORKDIR /usr/src/app/backend
+RUN mkdir -p /usr/src/app/client
+WORKDIR /usr/src/app/client
 
 # install dependencies
 COPY package*.json ./
 RUN npm cache verify && npm install
+# RUN npm i -g serve
 
 # copy app source to image _after_ npm install so that
 # application code changes don’t bust the docker cache of 
@@ -14,6 +15,6 @@ RUN npm cache verify && npm install
 COPY . .
 
 # set application PORT and expose docker PORT, 80 is what Elastic Beanstalk expects
-EXPOSE 3001
+EXPOSE 3000
 
-CMD [ "npm", "run", "start:dev" ]
+CMD ["npm", "start"]
