@@ -10,7 +10,7 @@ export default class Nav extends Component {
     this.state = {
       rate: "Any",
       dollarRate: "Any",
-      distance: 250,
+      distance: 100,
       meter_type: "Any",
       crime: false,
       navExpanded: false
@@ -164,7 +164,7 @@ export default class Nav extends Component {
               </label>
               <Slider
                 onChange={this.onDistanceChange}
-                defaultValue={250}
+                defaultValue={100}
                 min={0}
                 max={250}
                 step={5}
@@ -183,12 +183,14 @@ export default class Nav extends Component {
               />
             </div>
             <Button
-            onClick={this.onSearch}
-            variant="primary"
-            type="submit"
-            style={buttonStyle}
-            id="search-button-web"
-          >Filter</Button>
+              onClick={this.onSearch}
+              variant="primary"
+              type="submit"
+              style={buttonStyle}
+              id="search-button-web"
+            >
+              Filter
+            </Button>
             <Button
               onClick={this.onSearch}
               variant="primary"
