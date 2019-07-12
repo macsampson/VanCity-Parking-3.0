@@ -8,4 +8,5 @@
 * add ev chargers
 * allow search within viewport if no address is specified
 * create function to only pull data intermittently
+* allow infowindows to be opened from street view
 
