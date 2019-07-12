@@ -15,8 +15,16 @@ services:
     build: ./client
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=North America/Vancouver
+      - URL=vancityparking.com
+      - SUBDOMAINS=www,
+      - VALIDATION=http
   mongo:
     container_name: mongo
     image: mongo
