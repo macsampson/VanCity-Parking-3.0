@@ -12,7 +12,6 @@ var markers = []
 var activeInfoWindow // Keeps track of the last active info window (used for closing when a new one is opened)
 var autocomplete
 var moment = require('moment')
-// const dotenv = require('dotenv')
 
 class Container extends Component {
   constructor(props) {
@@ -173,10 +172,8 @@ async function getMeters(url, search_loc) {
   let json = await response.json()
   let meters = json.records
   console.log(meters)
-  // console.log(meters)
-
   // If no meters are returned, show an alert and return
-  if (meters.length === 0) {
+  if (meters === []) {
     toaster.notify(
       'No meters found with specified filters. Please adjust filters and try searching again.',
       {
