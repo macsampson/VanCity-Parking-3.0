@@ -5,7 +5,7 @@ import Container from './components/Container'
 const dotenv = require('dotenv')
 dotenv.config()
 
-var key = 'AIzaSyBnZJ2oG8ZJ4owzo2CovFd-g6euOMjaZmQ'
+var key = process.env.REACT_APP_MAPS_API
 
 class App extends Component {
   state = { map: null, meters: [], rate: 0, distance: 0 }
