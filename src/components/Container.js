@@ -12,6 +12,7 @@ var markers = []
 var activeInfoWindow // Keeps track of the last active info window (used for closing when a new one is opened)
 var autocomplete
 var moment = require('moment')
+// const dotenv = require('dotenv')
 
 class Container extends Component {
   constructor(props) {
@@ -132,6 +133,9 @@ class Container extends Component {
     const url = new URL(
       'https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parking-meters'
     )
+
+    // const key = process.env.VAN_OPEN_KEY
+    url.searchParams.append('rows', '100')
 
     url.searchParams.append(
       'geofilter.distance',
