@@ -47,7 +47,7 @@ class Container extends Component {
   }
 
   handleSearch = e => {
-    this.search()
+    this.search(e)
   }
 
   initMap = () => {
@@ -69,7 +69,9 @@ class Container extends Component {
 
     // Close info window when the map is clicked
     window.google.maps.event.addListener(map, 'click', e => {
-      activeInfoWindow.close()
+      if (activeInfoWindow) {
+        activeInfoWindow.close()
+      }
     })
 
     // Declare Options For Autocomplete
@@ -113,7 +115,9 @@ class Container extends Component {
     }
     if (!place.geometry) {
       // User entered the name of a Place that was not suggested and the Place Details request failed.
-      window.alert("No details available for input: '" + place.name + "'")
+      toaster.notify('No details available for ' + place.name, {
+        duration: 3000
+      })
       return
     }
 
@@ -145,7 +149,6 @@ class Container extends Component {
       url.searchParams.append('refine.meterhead', this.state.meter_type)
     }
 
-    console.log(url)
     getMeters(url, search_location).catch(err =>
       console.log('Fetch Error : -S', err)
     )
@@ -173,7 +176,8 @@ async function getMeters(url, search_loc) {
   let meters = json.records
   console.log(meters)
   // If no meters are returned, show an alert and return
-  if (meters === []) {
+  if (false) {
+    console.log('No meters')
     toaster.notify(
       'No meters found with specified filters. Please adjust filters and try searching again.',
       {
