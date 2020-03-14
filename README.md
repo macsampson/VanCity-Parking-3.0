@@ -1,6 +1,7 @@
 # VanCity Parking
 
 TODO
+- Refactor
 - Rate-dependent meter icons
 - Fix clearing search bar on smaller mobile devices
 - Search meters in current location
