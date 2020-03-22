@@ -27,6 +27,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -154,36 +155,37 @@ td {
 }
 
 /*TODO clean up*/
-@media only screen and (max-width: 600px) {
-  .navbar {
-    height: auto;
-  }
-
-  #map {
-    height: 90vh;
-  }
-
-  #brand-logo {
-    margin: 0rem;
-  }
-
-  #time-image-col {
-    display: none;
-  }
-
-  #search-button-web {
-    display: none;
-  }
-
-  #autocomplete {
-    margin-right: 1rem;
-  }
-
-  #search-button-mobile {
-    display: block;
-    margin: 0.5rem auto !important;
-  }
+/* @media only screen and (max-width: 600px) { */
+.navbar {
+  height: auto;
 }
+
+#map {
+  height: 90vh;
+}
+
+#brand-logo {
+  margin: 0rem;
+}
+
+#time-image-col {
+  display: none;
+}
+
+#search-button-web {
+  display: none;
+}
+
+#autocomplete {
+  margin-right: 1rem;
+}
+
+#search-button-mobile {
+  display: block;
+  margin: 0.5rem auto !important;
+}
+
+/* } */
 
 @media only screen and (max-width: 1400px) {
   #brand-text {

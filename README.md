@@ -8,5 +8,5 @@ TODO
 - Fix toasted notes
 - Add instant update of meters within map view when panning
 - Add crime overlay
-- Fix menu dropdown on mobile
+- ~Fix menu dropdown on mobile~
 - Add EV search
