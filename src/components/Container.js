@@ -61,8 +61,12 @@ class Container extends Component {
         center: center,
         zoom: zoom,
         gestureHandling: 'greedy',
-        fullscreenControl: false,
-        zoomControl: false
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: true,
+        rotateControl: false,
+        fullscreenControl: false
       }
     )
     map = new window.google.maps.Map(node, mapConfig)
