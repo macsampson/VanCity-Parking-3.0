@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import '../App.css'
+import React, { Component } from "react";
+import "../App.css";
 
 class InfoWindow extends Component {
   render() {
@@ -104,8 +104,8 @@ class InfoWindow extends Component {
           </tr>
         </div>
       </table>
-    )
+    );
   }
 }
 
-export default InfoWindow
+export default InfoWindow;

@@ -1,68 +1,68 @@
-import { Navbar, Form, FormControl, Button } from 'react-bootstrap'
-import Slider from 'rc-slider'
-import 'rc-slider/assets/index.css'
-import React, { Component } from 'react'
+import { Navbar, Form, FormControl, Button } from "react-bootstrap";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+import React, { Component } from "react";
 // import Switch from "react-switch";
 
 export default class Nav extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      rate: 'Any',
-      dollarRate: 'Any',
+      rate: "Any",
+      dollarRate: "Any",
       distance: 100,
-      meter_type: 'Any',
+      meter_type: "Any",
       crime: false,
-      navExpanded: false
-    }
+      navExpanded: false,
+    };
   }
 
-  onDistanceChange = distance => {
+  onDistanceChange = (distance) => {
     this.setState({
-      distance
-    })
-    this.props.distance(distance)
-  }
+      distance,
+    });
+    this.props.distance(distance);
+  };
 
-  onRateChange = rate => {
-    var dollars
+  onRateChange = (rate) => {
+    var dollars;
     if (rate === 10) {
-      dollars = 'Any'
-      rate = 'Any'
+      dollars = "Any";
+      rate = "Any";
     } else {
-      dollars = '$' + rate + '.00'
+      dollars = "$" + rate + ".00";
     }
 
     this.setState({
       dollarRate: dollars,
-      rate: rate
-    })
-    this.props.rate(rate)
-  }
+      rate: rate,
+    });
+    this.props.rate(rate);
+  };
 
-  onTypeChange = e => {
+  onTypeChange = (e) => {
     this.setState({
-      meter_type: e.target.value
-    })
-    this.props.type(e.target.value)
-  }
+      meter_type: e.target.value,
+    });
+    this.props.type(e.target.value);
+  };
 
-  onSearch = e => {
-    this.props.search(e)
-    this.closeNav()
-  }
+  onSearch = (e) => {
+    this.props.search(e);
+    this.closeNav();
+  };
 
-  handleChange = crime => {
-    this.setState({ crime })
-  }
+  handleChange = (crime) => {
+    this.setState({ crime });
+  };
 
-  setNavExpanded = expanded => {
-    this.setState({ navExpanded: expanded })
-  }
+  setNavExpanded = (expanded) => {
+    this.setState({ navExpanded: expanded });
+  };
 
   closeNav = () => {
-    this.setState({ navExpanded: false })
-  }
+    this.setState({ navExpanded: false });
+  };
 
   render() {
     // const searchStyle = {
@@ -74,39 +74,39 @@ export default class Nav extends Component {
     //   flex: "1"
     // };
     const sliderStyle = {
-      flex: '1',
-      padding: '1rem 1rem',
-      whiteSpace: 'nowrap'
-    }
+      flex: "1",
+      padding: "1rem 1rem",
+      whiteSpace: "nowrap",
+    };
     const labelStyle = {
       // minWidth: "60px",
-      display: 'inline-block',
-      color: '#fff',
-      padding: '0rem 0.5rem'
-    }
+      display: "inline-block",
+      color: "#fff",
+      padding: "0rem 0.5rem",
+    };
     const typeLabelStyle = {
       // minWidth: "60px",
-      display: 'inline-block',
-      color: '#fff',
-      padding: '1rem 1.5rem 1rem 0rem'
-    }
+      display: "inline-block",
+      color: "#fff",
+      padding: "1rem 1.5rem 1rem 0rem",
+    };
     const typeStyle = {
-      flex: '1',
-      padding: '0rem 1rem',
-      flexFlow: 'row',
-      whiteSpace: 'nowrap'
-    }
+      flex: "1",
+      padding: "0rem 1rem",
+      flexFlow: "row",
+      whiteSpace: "nowrap",
+    };
     const navStyle = {
-      display: 'flex'
-    }
+      display: "flex",
+    };
     const boxStyle = {
-      width: '85%',
-      flex: '10'
-    }
+      width: "85%",
+      flex: "10",
+    };
     const buttonStyle = {
-      margin: '0rem 0.5rem',
-      flex: '1'
-    }
+      margin: "0rem 0.5rem",
+      flex: "1",
+    };
     return (
       <div>
         <Navbar
@@ -127,7 +127,7 @@ export default class Nav extends Component {
               className="d-inline-block align-top"
               id="brand-logo"
             />
-            <div id="brand-text">{'VanCity Parking'}</div>
+            <div id="brand-text">{"VanCity Parking"}</div>
           </Navbar.Brand>
           <FormControl
             id="autocomplete"
@@ -210,6 +210,6 @@ export default class Nav extends Component {
           </label> */}
         </Navbar>
       </div>
-    )
+    );
   }
 }
