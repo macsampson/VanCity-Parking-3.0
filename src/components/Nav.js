@@ -151,7 +151,8 @@ export default class Nav extends Component {
               <FormControl as="select" onChange={this.onTypeChange}>
                 <option>Any</option>
                 <option>Single</option>
-                <option>Twin / Disability</option>
+                <option>Twin</option>
+                <option>Disability</option>
                 <option>Motorbike</option>
                 <option>Pay Station</option>
                 <option>Bay</option>

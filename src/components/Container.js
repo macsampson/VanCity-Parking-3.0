@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import ReactDOMServer from "react-dom/server";
 import InfoWindow from "./InfoWindow";
 import PropTypes from "prop-types";
-import toaster from "toasted-notes";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Nav from "./Nav";
 
 import "../App.css";
@@ -49,6 +50,8 @@ class Container extends Component {
   handleSearch = (e) => {
     this.search(e);
   };
+
+  notify = (location) => toast.error("No details available for " + location);
 
   initMap = () => {
     let { initialCenter, zoom } = this.props;
@@ -119,9 +122,8 @@ class Container extends Component {
     }
     if (!place.geometry) {
       // User entered the name of a Place that was not suggested and the Place Details request failed.
-      toaster.notify("No details available for " + place.name, {
-        duration: 3000,
-      });
+      this.notify(place.name);
+
       return;
     }
 
@@ -161,6 +163,11 @@ class Container extends Component {
   render() {
     return (
       <div>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          pauseOnHover={false}
+        />
         <Nav
           distance={this.handleDistanceChange}
           rate={this.handleRateChange}
@@ -180,13 +187,10 @@ async function getMeters(url, search_loc) {
   let meters = json.records;
   console.log(meters);
   // If no meters are returned, show an alert and return
-  if (false) {
+  if (meters.length === 0) {
     console.log("No meters");
-    toaster.notify(
-      "No meters found with specified filters. Please adjust filters and try searching again.",
-      {
-        duration: 3000,
-      }
+    toast.error(
+      "No meters found with specified filters. Please adjust filters and try searching again."
     );
     return;
   }
