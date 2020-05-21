@@ -9,7 +9,7 @@
   publish = "build/"
 
   # Default build command.
-  command = "npm run build"
+  command = "yarn build"
 
 
 [[headers]]
