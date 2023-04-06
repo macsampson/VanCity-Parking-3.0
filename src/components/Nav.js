@@ -1,176 +1,190 @@
-import { Navbar, Form, FormControl, Button } from "react-bootstrap";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
-import React, { Component } from "react";
-// import Switch from "react-switch";
+import React, { Component } from 'react'
+// import Box from '@mui/material/Box'
+import Slider from '@mui/material/Slider'
+import { Typography } from '@material-ui/core'
+import { FormControl } from '@mui/material'
+import Button from '@mui/material/Button'
+import { styled, alpha } from '@mui/material/styles'
+import InputBase from '@mui/material/InputBase'
+// import MenuIcon from '@mui/icons-material/Menu'
+import SearchIcon from '@mui/icons-material/Search'
+import Select from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import Drawer from '@mui/material/Drawer'
+import Grid2 from '@mui/material/Unstable_Grid2'
 
 export default class Nav extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rate: "Any",
-      dollarRate: "Any",
-      distance: 100,
-      meter_type: "Any",
-      crime: false,
-      navExpanded: false,
-    };
-  }
+	constructor(props) {
+		super(props)
+		this.state = {
+			rate: 'Any',
+			dollarRate: 'Any',
+			distance: 100,
+			meter_type: 'Any',
+			crime: false,
+			navExpanded: false,
+		}
+	}
 
-  onDistanceChange = (distance) => {
-    this.setState({
-      distance,
-    });
-    this.props.distance(distance);
-  };
+	onDistanceChange = (event, distance) => {
+		this.setState({
+			distance,
+		})
+		this.props.distance(distance)
+	}
 
-  onRateChange = (rate) => {
-    var dollars;
-    if (rate === 10) {
-      dollars = "Any";
-      rate = "Any";
-    } else {
-      dollars = "$" + rate + ".00";
-    }
+	onRateChange = (rate) => {
+		var dollars
+		if (rate === 10) {
+			dollars = 'Any'
+			rate = 'Any'
+		} else {
+			dollars = '$' + rate + '.00'
+		}
 
-    this.setState({
-      dollarRate: dollars,
-      rate: rate,
-    });
-    this.props.rate(rate);
-  };
+		this.setState({
+			dollarRate: dollars,
+			rate: rate,
+		})
+		this.props.rate(rate)
+	}
 
-  onTypeChange = (e) => {
-    this.setState({
-      meter_type: e.target.value,
-    });
-    this.props.type(e.target.value);
-  };
+	onTypeChange = (e) => {
+		this.setState({
+			meter_type: e.target.value,
+		})
+		this.props.type(e.target.value)
+	}
 
-  onSearch = (e) => {
-    this.props.search(e);
-    this.closeNav();
-  };
+	onSearch = (e) => {
+		this.props.search(e)
+		this.closeNav()
+	}
 
-  handleChange = (crime) => {
-    this.setState({ crime });
-  };
+	handleChange = (crime) => {
+		this.setState({ crime })
+	}
 
-  setNavExpanded = (expanded) => {
-    this.setState({ navExpanded: expanded });
-  };
+	// setNavExpanded = (expanded) => {
+	// 	this.setState({ navExpanded: expanded })
+	// }
 
-  closeNav = () => {
-    this.setState({ navExpanded: false });
-  };
+	// closeNav = () => {
+	// 	this.setState({ navExpanded: false })
+	// }
 
-  render() {
-    // const searchStyle = {
-    //   flex: "5",
-    //   display: "flex"
-    // };
-    // const brandStyle = {
-    //   margin: "0px 15px 0px 0px",
-    //   flex: "1"
-    // };
-    const sliderStyle = {
-      flex: "1",
-      padding: "1rem 1rem",
-      whiteSpace: "nowrap",
-    };
-    const labelStyle = {
-      // minWidth: "60px",
-      display: "inline-block",
-      color: "#fff",
-      padding: "0rem 0.5rem",
-    };
-    const typeLabelStyle = {
-      // minWidth: "60px",
-      display: "inline-block",
-      color: "#fff",
-      padding: "1rem 1.5rem 1rem 0rem",
-    };
-    const typeStyle = {
-      flex: "1",
-      padding: "0rem 1rem",
-      flexFlow: "row",
-      whiteSpace: "nowrap",
-    };
-    const navStyle = {
-      display: "flex",
-    };
-    const boxStyle = {
-      width: "85%",
-      flex: "10",
-    };
-    const buttonStyle = {
-      margin: "0rem 0.5rem",
-      flex: "1",
-    };
-    return (
-      <div>
-        <Navbar
-          onToggle={this.setNavExpanded}
-          expanded={this.state.navExpanded}
-          expand="xl"
-          style={navStyle}
-          bg="dark"
-          variant="dark"
-          fixed="top"
-        >
-          <Navbar.Brand>
-            <img
-              alt="parking logo"
-              src="/parking-favicon-96.png"
-              width="42"
-              height="42"
-              className="d-inline-block align-top"
-              id="brand-logo"
-            />
-            <div id="brand-text">{"VanCity Parking"}</div>
-          </Navbar.Brand>
-          <FormControl
-            id="autocomplete"
-            type="search"
-            placeholder="Search..."
-            style={boxStyle}
-          />
-          {/* <Button
-            onClick={this.onSearch}
-            variant="primary"
-            type="submit"
-            style={buttonStyle}
-            id="search-button-web"
-          >
-            Search
-          </Button> */}
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Form inline style={typeStyle}>
-              <label style={typeLabelStyle}>Meter Type:</label>
-              <FormControl as="select" onChange={this.onTypeChange}>
-                <option>Any</option>
-                <option>Single</option>
-                <option>Twin</option>
-                <option>Disability</option>
-                <option>Motorbike</option>
-                <option>Pay Station</option>
-                <option>Bay</option>
-              </FormControl>
-            </Form>
-            <div style={sliderStyle}>
-              <label style={labelStyle}>
-                Search Distance: {this.state.distance} meters
-              </label>
-              <Slider
-                onChange={this.onDistanceChange}
-                defaultValue={100}
-                min={0}
-                max={250}
-                step={5}
-              />
-            </div>
-            {/* <div style={sliderStyle}>
+	render() {
+		const marks = [
+			{
+				value: 10,
+				label: '10m',
+			},
+			{
+				value: 200,
+				label: '200m',
+			},
+		]
+
+		const Search = styled('div')(({ theme }) => ({
+			position: 'relative',
+			borderRadius: theme.shape.borderRadius,
+			backgroundColor: alpha(theme.palette.common.white, 0.15),
+			'&:hover': {
+				backgroundColor: alpha(theme.palette.common.white, 0.25),
+			},
+			marginLeft: 0,
+			width: '100%',
+			[theme.breakpoints.up('sm')]: {
+				marginLeft: theme.spacing(1),
+				width: 'auto',
+			},
+		}))
+
+		const SearchIconWrapper = styled('div')(({ theme }) => ({
+			padding: theme.spacing(0, 2),
+			height: '100%',
+			position: 'absolute',
+			pointerEvents: 'none',
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}))
+
+		const StyledInputBase = styled(InputBase)(({ theme }) => ({
+			color: 'inherit',
+			'& .MuiInputBase-input': {
+				padding: theme.spacing(1, 1, 1, 0),
+				// vertical padding + font size from searchIcon
+				paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+				transition: theme.transitions.create('width'),
+				width: '100%',
+				// [theme.breakpoints.up('sm')]: {
+				// 	width: '12ch',
+				// 	'&:focus': {
+				// 		width: '20ch',
+				// 	},
+				// },
+			},
+		}))
+
+		return (
+			<div>
+				<Drawer
+					variant="permanent"
+					anchor="left"
+					sx={{ '.MuiPaper-root': { width: '405px', padding: '20px' } }}
+				>
+					<FormControl sx={{ padding: '5px' }}>
+						<Search>
+							<SearchIconWrapper>
+								<SearchIcon />
+							</SearchIconWrapper>
+							<StyledInputBase
+								id="autocomplete"
+								placeholder="Search…"
+								inputProps={{ 'aria-label': 'search' }}
+								autoFocus={true}
+								// style={boxStyle}
+							/>
+						</Search>
+					</FormControl>
+					<FormControl>
+						<InputLabel id="demo-simple-select-label">Meter Type</InputLabel>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={this.meter_type}
+							label="Meter Type"
+							onChange={this.onTypeChange}
+						>
+							<MenuItem value="Any">
+								<em>Any</em>
+							</MenuItem>
+							<MenuItem value={'Single'}>Single</MenuItem>
+							<MenuItem value={'Twin'}>Twin</MenuItem>
+							<MenuItem value={'Motorbike'}>Motorbike</MenuItem>
+							<MenuItem value={'Disability'}>Disability</MenuItem>
+							<MenuItem value={'Pay Station'}>Pay Station</MenuItem>
+							<MenuItem value={'Bay'}>Bay</MenuItem>
+						</Select>
+					</FormControl>
+
+					<div>
+						<Typography id="input-slider" gutterBottom>
+							Distance
+						</Typography>
+						<Slider
+							onChange={this.onDistanceChange}
+							defaultValue={100}
+							min={10}
+							max={200}
+							step={5}
+							marks={marks}
+							// valueLabelDisplay="on"
+						/>
+					</div>
+					{/* <div style={sliderStyle}>
               <label style={labelStyle}>
                 Max Hourly Rate: {this.state.dollarRate}
               </label>
@@ -182,26 +196,27 @@ export default class Nav extends Component {
                 step={1}
               />
             </div> */}
-            <Button
-              onClick={this.onSearch}
-              variant="primary"
-              type="submit"
-              style={buttonStyle}
-              id="search-button-web"
-            >
-              Filter
-            </Button>
-            <Button
-              onClick={this.onSearch}
-              variant="primary"
-              type="submit"
-              style={buttonStyle}
-              id="search-button-mobile"
-            >
-              Filter
-            </Button>
-          </Navbar.Collapse>
-          {/* <label style={labelStyle}>
+					<Button
+						onClick={this.onSearch}
+						variant="primary"
+						type="submit"
+						// color="success"
+
+						// id="search-button-web"
+					>
+						Search
+					</Button>
+					{/* <Button
+							onClick={this.onSearch}
+							variant="primary"
+							type="submit"
+							style={buttonStyle}
+							// id="search-button-mobile"
+						>
+							Filter
+						</Button> */}
+					{/* </Navbar.Collapse> */}
+					{/* <label style={labelStyle}>
             <span>Vehicle Theft Overlay</span>
             <Switch
               onChange={this.handleChange}
@@ -209,8 +224,8 @@ export default class Nav extends Component {
               onColor={"#007bff"}
             />
           </label> */}
-        </Navbar>
-      </div>
-    );
-  }
+				</Drawer>
+			</div>
+		)
+	}
 }
