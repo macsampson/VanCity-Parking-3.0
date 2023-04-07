@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 // import "../App.css";
 
 export default function InfoWindow(props) {
@@ -13,57 +13,57 @@ export default function InfoWindow(props) {
             <b>Mon-Fri:</b>
           </th>
           <td>9am - 6pm</td>
-          <td>{this.props.weekdays_early_rate}/hr</td>
+          <td>{props.weekdays_early_rate}/hr</td>
         </tr>
         <tr>
-          <td className="limit">Limit: {this.props.weekdays_early_limit}</td>
+          <td className="limit">Limit: {props.weekdays_early_limit}</td>
         </tr>
         <tr>
           <td>6pm - 10pm</td>
-          <td>{this.props.weekdays_late_rate}/hr</td>
+          <td>{props.weekdays_late_rate}/hr</td>
         </tr>
         <tr>
-          <td className="limit">Limit: {this.props.weekdays_late_limit}</td>
+          <td className="limit">Limit: {props.weekdays_late_limit}</td>
         </tr>
         <tr>
           <th rowSpan="4">
             <b>Saturday:</b>
           </th>
           <td>9am - 6pm</td>
-          <td>{this.props.saturdays_early_rate}/hr</td>
+          <td>{props.saturdays_early_rate}/hr</td>
         </tr>
         <tr>
-          <td className="limit">Limit: {this.props.saturdays_early_limit}</td>
+          <td className="limit">Limit: {props.saturdays_early_limit}</td>
         </tr>
         <tr>
           <td>6pm - 10pm</td>
-          <td>{this.props.saturdays_late_rate}/hr</td>
+          <td>{props.saturdays_late_rate}/hr</td>
         </tr>
         <tr>
-          <td className="limit">Limit: {this.props.saturdays_late_limit}</td>
+          <td className="limit">Limit: {props.saturdays_late_limit}</td>
         </tr>
         <tr>
           <th rowSpan="4">
             <b>Sunday:</b>
           </th>
           <td>9am - 6pm</td>
-          <td>{this.props.sunday_early_rate}/hr</td>
+          <td>{props.sunday_early_rate}/hr</td>
         </tr>
         <tr>
-          <td className="limit">Limit: {this.props.sunday_early_limit}</td>
+          <td className="limit">Limit: {props.sunday_early_limit}</td>
         </tr>
         <tr>
           <td>6pm - 10pm</td>
-          <td>{this.props.sunday_late_rate}/hr</td>
+          <td>{props.sunday_late_rate}/hr</td>
         </tr>
         <tr>
-          <td className="limit">Limit: {this.props.sunday_late_limit}</td>
+          <td className="limit">Limit: {props.sunday_late_limit}</td>
         </tr>
         <tr>
           <th>
             <b>In Effect:</b>
           </th>
-          <td>{this.props.in_effect}</td>
+          <td>{props.in_effect}</td>
         </tr>
         <tr>
           <td>
@@ -72,7 +72,7 @@ export default function InfoWindow(props) {
           <th>
             <b>Pay By Phone #:</b>
           </th>
-          <td>{this.props.pay_by_phone}</td>
+          <td>{props.pay_by_phone}</td>
         </tr>
         <tr>
           <td>
@@ -81,7 +81,7 @@ export default function InfoWindow(props) {
           <th>
             <b>Credit Card Accepted:</b>
           </th>
-          <td>{this.props.credit_card}</td>
+          <td>{props.credit_card}</td>
         </tr>
         <tr>
           <td>
@@ -90,7 +90,7 @@ export default function InfoWindow(props) {
           <th>
             <b>Meter Type: </b>
           </th>
-          <td>{this.props.meter_type}</td>
+          <td>{props.meter_type}</td>
         </tr>
         <tr>
           <td>
@@ -99,7 +99,7 @@ export default function InfoWindow(props) {
           <th>
             <b>Meter Info Last Updated: </b>
           </th>
-          <td>{this.props.updated}</td>
+          <td>{props.updated}</td>
         </tr>
       </div>
     </table>

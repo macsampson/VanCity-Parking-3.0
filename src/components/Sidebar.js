@@ -1,97 +1,78 @@
-import * as React from 'react'
-import Box from '@mui/material/Box'
-import Drawer from '@mui/material/Drawer'
+import React, { useState } from 'react'
 import Button from '@mui/material/Button'
-import List from '@mui/material/List'
-import Divider from '@mui/material/Divider'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
-import Slider from '@mui/material/Slider'
-import { AppBar, Toolbar, Typography } from '@material-ui/core'
-import { FormControl } from '@mui/material'
-import { styled, alpha } from '@mui/material/styles'
-import InputBase from '@mui/material/InputBase'
 // import MenuIcon from '@mui/icons-material/Menu'
-import SearchIcon from '@mui/icons-material/Search'
-import Select from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
+import Drawer from '@mui/material/Drawer'
+import Searchbar from './Searchbar'
+import MeterTypeSelect from './MeterTypeSelect'
+// import Grid2 from '@mui/material/Unstable_Grid2'
 
-export default function TemporaryDrawer() {
-	const [state, setState] = React.useState({
-		left: true,
-	})
+export default function Sidebar(props) {
+  // const [rate, setRate] = useState('Any')
+  // const [dollarRate, setDollarRate] = useState('Any')
+  // const [distance, setDistance] = useState(100)
+  const [meterType, setMeterType] = useState('Any')
+  // const [crime, setCrime] = useState(false)
+  // const [navExpanded, setNavExpanded] = useState(false);
 
-	const toggleDrawer = (anchor, open) => (event) => {
-		if (
-			event.type === 'keydown' &&
-			(event.key === 'Tab' || event.key === 'Shift')
-		) {
-			return
-		}
+  // const onDistanceChange = (event, distance) => {
+  //   setDistance(distance)
+  //   props.distance(distance)
+  // }
 
-		setState({ ...state, [anchor]: open })
-	}
+  // const onRateChange = (rate) => {
+  //   var dollars
+  //   if (rate === 10) {
+  //     dollars = 'Any'
+  //     rate = 'Any'
+  //   } else {
+  //     dollars = '$' + rate + '.00'
+  //   }
 
-	const list = (anchor) => (
-		<Box
-			sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-			role="presentation"
-			onClick={toggleDrawer(anchor, false)}
-			onKeyDown={toggleDrawer(anchor, false)}
-		>
-			<List>
-				{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-					<ListItem
-						key={text}
-						disablePadding
-					>
-						<ListItemButton>
-							<ListItemIcon>
-								{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
-			</List>
-			<Divider />
-			<List>
-				{['All mail', 'Trash', 'Spam'].map((text, index) => (
-					<ListItem
-						key={text}
-						disablePadding
-					>
-						<ListItemButton>
-							<ListItemIcon>
-								{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
-			</List>
-		</Box>
-	)
+  //   setDollarRate(dollars)
+  //   setRate(rate)
+  //   props.rate(rate)
+  // }
 
-	return (
-		<div>
-			{['left'].map((anchor) => (
-				<React.Fragment key={anchor}>
-					<Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-					<Drawer
-						anchor={anchor}
-						open={state[anchor]}
-						variant="permanent"
-					>
-						{list(anchor)}
-					</Drawer>
-				</React.Fragment>
-			))}
-		</div>
-	)
+  const handleMeterChange = (e) => {
+    setMeterType(e.target.value)
+    props.type(e.target.value)
+  }
+
+  const onSearch = (e) => {
+    props.search(e)
+  }
+
+  // const handleCrimeChange = (crime) => {
+  //   setCrime(crime)
+  // }
+
+  return (
+    <div>
+      <Drawer
+        variant="permanent"
+        anchor="left"
+        sx={{ '.MuiPaper-root': { width: '405px', padding: '20px' } }}
+      >
+        <Searchbar />
+        <MeterTypeSelect onMeterChange={handleMeterChange} />
+        <Button
+          onClick={onSearch}
+          variant="primary"
+          type="submit"
+          style={{ marginTop: '16px' }}
+        >
+          Search
+        </Button>
+
+        {/* <label style={labelStyle}>
+            <span>Vehicle Theft Overlay</span>
+            <Switch
+              onChange={this.handleChange}
+              checked={this.state.crime}
+              onColor={"#007bff"}
+            />
+          </label> */}
+      </Drawer>
+    </div>
+  )
 }

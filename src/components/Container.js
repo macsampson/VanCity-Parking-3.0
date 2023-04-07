@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
+// import { GoogleMap, LoadScript } from '@react-google-maps/api'
+
 import ReactDOMServer from 'react-dom/server'
 import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
+  LoadScript,
 } from 'react-google-maps'
 import InfoWindow from './InfoWindow'
 import PropTypes from 'prop-types'
-import Nav from './Nav'
+import Sidebar from './Sidebar'
 
 import '../App.css'
 
@@ -30,6 +33,11 @@ let styles = {
       stylers: [{ visibility: 'off' }],
     },
   ],
+}
+
+const containerStyle = {
+  width: '400px',
+  height: '400px',
 }
 
 export default function Container({ initialCenter, zoom }) {
@@ -136,7 +144,7 @@ export default function Container({ initialCenter, zoom }) {
 
     url.searchParams.append(
       'geofilter.distance',
-      search_lat + ',' + search_lng + ',' + distance
+      search_lat + ',' + search_lng + ',' + '500'
     )
 
     if (meterType !== 'Any') {
@@ -150,13 +158,13 @@ export default function Container({ initialCenter, zoom }) {
 
   return (
     <div className="map-container">
-      <Nav
+      <Sidebar
         distance={handleDistanceChange}
         rate={handleRateChange}
         type={handleTypeChange}
         search={handleSearch}
       />
-      <div id="map" />
+      {/* <div id="map" /> */}
     </div>
   )
 }
