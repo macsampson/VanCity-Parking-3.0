@@ -151,6 +151,7 @@ export default function Nav(props) {
         </FormControl>
 
         <div>
+          // TODO remove slider and use search within viewport
           <Typography id="input-slider" gutterBottom>
             Distance
           </Typography>
@@ -161,7 +162,12 @@ export default function Nav(props) {
             max={200}
             step={5}
             marks={marks}
-            // valueLabelDisplay="on"
+            aria-valuetext="meters"
+            track={'normal'}
+            valueLabelDisplay="auto"
+            valueLabelFormat={(value) => {
+              return `${value}m`
+            }}
           />
         </div>
         {/* <div style={sliderStyle}>
@@ -176,26 +182,10 @@ export default function Nav(props) {
                 step={1}
               />
             </div> */}
-        <Button
-          onClick={onSearch}
-          variant="primary"
-          type="submit"
-          // color="success"
-
-          // id="search-button-web"
-        >
+        <Button onClick={onSearch} variant="primary" type="submit">
           Search
         </Button>
-        {/* <Button
-							onClick={this.onSearch}
-							variant="primary"
-							type="submit"
-							style={buttonStyle}
-							// id="search-button-mobile"
-						>
-							Filter
-						</Button> */}
-        {/* </Navbar.Collapse> */}
+
         {/* <label style={labelStyle}>
             <span>Vehicle Theft Overlay</span>
             <Switch
