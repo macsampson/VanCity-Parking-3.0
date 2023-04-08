@@ -6,6 +6,9 @@ import Searchbar from './Searchbar'
 import MeterTypeSelect from './MeterTypeSelect'
 // import Grid2 from '@mui/material/Unstable_Grid2'
 import MeterInfo from './MeterInfo'
+import { StreetViewPanorama } from '@react-google-maps/api'
+import StreetView from './StreetView'
+
 export default function Sidebar(props) {
 	// const [rate, setRate] = useState('Any')
 	// const [dollarRate, setDollarRate] = useState('Any')
@@ -13,6 +16,7 @@ export default function Sidebar(props) {
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [markers, setMarkers] = useState([])
 	const [meterInfo, setMeterInfo] = useState(null)
+
 	// const [crime, setCrime] = useState(false)
 
 	// const onDistanceChange = (event, distance) => {
@@ -87,7 +91,10 @@ export default function Sidebar(props) {
 					sunday_late_limit: record.fields.t_su_6p_10,
 					pay_by_phone: record.fields.pay_phone,
 					credit_card: record.fields.creditcard,
-					// in_effect: record.fields.timeineffe.replace('METER IN EFFECT:', ''),
+					in_effect: record.fields.timeineffe
+						? record.fields.timeineffe.replace('METER IN EFFECT:', '')
+						: 'n/a',
+
 					updated: new Date(record.record_timestamp).toLocaleDateString(
 						'en-US',
 						{
@@ -115,7 +122,12 @@ export default function Sidebar(props) {
 			const meter = findMeterInfo(props.clickedMarker.key)
 			console.log(meter)
 			if (meter) {
-				return <MeterInfo meter={meter} />
+				return (
+					<div>
+						<MeterInfo meter={meter} />
+						{/* <StreetView meter={meter} /> */}
+					</div>
+				)
 			}
 		}
 	}
@@ -125,7 +137,7 @@ export default function Sidebar(props) {
 		if (selectedPlace) {
 			fetchParkingMeters()
 		}
-	}, [selectedPlace])
+	}, [selectedPlace, meterType])
 
 	useEffect(() => {
 		if (markers) {
