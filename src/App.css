@@ -1,134 +1,134 @@
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+	animation: App-logo-spin infinite 20s linear;
+	height: 40vmin;
+	pointer-events: none;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
 }
 
 .App-link {
-  color: #61dafb;
+	color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
 
-  to {
-    transform: rotate(360deg);
-  }
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 /* Optional: Makes the sample page fill the window. */
 html,
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: 'Rubik', sans-serif;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Rubik', sans-serif;
 }
 
 .infowindow-days {
-  padding: 5px 12px 5px 5px;
+	padding: 5px 12px 5px 5px;
 }
 
 .infowindow-hours {
-  padding-bottom: 3px;
+	padding-bottom: 3px;
 }
 
 .section-info-icon {
-  margin-left: 24px;
-  margin-right: 24px;
+	margin-left: 24px;
+	margin-right: 24px;
 }
 
 th[rowspan],
 td[rowspan] {
-  vertical-align: top;
+	vertical-align: top;
 }
 
 td {
-  padding-right: 10px;
+	padding-right: 10px;
 }
 
 .limit {
-  padding-bottom: 5px;
+	padding-bottom: 5px;
 }
 
 /* Styles for toaster notifications */
-.Toaster__alert {
-  background-color: white;
-  overflow: hidden;
-  max-width: 650px;
-  position: relative;
-  border-radius: 0.4rem;
-  display: flex;
-  padding: 1rem;
-  padding-right: 48px;
-  box-shadow: rgba(52, 58, 64, 0.15) 0px 1px 10px 0px,
-    rgba(52, 58, 64, 0.1) 0px 6px 12px 0px,
-    rgba(52, 58, 64, 0.12) 0px 6px 15px -2px;
+/* .Toaster__alert {
+	background-color: white;
+	overflow: hidden;
+	max-width: 650px;
+	position: relative;
+	border-radius: 0.4rem;
+	display: flex;
+	padding: 1rem;
+	padding-right: 48px;
+	box-shadow: rgba(52, 58, 64, 0.15) 0px 1px 10px 0px,
+		rgba(52, 58, 64, 0.1) 0px 6px 12px 0px,
+		rgba(52, 58, 64, 0.12) 0px 6px 15px -2px;
 }
 
 .Toaster__alert_text {
-  box-sizing: border-box;
-  font-family: 'Rubik', sans-serif, Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-  color: rgb(33, 37, 41);
-  -webkit-font-smoothing: antialiased;
-  font-weight: 500;
-  line-height: 1.5;
-  font-size: 1rem;
-  margin: 0px;
+	box-sizing: border-box;
+	font-family: 'Rubik', sans-serif, Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+		sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+		'Noto Color Emoji';
+	color: rgb(33, 37, 41);
+	-webkit-font-smoothing: antialiased;
+	font-weight: 500;
+	line-height: 1.5;
+	font-size: 1rem;
+	margin: 0px;
 }
 
 .Toaster__alert_close {
-  padding: 12px;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
-  position: absolute;
-  top: 7px;
-  right: 4px;
-  border-radius: 0.4rem;
-  border: 0;
-  -webkit-appearance: none;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1;
-  text-shadow: 0 1px 0 #fff;
-  opacity: 0.5;
+	padding: 12px;
+	outline: none;
+	cursor: pointer;
+	background-color: transparent;
+	position: absolute;
+	top: 7px;
+	right: 4px;
+	border-radius: 0.4rem;
+	border: 0;
+	-webkit-appearance: none;
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1;
+	text-shadow: 0 1px 0 #fff;
+	opacity: 0.5;
 }
 
 .Toaster__alert_close:focus {
-  box-shadow: rgba(52, 58, 64, 0.15) 0px 0px 0px 3px;
+	box-shadow: rgba(52, 58, 64, 0.15) 0px 0px 0px 3px;
 }
 
 .Toaster__message-wrapper {
-  padding: 8px;
-}
-
+	padding: 8px;
+} */
+/* 
 #brand-text {
-  float: right;
-  padding: 0.3rem 0rem 0rem 0rem;
-}
+	float: right;
+	padding: 0.3rem 0rem 0rem 0rem;
+} */
 
 .pac-container {
-  z-index: 10000;
+	z-index: 10000;
 }
 
 /* .navbar {
@@ -136,14 +136,14 @@ td {
 } */
 
 /*TODO clean up*/
-#map {
-  /* margin-top: 68px; */
-  height: 100vh;
-}
+/* #map {
+	margin-top: 68px;
+	height: 100vh;
+} */
 
-#root {
-  overflow: hidden;
-}
+/* #root {
+	overflow: hidden;
+} */
 
 /* #brand-logo {
 	margin: 0px 15px 0px 0px;
@@ -156,22 +156,10 @@ td {
 	height: auto;
 } */
 
-#map {
-  /* height: 90vh; */
-}
-
-#brand-logo {
-  margin: 0rem;
-}
-
-#time-image-col {
-  display: none;
-}
-
 /* } */
 
 @media only screen and (max-width: 1400px) {
-  #brand-text {
-    display: none;
-  }
+	#brand-text {
+		display: none;
+	}
 }
