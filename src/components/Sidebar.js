@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Button from '@mui/material/Button'
 // import MenuIcon from '@mui/icons-material/Menu'
+// import Switch from '@mui/material/Switch'
 import Drawer from '@mui/material/Drawer'
 import Searchbar from './Searchbar'
 import MeterTypeSelect from './MeterTypeSelect'
+import Box from '@mui/material/Box'
 // import Grid2 from '@mui/material/Unstable_Grid2'
 import MeterInfo from './MeterInfo'
+// eslint-disable-next-line no-unused-vars
 import { StreetViewPanorama } from '@react-google-maps/api'
+// eslint-disable-next-line no-unused-vars
 import StreetView from './StreetView'
 
 export default function Sidebar(props) {
@@ -15,7 +19,22 @@ export default function Sidebar(props) {
 	const [meterType, setMeterType] = useState('Any')
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [markers, setMarkers] = useState([])
-	const [meterInfo, setMeterInfo] = useState(null)
+	const [rawMeterInfo, setRawMeterInfo] = useState(null)
+	// state object for highlighted meterInfo
+	const [highlightedMeterInfo, setHighlightedMeterInfo] = useState(null)
+	// state obbject for current meterid
+	const [currentMeterId, setCurrentMeterId] = useState(null)
+
+	// state obect for current meters
+	const [currentMeters, setCurrentMeters] = useState(null)
+
+	// reference to meter info to scroll to
+	const meterInfoRef = useRef(null)
+
+	// state object for list of meterinfo components
+	// const [meterInfoList, setMeterInfoList] = useState([])
+
+	// toggle the expanded meterInfo
 
 	// const [crime, setCrime] = useState(false)
 
@@ -106,29 +125,92 @@ export default function Sidebar(props) {
 					),
 				}))
 				setMarkers(newMarkers)
-				setMeterInfo(newMeterInfo)
+				setRawMeterInfo(newMeterInfo)
+				setCurrentMeterId(null)
 			})
 	}
 
 	// create function to find meter info by meter id
+	// eslint-disable-next-line
 	function findMeterInfo(meterid) {
 		// console.log('looking for info')
-		return meterInfo.find((meter) => meter.meterid === meterid)
+		return rawMeterInfo.find((meter) => meter.meterid === meterid)
 	}
 
-	// function to render meter info in sidebar
-	function renderMeterInfo() {
-		if (props.clickedMarker) {
-			const meter = findMeterInfo(props.clickedMarker.key)
-			console.log(meter)
-			if (meter) {
-				return (
-					<div>
-						<MeterInfo meter={meter} />
-						{/* <StreetView meter={meter} /> */}
-					</div>
+	// function to change background color of meterinfo element when marker is clicked unhighlight all other meterinfo elements
+	function highlightMeterInfo(currentMeterId) {
+		const meterInfoElement = document.getElementById(currentMeterId)
+		if (highlightedMeterInfo) {
+			const highlightedMeterInfoElement = document.getElementById(
+				highlightedMeterInfo
+			)
+			if (highlightedMeterInfoElement) {
+				highlightedMeterInfoElement.style.backgroundColor = '#F9F9F9'
+			}
+		}
+
+		meterInfoElement.style.backgroundColor = 'lightblue'
+		setHighlightedMeterInfo(currentMeterId)
+		meterInfoRef.current = meterInfoElement
+	}
+
+	// scroll to meter info element
+	function scrollToMeterInfo() {
+		const meterInfoElement = document.getElementById(currentMeterId)
+		meterInfoElement.scrollIntoView({ behavior: 'smooth' })
+	}
+
+	// function to expand meter info element if it is collapsed
+
+	// function to render all meter info in sidebar
+	function renderAllMeterInfo() {
+		if (rawMeterInfo) {
+			console.log('rendering all meter info')
+			const meterList = []
+			for (const meter of rawMeterInfo) {
+				if (meter.meterid === currentMeterId) {
+					console.log('expanding meter info')
+				}
+				meterList.push(
+					<MeterInfo
+						key={meter.meterid}
+						meter={meter}
+						expanded={meter.meterid === currentMeterId ? true : false}
+					/>
 				)
 			}
+			return <div>{meterList}</div>
+		}
+	}
+
+	// function iterate through currentMeters and update the expanded state of a meter matching the meterid
+	function expandMeterInfo(meterid) {
+		console.log('expanding meter info')
+		const newMeterInfo = currentMeters.map((meter) => {
+			if (meter.key === meterid) {
+				return { ...meter, expanded: true }
+			} else {
+				return { ...meter, expanded: false }
+			}
+		})
+		setCurrentMeters(newMeterInfo)
+	}
+
+	// function to update currentMeters when rawMeterInfo changes
+	function updateCurrentMeters() {
+		if (rawMeterInfo) {
+			console.log('updating current meters')
+			const meterComps = rawMeterInfo.map((meter) => {
+				return (
+					<MeterInfo
+						meter={meter}
+						expanded={meter.meterid === currentMeterId ? true : false}
+						key={meter.meterid}
+					/>
+				)
+			})
+			setCurrentMeters(meterComps)
+			console.log('current meters updated')
 		}
 	}
 
@@ -149,9 +231,34 @@ export default function Sidebar(props) {
 	useEffect(() => {
 		// console.log('clicked')
 		if (props.clickedMarker) {
-			renderMeterInfo()
+			// console.log('clicked', props.clickedMarker)
+			setCurrentMeterId(props.clickedMarker.key)
+			// expandMeterInfo(props.clickedMarker.key)
 		}
 	}, [props.clickedMarker])
+
+	// useffect to update currentmeters when rawmeterinfo changes
+	useEffect(() => {
+		updateCurrentMeters()
+		if (currentMeterId) {
+			meterInfoRef.current = document.getElementById(currentMeterId)
+		}
+	}, [rawMeterInfo, currentMeterId])
+
+	// useffect to scroll to meter when meterinfo ref changes
+	useEffect(() => {
+		if (meterInfoRef.current) {
+			meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })
+			highlightMeterInfo(currentMeterId)
+		}
+	}, [meterInfoRef.current])
+
+	// call higihtlightmeterinfo when currentmeterid changes
+	// useEffect(() => {
+	// 	if (currentMeterId) {
+	// 		highlightMeterInfo()
+	// 	}
+	// }, [currentMeterId])
 
 	return (
 		<div>
@@ -162,29 +269,40 @@ export default function Sidebar(props) {
 					'.MuiPaper-root': {
 						width: '405px',
 						padding: '20px',
+						order: 1,
 					},
 				}}
 			>
-				<Searchbar onSelectPlace={setSelectedPlace} />
-				<MeterTypeSelect onMeterChange={setMeterType} />
-				<Button
-					onClick={fetchParkingMeters}
-					variant="primary"
-					type="submit"
-					style={{ marginTop: '16px' }}
+				<Box
+					style={{
+						position: 'sticky',
+						top: 0,
+						zIndex: 1,
+						backgroundColor: 'white',
+						width: '100%',
+					}}
 				>
-					Search
-				</Button>
-				{renderMeterInfo()}
+					<Searchbar onSelectPlace={setSelectedPlace} />
+					<MeterTypeSelect onMeterChange={setMeterType} />
+					<div>
+						<Button
+							onClick={fetchParkingMeters}
+							variant="primary"
+							type="submit"
+							style={{ marginTop: '16px' }}
+						>
+							Search
+						</Button>
+					</div>
+				</Box>
+				<div style={{ marginTop: '80px', overflow: 'auto' }}>
+					{currentMeters}
+				</div>
 
-				{/* <label style={labelStyle}>
-            <span>Vehicle Theft Overlay</span>
-            <Switch
-              onChange={this.handleChange}
-              checked={this.state.crime}
-              onColor={"#007bff"}
-            />
-          </label> */}
+				{/* <label>
+					<span>Vehicle Crime Overlay</span>
+					<Switch onColor={'#007bff'} />
+				</label> */}
 			</Drawer>
 		</div>
 	)
