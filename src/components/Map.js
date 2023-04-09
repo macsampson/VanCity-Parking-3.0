@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
-import {
-	GoogleMap,
-	useLoadScript,
-	Marker,
-	useGoogleMap,
-} from '@react-google-maps/api'
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api'
 
 const containerStyle = {
-	width: '100%',
+	// width: '100%',
 	height: '100%',
 	position: 'absolute',
+	order: 2,
+	left: '405px',
+	right: '0px',
 }
 
 const center = {

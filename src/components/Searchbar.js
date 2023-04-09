@@ -26,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
 		// marginLeft: 0,
 		width: '100%',
 		border: '1px solid transparent',
-		[theme.breakpoints.up('sm')]: {
-			// marginLeft: theme.spacing(3),
-			width: 'auto',
-		},
+		// [theme.breakpoints.up('sm')]: {
+		// 	// marginLeft: theme.spacing(3),
+		// 	width: 'auto',
+		// },
 		boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
 	},
 	searchIcon: {
@@ -47,11 +47,11 @@ const useStyles = makeStyles((theme) => ({
 	inputInput: {
 		padding: theme.spacing(1, 1, 1, 7),
 		// vertical padding + font size from searchIcon
-		transition: theme.transitions.create('width'),
+		// transition: theme.transitions.create('width'),
 		width: '100%',
-		[theme.breakpoints.up('md')]: {
-			width: '30ch',
-		},
+		// [theme.breakpoints.up('md')]: {
+		// 	width: '30ch',
+		// },
 	},
 	clearIcon: {
 		color: theme.palette.grey[500],
@@ -95,7 +95,7 @@ function SearchBar(props) {
 	}
 
 	return (
-		<FormControl>
+		<FormControl className={classes.search}>
 			<div className={classes.search}>
 				<div className={classes.searchIcon}>
 					<SearchIcon />

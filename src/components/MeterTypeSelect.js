@@ -14,7 +14,7 @@ function MeterTypeSelect(props) {
 	}
 
 	return (
-		<FormControl style={{ marginTop: '16px' }}>
+		<FormControl style={{ marginTop: '16px', width: '100%' }}>
 			<InputLabel id="demo-simple-select-label">Meter Type</InputLabel>
 			<Select
 				labelId="demo-simple-select-label"

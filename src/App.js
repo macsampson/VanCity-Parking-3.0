@@ -4,7 +4,6 @@ import './App.css'
 import Map from './components/Map'
 import Sidebar from './components/Sidebar'
 import { LoadScript } from '@react-google-maps/api'
-import { useEffect } from 'react'
 
 const dotenv = require('dotenv')
 dotenv.config()
@@ -15,9 +14,9 @@ const libraries = ['places']
 
 export default function App() {
 	// Create a state object to hold the place data
-	const [place, setPlace] = useState(null)
-	// create a state object to hold meter type
-	const [meterType, setMeterType] = useState('Any')
+	// const [place, setPlace] = useState(null)
+	// // create a state object to hold meter type
+	// const [meterType, setMeterType] = useState('Any')
 	// create a state object to hold the markers
 	const [markers, setMarkers] = useState([])
 
@@ -47,11 +46,16 @@ export default function App() {
 	return (
 		<main>
 			<LoadScript googleMapsApiKey={key} libraries={libraries}>
-				<Sidebar
-					onMarkersChange={setMarkers}
-					clickedMarker={clickedMarker}
-				></Sidebar>
-				<Map markers={markers} onMarkerClicked={handleMarkerClick} />
+				<div
+					className="container"
+					style={{ display: 'flex', flexWrap: 'wrap' }}
+				>
+					<Sidebar
+						onMarkersChange={setMarkers}
+						clickedMarker={clickedMarker}
+					></Sidebar>
+					<Map markers={markers} onMarkerClicked={handleMarkerClick} />
+				</div>
 			</LoadScript>
 		</main>
 	)
