@@ -46,17 +46,16 @@ const MeterInfo = ({ meter, expanded }) => {
 			fontSize: '16px',
 			fontWeight: 'bold',
 			marginRight: '8px',
-			// minWidth: '160px',
 		},
 		value: {
 			fontSize: '16px',
 			color: '#333',
-			display: 'flex',
+			display: 'block',
 			alignItems: 'center',
 		},
 		icon: {
 			fontSize: '16px',
-			marginRight: '8px',
+			marginLeft: '8px',
 		},
 		expandButton: {
 			border: 'none',
@@ -72,6 +71,12 @@ const MeterInfo = ({ meter, expanded }) => {
 			display: isExpanded ? 'block' : 'none',
 			marginTop: '8px',
 		},
+		subLabel: {
+			display: 'block',
+			fontSize: '0.8em',
+			marginLeft: '8px',
+			color: 'gray',
+		},
 	}
 
 	const getRate = () => {
@@ -80,7 +85,7 @@ const MeterInfo = ({ meter, expanded }) => {
 
 		if (day === 0) {
 			// Sunday
-			return meter.sundays_early_rate
+			return meter.sunday_early_rate
 		} else if (day === 6) {
 			// Saturday
 			return meter.saturdays_early_rate
@@ -118,81 +123,82 @@ const MeterInfo = ({ meter, expanded }) => {
 						<div style={styles.value}>{meter.meter_type}</div>
 					</div>
 					<div style={styles.row}>
-						<div style={styles.label}>Weekdays Early Rate:</div>
-						<div style={styles.value}>{meter.weekdays_early_rate}</div>
+						<div style={styles.label}>Weekdays:</div>
+						<div style={styles.value}>
+							<div style={styles.row}>
+								<div style={styles.subLabel}>Early Rate:</div>
+								<div style={styles.value}>{meter.weekdays_early_rate}</div>
+								<div style={styles.subLabel}>Early Limit:</div>
+								<div style={styles.value}>{meter.weekdays_early_limit}</div>
+							</div>
+							<div style={styles.row}>
+								<div style={styles.subLabel}>Late Rate:</div>
+								<div style={styles.value}>{meter.weekdays_late_rate}</div>
+								<div style={styles.subLabel}>Late Limit:</div>
+								<div style={styles.value}>{meter.weekdays_late_limit}</div>
+							</div>
+						</div>
 					</div>
 					<div style={styles.row}>
-						<div style={styles.label}>Weekdays Early Limit:</div>
-						<div style={styles.value}>{meter.weekdays_early_limit}</div>
+						<div style={styles.label}>Saturdays:</div>
+						<div style={styles.value}>
+							<div style={styles.row}>
+								<div style={styles.subLabel}>Early Rate:</div>
+								<div style={styles.value}>{meter.saturdays_early_rate}</div>
+								<div style={styles.subLabel}>Early Limit:</div>
+								<div style={styles.value}>{meter.saturdays_early_limit}</div>
+							</div>
+							<div style={styles.row}>
+								<div style={styles.subLabel}>Late Rate:</div>
+								<div style={styles.value}>{meter.saturdays_late_rate}</div>
+								<div style={styles.subLabel}>Late Limit:</div>
+								<div style={styles.value}>{meter.saturdays_late_limit}</div>
+							</div>
+						</div>
 					</div>
 					<div style={styles.row}>
-						<div style={styles.label}>Weekdays Late Rate:</div>
-						<div style={styles.value}>{meter.weekdays_late_rate}</div>
+						<div style={styles.label}>Sundays:</div>
+						<div style={styles.value}>
+							<div style={styles.row}>
+								<div style={styles.subLabel}>Early Rate:</div>
+								<div style={styles.value}>{meter.sunday_early_rate}</div>
+								<div style={styles.subLabel}>Early Limit:</div>
+								<div style={styles.value}>{meter.sunday_early_limit}</div>
+							</div>
+							<div style={styles.row}>
+								<div style={styles.subLabel}>Late Rate:</div>
+								<div style={styles.value}>{meter.sunday_late_rate}</div>
+								<div style={styles.subLabel}>Late Limit:</div>
+								<div style={styles.value}>{meter.sunday_late_limit}</div>
+							</div>
+						</div>
 					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Weekdays Late Limit:</div>
-						<div style={styles.value}>{meter.weekdays_late_limit}</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Saturdays Early Rate:</div>
-						<div style={styles.value}>{meter.saturdays_early_rate}</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Saturdays Early Limit:</div>
-						<div style={styles.value}>{meter.saturdays_early_limit}</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Saturdays Late Rate:</div>
-						<div style={styles.value}>{meter.saturdays_late_rate}</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Saturdays Late Limit:</div>
-						<div style={styles.value}>{meter.saturdays_late_limit}</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Sundays Early Rate:</div>
-						<div style={styles.value}>{meter.sundays_early_rate}</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Sundays Early Limit:</div>
-						<div style={styles.value}>{meter.sundays_early_limit}</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Sundays Late Rate:</div>
-						<div style={styles.value}>{meter.sundays_late_rate}</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Sundays Late Limit:</div>
-						<div style={styles.value}>{meter.sundays_late_limit}</div>
-					</div>
+
 					<div style={styles.row}>
 						<div style={styles.label}>Pay by Phone:</div>
 						<div style={styles.value}>
-							<FontAwesomeIcon icon={faMobileAlt} style={styles.icon} />
 							{meter.pay_by_phone}
+							<FontAwesomeIcon icon={faMobileAlt} style={styles.icon} />
 						</div>
 					</div>
 					<div style={styles.row}>
 						<div style={styles.label}>Pay by Credit Card:</div>
-
 						<div style={styles.value}>
-							<FontAwesomeIcon icon={faCreditCard} style={styles.icon} />
 							{meter.credit_card}
+							<FontAwesomeIcon icon={faCreditCard} style={styles.icon} />
 						</div>
 					</div>
 					<div style={styles.row}>
 						<div style={styles.label}>In Effect:</div>
 						<div style={styles.value}>
-							<FontAwesomeIcon icon={faClock} style={styles.icon} />
 							{meter.in_effect}
+							<FontAwesomeIcon icon={faClock} style={styles.icon} />
 						</div>
 					</div>
 					<div style={styles.row}>
 						<div style={styles.label}>Updated:</div>
-						<div style={styles.value}>
-							<FontAwesomeIcon icon={faSpinner} style={styles.icon} />
-							{meter.updated}
-						</div>
+						<div style={styles.value}>{meter.updated}</div>
+						<FontAwesomeIcon icon={faSpinner} style={styles.icon} />
 					</div>
 				</div>
 			)}

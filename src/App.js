@@ -46,10 +46,7 @@ export default function App() {
 	return (
 		<main>
 			<LoadScript googleMapsApiKey={key} libraries={libraries}>
-				<div
-					className="container"
-					style={{ display: 'flex', flexWrap: 'wrap' }}
-				>
+				<div style={{ display: 'flex', flexDirection: 'row' }}>
 					<Sidebar
 						onMarkersChange={setMarkers}
 						clickedMarker={clickedMarker}

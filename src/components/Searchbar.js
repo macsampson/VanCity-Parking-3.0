@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	inputRoot: {
 		color: 'inherit',
+		width: '93%',
 	},
 	inputInput: {
 		padding: theme.spacing(1, 1, 1, 7),
@@ -70,7 +71,7 @@ function SearchBar(props) {
 	const [autocomplete, setAutocomplete] = useState(null)
 
 	const onLoad = (autocomplete) => {
-		console.log('autocomplete: ', autocomplete)
+		// console.log('autocomplete: ', autocomplete)
 		setAutocomplete(autocomplete)
 	}
 

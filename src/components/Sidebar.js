@@ -248,8 +248,11 @@ export default function Sidebar(props) {
 	// useffect to scroll to meter when meterinfo ref changes
 	useEffect(() => {
 		if (meterInfoRef.current) {
-			meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })
 			highlightMeterInfo(currentMeterId)
+
+			setTimeout(() => {
+				meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })
+			}, 50)
 		}
 	}, [meterInfoRef.current])
 
@@ -261,24 +264,31 @@ export default function Sidebar(props) {
 	// }, [currentMeterId])
 
 	return (
-		<div>
-			<Drawer
-				variant="permanent"
-				anchor="left"
-				sx={{
-					'.MuiPaper-root': {
-						width: '405px',
-						padding: '20px',
-						order: 1,
-					},
+		<div
+			style={{
+				height: '100vh',
+				flex: '0 0 25%',
+				// minWidth: '400px',
+				background: 'white',
+
+				padding: '10px',
+			}}
+		>
+			<div
+				style={{
+					// make flex column
+					display: 'flex',
+					flexDirection: 'column',
+					height: '100%',
+					// justifyContent: 'space-between'
 				}}
 			>
 				<Box
 					style={{
-						position: 'sticky',
+						flex: '0 0 25%',
 						top: 0,
 						zIndex: 1,
-						backgroundColor: 'white',
+
 						width: '100%',
 					}}
 				>
@@ -295,15 +305,20 @@ export default function Sidebar(props) {
 						</Button>
 					</div>
 				</Box>
-				<div style={{ marginTop: '80px', overflow: 'auto' }}>
+				<Box
+					style={{
+						flex: '0 0 75%',
+						overflow: 'scroll',
+					}}
+				>
 					{currentMeters}
-				</div>
+				</Box>
+			</div>
 
-				{/* <label>
+			{/* <label>
 					<span>Vehicle Crime Overlay</span>
 					<Switch onColor={'#007bff'} />
 				</label> */}
-			</Drawer>
 		</div>
 	)
 }

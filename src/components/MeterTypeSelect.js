@@ -22,6 +22,7 @@ function MeterTypeSelect(props) {
 				value={meterType}
 				label="Meter Type"
 				onChange={handleChange}
+				style={{ borderRadius: '15px' }}
 			>
 				<MenuItem value="Any">
 					<em>Any</em>
