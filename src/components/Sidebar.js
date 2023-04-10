@@ -11,7 +11,6 @@ import MeterInfo from './MeterInfo'
 // eslint-disable-next-line no-unused-vars
 import { StreetViewPanorama } from '@react-google-maps/api'
 // eslint-disable-next-line no-unused-vars
-import StreetView from './StreetView'
 
 export default function Sidebar(props) {
 	// const [rate, setRate] = useState('Any')
