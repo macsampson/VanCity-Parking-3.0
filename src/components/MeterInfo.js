@@ -86,8 +86,8 @@ const MeterInfo = ({ meter, expanded }) => {
 			alignItems: 'center',
 		},
 		icon: {
-			fontSize: '16px',
-			marginLeft: '8px',
+			fontSize: '1.5rem',
+			// marginLeft: '8px',
 		},
 		expandButton: {
 			border: 'none',
@@ -113,7 +113,7 @@ const MeterInfo = ({ meter, expanded }) => {
 		subLabel: {
 			display: 'block',
 			fontSize: '0.8em',
-			marginLeft: '8px',
+			// marginLeft: '8px',
 			color: 'gray',
 		},
 		titleBar: {
@@ -133,6 +133,10 @@ const MeterInfo = ({ meter, expanded }) => {
 		distance: {
 			flex: '1',
 			textAlign: 'center',
+		},
+		paymentType: {
+			textAlign: 'center',
+			flex: '1',
 		},
 	}
 
@@ -242,7 +246,7 @@ const MeterInfo = ({ meter, expanded }) => {
 		return (
 			<div style={styles.row}>
 				<div className="rate-limit" style={styles.rateLimit}>
-					<span style={styles.value}>{rateAndLimit.rate}/hour</span>
+					<span style={styles.value}>{rateAndLimit.rate}/hr</span>
 					<span style={styles.value}>Limit: {rateAndLimit.limit}</span>
 				</div>
 				<div className="distance" style={styles.distance}>
@@ -258,7 +262,7 @@ const MeterInfo = ({ meter, expanded }) => {
 		paymentTypes.forEach((type) => {
 			if (type.creditCard) {
 				icons.push(
-					<div>
+					<div className="paymentType" style={styles.paymentType}>
 						<FontAwesomeIcon
 							icon={faCreditCard}
 							style={styles.icon}
@@ -270,7 +274,7 @@ const MeterInfo = ({ meter, expanded }) => {
 			}
 			if (type.payByPhone) {
 				icons.push(
-					<div>
+					<div className="paymentType" style={styles.paymentType}>
 						<FontAwesomeIcon
 							icon={faMobileAlt}
 							style={styles.icon}
@@ -367,13 +371,13 @@ const MeterInfo = ({ meter, expanded }) => {
 						<div style={styles.label}>In Effect:</div>
 						<div style={styles.value}>
 							{meter.in_effect}
-							<FontAwesomeIcon icon={faClock} style={styles.icon} />
+							{/* <FontAwesomeIcon icon={faClock} style={styles.icon} /> */}
 						</div>
 					</div>
 					<div style={styles.row}>
 						<div style={styles.label}>Updated:</div>
 						<div style={styles.value}>{meter.updated}</div>
-						<FontAwesomeIcon icon={faSpinner} style={styles.icon} />
+						{/* <FontAwesomeIcon icon={faSpinner} style={styles.icon} /> */}
 					</div>
 				</div>
 			)}

@@ -4,6 +4,7 @@ import {
 	useLoadScript,
 	Marker,
 	StreetViewPanorama,
+	DistanceMatrixService,
 } from '@react-google-maps/api'
 
 const center = {
