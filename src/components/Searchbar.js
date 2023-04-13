@@ -53,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
 		// [theme.breakpoints.up('md')]: {
 		// 	width: '30ch',
 		// },
+		// backgroundColor: 'white',
+		borderRadius: 15,
 	},
 	clearIcon: {
 		color: theme.palette.grey[500],

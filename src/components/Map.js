@@ -5,21 +5,10 @@ import {
 	Marker,
 	StreetViewPanorama,
 } from '@react-google-maps/api'
-import { height } from '@mui/system'
 
 const center = {
 	lat: 49.2827,
 	lng: -123.1207,
-}
-
-const mapStyle = {
-	width: '75%',
-	position: 'absolute',
-	maxHeight: '75%',
-	top: '0px',
-	left: '25%',
-	right: '0px',
-	bottom: '0px',
 }
 
 const dividerStyle = {
@@ -37,7 +26,7 @@ const dividerStyle = {
 const streetViewStyle = {
 	position: 'absolute',
 	top: '75%',
-	left: '25%',
+	left: '400px',
 	right: '0%',
 	bottom: '0%',
 }
@@ -61,6 +50,16 @@ function Map(props) {
 
 	// state for location marker
 	const [locationMarker, setLocationMarker] = useState(null)
+
+	const mapStyle = {
+		width: 'auto',
+		position: 'absolute',
+		// maxHeight: '75%',
+		top: '0px',
+		left: '400px',
+		right: '0px',
+		bottom: clickedMarker ? '25%' : '0%',
+	}
 
 	// update markers when props change
 	useEffect(() => {
@@ -113,9 +112,9 @@ function Map(props) {
 	if (!isLoaded) return <p>Loading map</p>
 
 	return (
-		<div style={{ flex: '0 0 75%' }}>
+		<div style={{ flex: '1' }}>
 			<div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-				<div style={{ flex: '1 1 75%' }}>
+				<div style={{ flex: '1 1 auto' }}>
 					<GoogleMap
 						mapContainerStyle={mapStyle}
 						center={center}
@@ -138,30 +137,34 @@ function Map(props) {
 					</GoogleMap>
 				</div>
 
-				<div className="streetview" style={{ flex: '1 1 25%' }}>
-					<GoogleMap
-						// add mapcontainerstyle to for 20% height starting from the bottom
-						mapContainerStyle={streetViewStyle}
-					>
-						<StreetViewPanorama
-							position={clickedMarker}
-							visible={true}
-							options={{
-								zoom: 1,
-								addressControl: false,
-								fullscreenControl: false,
-								motionTracking: false,
-								linksControl: false,
-								panControl: false,
-								enableCloseButton: false,
-								scrollwheel: false,
-								showRoadLabels: false,
-								bestGuess: true,
-								source: window.google.maps.StreetViewSource.OUTDOOR,
-							}}
-						/>
-					</GoogleMap>
-				</div>
+				{clickedMarker && (
+					<div className="streetview" style={{ flex: '1 1 25%' }}>
+						<GoogleMap
+							// add mapcontainerstyle to for 20% height starting from the bottom
+							mapContainerStyle={streetViewStyle}
+						>
+							{/* onyl show streetview if theres a clicked marker */}
+
+							<StreetViewPanorama
+								position={clickedMarker}
+								visible={true}
+								options={{
+									zoom: 1,
+									addressControl: false,
+									fullscreenControl: false,
+									motionTracking: false,
+									linksControl: false,
+									panControl: false,
+									enableCloseButton: false,
+									scrollwheel: false,
+									showRoadLabels: false,
+									bestGuess: true,
+									source: window.google.maps.StreetViewSource.OUTDOOR,
+								}}
+							/>
+						</GoogleMap>
+					</div>
+				)}
 			</div>
 		</div>
 	)

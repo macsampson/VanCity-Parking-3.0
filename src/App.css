@@ -23,6 +23,14 @@
 	color: #61dafb;
 }
 
+.meter-info {
+	transition: transform 0.2s ease-in-out;
+}
+
+.meter-info:hover {
+	transform: scale(1.02);
+}
+
 @keyframes App-logo-spin {
 	from {
 		transform: rotate(0deg);
@@ -67,6 +75,15 @@ td {
 .limit {
 	padding-bottom: 5px;
 }
+
+/* .meter-info {
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}
+
+.meter-info.visible {
+	opacity: 1;
+} */
 
 /* Styles for toaster notifications */
 /* .Toaster__alert {

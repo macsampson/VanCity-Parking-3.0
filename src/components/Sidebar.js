@@ -2,14 +2,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import Button from '@mui/material/Button'
 // import MenuIcon from '@mui/icons-material/Menu'
 // import Switch from '@mui/material/Switch'
-import Drawer from '@mui/material/Drawer'
 import Searchbar from './Searchbar'
 import MeterTypeSelect from './MeterTypeSelect'
 import Box from '@mui/material/Box'
 // import Grid2 from '@mui/material/Unstable_Grid2'
 import MeterInfo from './MeterInfo'
 // eslint-disable-next-line no-unused-vars
-import { StreetViewPanorama } from '@react-google-maps/api'
 // eslint-disable-next-line no-unused-vars
 
 export default function Sidebar(props) {
@@ -94,6 +92,10 @@ export default function Sidebar(props) {
 				}))
 				const newMeterInfo = data.records.map((record) => ({
 					meterid: record.fields.meterid,
+					location: {
+						lat: record.fields.geom.coordinates[1],
+						lng: record.fields.geom.coordinates[0],
+					},
 					meter_type: record.fields.meterhead,
 					weekdays_early_rate: record.fields.r_mf_9a_6p,
 					weekdays_early_limit: record.fields.t_mf_9a_6p,
@@ -131,10 +133,10 @@ export default function Sidebar(props) {
 
 	// create function to find meter info by meter id
 	// eslint-disable-next-line
-	function findMeterInfo(meterid) {
-		// console.log('looking for info')
-		return rawMeterInfo.find((meter) => meter.meterid === meterid)
-	}
+	// function findMeterInfo(meterid) {
+	// 	// console.log('looking for info')
+	// 	return rawMeterInfo.find((meter) => meter.meterid === meterid)
+	// }
 
 	// function to change background color of meterinfo element when marker is clicked unhighlight all other meterinfo elements
 	function highlightMeterInfo(currentMeterId) {
@@ -154,46 +156,46 @@ export default function Sidebar(props) {
 	}
 
 	// scroll to meter info element
-	function scrollToMeterInfo() {
-		const meterInfoElement = document.getElementById(currentMeterId)
-		meterInfoElement.scrollIntoView({ behavior: 'smooth' })
-	}
+	// function scrollToMeterInfo() {
+	// 	const meterInfoElement = document.getElementById(currentMeterId)
+	// 	meterInfoElement.scrollIntoView({ behavior: 'smooth' })
+	// }
 
 	// function to expand meter info element if it is collapsed
 
 	// function to render all meter info in sidebar
-	function renderAllMeterInfo() {
-		if (rawMeterInfo) {
-			console.log('rendering all meter info')
-			const meterList = []
-			for (const meter of rawMeterInfo) {
-				if (meter.meterid === currentMeterId) {
-					console.log('expanding meter info')
-				}
-				meterList.push(
-					<MeterInfo
-						key={meter.meterid}
-						meter={meter}
-						expanded={meter.meterid === currentMeterId ? true : false}
-					/>
-				)
-			}
-			return <div>{meterList}</div>
-		}
-	}
+	// function renderAllMeterInfo() {
+	// 	if (rawMeterInfo) {
+	// 		console.log('rendering all meter info')
+	// 		const meterList = []
+	// 		for (const meter of rawMeterInfo) {
+	// 			if (meter.meterid === currentMeterId) {
+	// 				console.log('expanding meter info')
+	// 			}
+	// 			meterList.push(
+	// 				<MeterInfo
+	// 					key={meter.meterid}
+	// 					meter={meter}
+	// 					expanded={meter.meterid === currentMeterId ? true : false}
+	// 				/>
+	// 			)
+	// 		}
+	// 		return <div>{meterList}</div>
+	// 	}
+	// }
 
 	// function iterate through currentMeters and update the expanded state of a meter matching the meterid
-	function expandMeterInfo(meterid) {
-		console.log('expanding meter info')
-		const newMeterInfo = currentMeters.map((meter) => {
-			if (meter.key === meterid) {
-				return { ...meter, expanded: true }
-			} else {
-				return { ...meter, expanded: false }
-			}
-		})
-		setCurrentMeters(newMeterInfo)
-	}
+	// function expandMeterInfo(meterid) {
+	// 	console.log('expanding meter info')
+	// 	const newMeterInfo = currentMeters.map((meter) => {
+	// 		if (meter.key === meterid) {
+	// 			return { ...meter, expanded: true }
+	// 		} else {
+	// 			return { ...meter, expanded: false }
+	// 		}
+	// 	})
+	// 	setCurrentMeters(newMeterInfo)
+	// }
 
 	// function to update currentMeters when rawMeterInfo changes
 	function updateCurrentMeters() {
@@ -247,7 +249,7 @@ export default function Sidebar(props) {
 	// useffect to scroll to meter when meterinfo ref changes
 	useEffect(() => {
 		if (meterInfoRef.current) {
-			highlightMeterInfo(currentMeterId)
+			// highlightMeterInfo(currentMeterId)
 
 			setTimeout(() => {
 				meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -266,11 +268,11 @@ export default function Sidebar(props) {
 		<div
 			style={{
 				height: '100vh',
-				flex: '0 0 25%',
-				// minWidth: '400px',
-				background: 'white',
-
-				padding: '10px',
+				flex: '0 0 auto',
+				minWidth: '400px',
+				maxWidth: '400px',
+				background: '#e6e6e6',
+				// padding: '10px',
 			}}
 		>
 			<div
@@ -284,16 +286,15 @@ export default function Sidebar(props) {
 			>
 				<Box
 					style={{
-						flex: '0 0 25%',
-						top: 0,
+						flex: '0 0 auto',
+						padding: '10px',
 						zIndex: 1,
-
 						width: '100%',
 					}}
 				>
 					<Searchbar onSelectPlace={setSelectedPlace} />
-					<MeterTypeSelect onMeterChange={setMeterType} />
-					<div>
+					{/* <MeterTypeSelect onMeterChange={setMeterType} /> */}
+					{/* <div>
 						<Button
 							onClick={fetchParkingMeters}
 							variant="primary"
@@ -302,12 +303,15 @@ export default function Sidebar(props) {
 						>
 							Search
 						</Button>
-					</div>
+					</div> */}
 				</Box>
 				<Box
 					style={{
-						flex: '0 0 75%',
+						flex: '0 0 95%',
 						overflow: 'scroll',
+						// marginTop: '7%',
+						padding: '10px',
+						paddingTop: '10px',
 					}}
 				>
 					{currentMeters}
