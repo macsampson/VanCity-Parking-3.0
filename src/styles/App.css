@@ -1,0 +1,84 @@
+.App {
+	text-align: center;
+}
+
+/* .App-logo {
+	animation: App-logo-spin infinite 20s linear;
+	height: 40vmin;
+	pointer-events: none;
+}
+
+.App-header {
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
+} */
+
+.App-link {
+	color: #61dafb;
+}
+
+.meter-info {
+	transition: transform 0.2s ease-in-out;
+}
+
+.meter-info:hover {
+	transform: scale(1.02);
+	cursor: pointer;
+}
+
+@keyframes App-logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Roboto', sans-serif;
+}
+
+.infowindow-days {
+	padding: 5px 12px 5px 5px;
+}
+
+.infowindow-hours {
+	padding-bottom: 3px;
+}
+
+.section-info-icon {
+	margin-left: 24px;
+	margin-right: 24px;
+}
+
+th[rowspan],
+td[rowspan] {
+	vertical-align: top;
+}
+
+td {
+	padding-right: 10px;
+}
+
+.limit {
+	padding-bottom: 5px;
+}
+
+@media only screen and (max-width: 1400px) {
+	#brand-text {
+		display: none;
+	}
+}
