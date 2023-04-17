@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import SearchBar from './Searchbar'
 import { LoadScript } from '@react-google-maps/api'
 import { useNavigate } from 'react-router-dom'
+import '../styles/Homepage.css'
+import Mapbox from './Mapbox'
 
 const dotenv = require('dotenv')
 dotenv.config()
@@ -29,7 +31,8 @@ function Homepage() {
 			<div
 				className="homepage"
 				style={{
-					background: 'aquamarine',
+					// use bg.jpg image from images folder as background
+					backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg.jpg)`,
 					display: 'flex',
 					flexDirection: 'column',
 					justifyContent: 'center',
@@ -37,7 +40,9 @@ function Homepage() {
 					height: '100vh',
 				}}
 			>
-				<h1>Vancouver Parking 🅿️</h1>
+				<h1>
+					Vancouver Parking <span role={'img'}>🅿️</span>
+				</h1>
 				<p>Find parking near you</p>
 				<div
 					style={{

@@ -5,6 +5,7 @@ import Searchbar from './Searchbar'
 import { LoadScript } from '@react-google-maps/api'
 import { register as registerServiceWorker } from '../serviceWorker'
 import { useLocation } from 'react-router-dom'
+import '../styles/ParkingPage.css'
 
 const dotenv = require('dotenv')
 dotenv.config()
@@ -59,8 +60,7 @@ export default function ParkingPage() {
 			zIndex: 1,
 			position: 'absolute',
 			right: '0px',
-			width: '25%',
-			// width: '100%',
+			width: '50vw',
 		},
 	}
 
