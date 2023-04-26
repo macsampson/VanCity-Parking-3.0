@@ -47,7 +47,7 @@ const MeterInfo = ({ meter, expanded }) => {
 		paymentTypes.push({ creditCard: meter.credit_card === 'Yes' })
 		paymentTypes.push({ payByPhone: meter.pay_by_phone !== null })
 		setPaymentTypes(paymentTypes)
-		getMeterAddress(meter)
+		// getMeterAddress(meter)
 	}, [meter])
 
 	const styles = {
@@ -150,51 +150,6 @@ const MeterInfo = ({ meter, expanded }) => {
 		},
 	}
 
-	// get meter address from google maps geocoder api using meter location
-	const getMeterAddress = async (meter) => {
-		const url = `https://maps.googleapis.com/maps/api/geocode/json?type=parking&latlng=${meter.location.lat},${meter.location.lng}&key=${process.env.REACT_APP_MAPS_API}`
-		const response = await fetch(url)
-		const data = await response.json()
-		// console.log(data);
-		// search for neighborhood or premise in address components
-		// if found, set address to neighborhood or premise
-		// else set address to formatted address
-		// const neighborhood = data.results[0].address_components.find(
-		// 	(component) =>
-		// 		component.types[0] === 'neighborhood' &&
-		// 		component.types[1] === 'political'
-		// )
-		// find establishment or point of interest in address components
-		// if found, set address to establishment or point of interest
-		// else set address to formatted address
-		const establishment = data.results[0].address_components.find(
-			(component) =>
-				component.types[0] === 'establishment' &&
-				component.types[1] === 'point_of_interest'
-		)
-		// if (neighborhood) {
-		// 	setMeterAddress(neighborhood.long_name)
-		// } else {
-		// 	setMeterAddress(data.results[0].formatted_address)
-		// }
-		if (establishment) {
-			setMeterAddress(establishment.short_name)
-		} else {
-			setMeterAddress(
-				data.results[0].address_components[0].short_name +
-					' ' +
-					data.results[0].address_components[1].short_name +
-					', ' +
-					data.results[0].address_components[2].short_name
-			)
-		}
-
-		// console.log(data.results[0].address_components)
-		// setMeterAddress(data.results[0].address_components)
-	}
-
-	// get closest landmark to meter location using places api from window.google
-
 	// get rate and limit based on current time and return as object
 	// early rate and limit is from 9am-6pm and late rate and limit is from 6pm-10pm
 	const getRateAndLimit = () => {
@@ -260,12 +215,9 @@ const MeterInfo = ({ meter, expanded }) => {
 					<span style={styles.value}>Limit: {rateAndLimit.limit}</span>
 				</div>
 				<div className="distance" style={styles.distance}>
-					{/* {meter.distance} meters */}
+					{console.log(meter.duration)}
 					<span style={styles.value}>
-						{Math.floor(meter.duration / 60) > 1
-							? Math.floor(meter.duration / 60)
-							: 0}{' '}
-						min
+						{Math.floor(meter.duration / 60)} min
 					</span>
 					<span>to destination</span>
 				</div>

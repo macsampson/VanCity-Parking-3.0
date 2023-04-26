@@ -40,10 +40,12 @@ export default function ParkingPage() {
 	const handleSelectedPlace = (place) => {
 		// console.log('place selected', place)
 		// get lat and lng from place
-		const lat = place.geometry.location.lat()
-		const lng = place.geometry.location.lng()
-		// set selected place
-		setSelectedPlace({ lat, lng })
+		if (place.geometry) {
+			const lat = place.geometry.location.lat()
+			const lng = place.geometry.location.lng()
+			// set selected place
+			setSelectedPlace({ lat, lng })
+		}
 	}
 
 	// use effect to set selected place when it changes
