@@ -31,42 +31,122 @@ export default function Sidebar(props) {
 	// call the fetchParkingMeters function when place prop changes
 
 	useEffect(() => {
+		// console.log('selected place changed', selectedPlace)
 		if (selectedPlace) {
-			// set rawmeterinfo firstapicall and secondapicall to false
-			setRawMeterInfo({
-				data: [],
-				firstApiCall: false,
-				secondApiCall: false,
-			})
-			// console.log('fetching parking meters')
-			// call fetchParkingMeters function
-			fetchParkingMeters(selectedPlace, setRawMeterInfo)
+			const fetchMeterInfo = async () => {
+				setRawMeterInfo({
+					data: [],
+					firstApiCall: false,
+					secondApiCall: false,
+				})
+				try {
+					const res = await Promise.all([fetchParkingMeters(selectedPlace)])
+					// console.log(data[0])
+					const res2 = await Promise.all([getDirections(res[0], selectedPlace)])
+					const dataWithDirections = res2[0]
+					// console.log(dataWithDirections)
+					setRawMeterInfo({
+						data: dataWithDirections,
+						firstApiCall: true,
+						secondApiCall: true,
+					})
+					setMarkers(
+						Object.keys(dataWithDirections).map((key) => {
+							const meter = dataWithDirections[key]
+							return {
+								lng: meter.location.lng,
+								lat: meter.location.lat,
+								key: meter.meterid,
+							}
+						})
+					)
+					setCurrentMeters(
+						Object.values(dataWithDirections).map((meter) => (
+							<MeterInfo
+								meter={meter}
+								expanded={meter.meterid === currentMeterId}
+								key={meter.meterid}
+								onClick={() => {
+									props.clickedMeter(meter)
+								}}
+							/>
+						))
+					)
+				} catch (error) {
+					console.error(error)
+				}
+			}
+			fetchMeterInfo()
 		}
 	}, [selectedPlace])
 
-	// useeffect to pringt rawmeterinfo when it changes
-	useEffect(() => {
-		if (rawMeterInfo.firstApiCall) {
-			// console.log(rawMeterInfo.data)
-			getDirections(rawMeterInfo, setRawMeterInfo, selectedPlace)
-		}
-	}, [rawMeterInfo.firstApiCall])
+	// useEffect(() => {
+	// 	if (selectedPlace) {
+	// 		const fetchData = async () => {
+	// 			setRawMeterInfo({
+	// 				data: [],
+	// 				firstApiCall: false,
+	// 				secondApiCall: false,
+	// 			})
+	// 			try {
+	// 				const data = await fetchParkingMeters(selectedPlace)
+	// 				// console.log(data)
+	// 				setRawMeterInfo({
+	// 					data: data,
+	// 					firstApiCall: true,
+	// 					secondApiCall: false,
+	// 				})
+	// 			} catch (error) {
+	// 				console.error(error)
+	// 			}
+	// 		}
 
-	// useffect to update currentmeters when rawmeterinfo.secondapicall changes
-	useEffect(() => {
-		if (rawMeterInfo.secondApiCall) {
-			updateCurrentMeters()
-			const newMarkers = []
-			for (let key in rawMeterInfo.data) {
-				newMarkers.push({
-					lng: rawMeterInfo.data[key].location.lng,
-					lat: rawMeterInfo.data[key].location.lat,
-					key: rawMeterInfo.data[key].meterid,
-				})
-			}
-			setMarkers(newMarkers)
-		}
-	}, [rawMeterInfo.secondApiCall])
+	// 		fetchData()
+	// 	}
+	// }, [selectedPlace])
+
+	// // useeffect to pringt rawmeterinfo when it changes
+	// useEffect(() => {
+	// 	console.log(rawMeterInfo.data)
+	// 	if (rawMeterInfo.firstApiCall) {
+	// 		console.log('fetching dataWithDirections')
+	// 		const fetchdataWithDirections = async () => {
+	// 			if (rawMeterInfo.firstApiCall && rawMeterInfo.data) {
+	// 				// console.log(rawMeterInfo.data)
+	// 				// console.log(rawMeterInfo)
+	// 				try {
+	// 					const updatedMeterInfo = getdataWithDirections(rawMeterInfo, selectedPlace)
+	// 					setRawMeterInfo({
+	// 						data: updatedMeterInfo,
+	// 						firstApiCall: true,
+	// 						secondApiCall: true,
+	// 					})
+	// 				} catch (error) {
+	// 					console.error(error)
+	// 				}
+	// 			}
+	// 		}
+	// 		fetchdataWithDirections()
+	// 	}
+	// }, [rawMeterInfo.firstApiCall])
+
+	// // useffect to update currentmeters when rawmeterinfo.secondapicall changes
+	// useEffect(() => {
+	// 	if (rawMeterInfo.secondApiCall) {
+	// 		updateCurrentMeters()
+	// 		const newMarkers = []
+	// 		console.log('generate markers: ', rawMeterInfo.data)
+	// 		for (let key in rawMeterInfo.data) {
+	// 			newMarkers.push({
+	// 				lng: rawMeterInfo.data[key].location.lng,
+	// 				lat: rawMeterInfo.data[key].location.lat,
+	// 				key: rawMeterInfo.data[key].meterid,
+	// 			})
+	// 		}
+	// 		console.log(newMarkers)
+	// 		setMarkers(newMarkers)
+	// 	}
+	// }, [rawMeterInfo.secondApiCall])
 
 	// call findmeterinfo when marker is clicked
 	useEffect(() => {
@@ -97,29 +177,31 @@ export default function Sidebar(props) {
 	}, [meterInfoRef.current])
 
 	// function to update currentMeters when rawMeterInfo changes
-	function updateCurrentMeters() {
-		if (rawMeterInfo.secondApiCall) {
-			console.log('updating current meters')
-			const meterComps = []
-			for (let key in rawMeterInfo.data) {
-				// console.log(rawMeterInfo[key]);
-				const meterComp = (
-					<MeterInfo
-						meter={rawMeterInfo.data[key]}
-						expanded={
-							rawMeterInfo.data[key].meterid === currentMeterId ? true : false
-						}
-						key={rawMeterInfo.data[key].meterid}
-						onClick={() => {
-							props.clickedMeter(rawMeterInfo.data[key])
-						}}
-					/>
-				)
-				meterComps.push(meterComp)
-			}
-			setCurrentMeters(meterComps)
-		}
-	}
+	// function updateCurrentMeters() {
+	// 	if (rawMeterInfo.secondApiCall) {
+	// 		console.log('updating meter comps: ', rawMeterInfo.data)
+	// 		const meterComps = []
+	// 		for (let key in rawMeterInfo.data) {
+	// 			console.log(key)
+	// 			// console.log(rawMeterInfo[key]);
+	// 			const meterComp = (
+	// 				<MeterInfo
+	// 					meter={rawMeterInfo.data[key]}
+	// 					expanded={
+	// 						rawMeterInfo.data[key].meterid === currentMeterId ? true : false
+	// 					}
+	// 					key={rawMeterInfo.data[key].meterid}
+	// 					onClick={() => {
+	// 						props.clickedMeter(rawMeterInfo.data[key])
+	// 					}}
+	// 				/>
+	// 			)
+	// 			meterComps.push(meterComp)
+	// 		}
+	// 		setCurrentMeters(meterComps)
+	// 		console.log('meter comps', meterComps)
+	// 	}
+	// }
 
 	const styles = {
 		container: {
