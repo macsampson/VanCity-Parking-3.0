@@ -47,7 +47,7 @@ const MeterInfo = ({ meter, expanded }) => {
 		paymentTypes.push({ creditCard: meter.credit_card === 'Yes' })
 		paymentTypes.push({ payByPhone: meter.pay_by_phone !== null })
 		setPaymentTypes(paymentTypes)
-		// getMeterAddress(meter)
+		setDistance(Math.floor(meter.duration / 60))
 	}, [meter])
 
 	const styles = {
@@ -205,25 +205,7 @@ const MeterInfo = ({ meter, expanded }) => {
 		}
 	}
 
-	// render meter rate and limit
-	const renderRate = () => {
-		const rateAndLimit = getRateAndLimit()
-		return (
-			<div style={styles.row}>
-				<div className="rate-limit" style={styles.rateLimit}>
-					<span style={styles.value}>{rateAndLimit.rate}/hr</span>
-					<span style={styles.value}>Limit: {rateAndLimit.limit}</span>
-				</div>
-				<div className="distance" style={styles.distance}>
-					{console.log(meter.duration)}
-					<span style={styles.value}>
-						{Math.floor(meter.duration / 60)} min
-					</span>
-					<span>to destination</span>
-				</div>
-			</div>
-		)
-	}
+	const rateAndLimit = getRateAndLimit()
 
 	// get icons for payment types
 	const getPaymentIcons = () => {
@@ -271,7 +253,17 @@ const MeterInfo = ({ meter, expanded }) => {
 					{meter.count > 1 ? ' spots' : ' spot'}
 				</div>
 			</div>
-			<div style={styles.row}>{renderRate()}</div>
+			<div style={styles.row}>
+				<div className="rate-limit" style={styles.rateLimit}>
+					<span style={styles.value}>{rateAndLimit.rate}/hr</span>
+					<span style={styles.value}>Limit: {rateAndLimit.limit}</span>
+				</div>
+				<div className="distance" style={styles.distance}>
+					{/* {console.log(meter.duration)} */}
+					<span style={styles.value}>{distance} min</span>
+					<span>to destination</span>
+				</div>
+			</div>
 			<button style={styles.expandButton} onClick={toggleExpand}>
 				{isExpanded ? 'Hide details' : 'Show details'}
 				<FontAwesomeIcon
@@ -341,18 +333,18 @@ const MeterInfo = ({ meter, expanded }) => {
 						<div style={styles.label}>Payment Types:</div>
 						{getPaymentIcons()}
 					</div>
-					<div style={styles.row}>
+					{/* <div style={styles.row}>
 						<div style={styles.label}>In Effect:</div>
 						<div style={styles.value}>
 							{meter.in_effect}
-							{/* <FontAwesomeIcon icon={faClock} style={styles.icon} /> */}
+							<FontAwesomeIcon icon={faClock} style={styles.icon} /> 
 						</div>
 					</div>
 					<div style={styles.row}>
 						<div style={styles.label}>Updated:</div>
 						<div style={styles.value}>{meter.updated}</div>
-						{/* <FontAwesomeIcon icon={faSpinner} style={styles.icon} /> */}
-					</div>
+						 <FontAwesomeIcon icon={faSpinner} style={styles.icon}/>
+					</div> */}
 				</div>
 			)}
 		</div>

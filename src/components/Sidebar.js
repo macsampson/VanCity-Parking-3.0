@@ -44,12 +44,12 @@ export default function Sidebar(props) {
 					// console.log(data[0])
 					const res2 = await Promise.all([getDirections(res[0], selectedPlace)])
 					const dataWithDirections = res2[0]
-					// console.log(dataWithDirections)
 					setRawMeterInfo({
 						data: dataWithDirections,
 						firstApiCall: true,
 						secondApiCall: true,
 					})
+					console.log(rawMeterInfo.data)
 					setMarkers(
 						Object.keys(dataWithDirections).map((key) => {
 							const meter = dataWithDirections[key]
