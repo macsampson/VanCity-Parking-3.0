@@ -88,6 +88,18 @@ const MeterInfo = ({ meter, expanded }) => {
 			display: 'block',
 			alignItems: 'center',
 		},
+		limit: {
+			fontSize: '1rem',
+			color: '#555',
+			display: 'block',
+			alignItems: 'center',
+		},
+		rate: {
+			fontSize: '1.5rem',
+			color: '#333',
+			display: 'block',
+			alignItems: 'center',
+		},
 		icon: {
 			fontSize: '1.5rem',
 			// marginLeft: '8px',
@@ -256,11 +268,23 @@ const MeterInfo = ({ meter, expanded }) => {
 			</div>
 			<div style={styles.row}>
 				<div className="rate-limit" style={styles.rateLimit}>
-					<span style={styles.value}>{rateAndLimit.rate}/hr</span>
-					<span style={styles.value}>Limit: {rateAndLimit.limit}</span>
+					<span style={styles.rate}>{rateAndLimit.rate}/hr</span>
+					<span style={styles.limit}>{rateAndLimit.limit} hours</span>
 				</div>
+
 				<div className="distance" style={styles.distance}>
 					{/* {console.log(meter.duration)} */}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="28"
+						height="28"
+						viewBox="0 0 50 80"
+					>
+						<path
+							fill="#555555"
+							d="M30.686 14.286c4.035 0 7.306-3.198 7.306-7.143S34.722 0 30.686 0C26.65 0 23.38 3.198 23.38 7.143s3.27 7.143 7.306 7.143zm17.505 22.04l-9.897-4.398-6.297-13.023c-.166-.446-.37-.872-.614-1.273l-.15-.31c-.375-.77-.963-1.346-1.62-1.67-.754-.575-1.633-1-2.61-1.216-.57-.126-1.142-.167-1.706-.144-.502-.017-1.036.06-1.572.25-.865.248-1.68.662-2.405 1.22l-14.785 7.86c-.267.14-.503.306-.727.483-.723.39-1.277 1.084-1.44 1.96L2.058 38.36c-.29 1.54.718 3.022 2.25 3.313 1.53.29 3.005-.723 3.293-2.262L9.77 27.876l7.94-4.222-3.494 15.942c-.106.482-.145.942-.133 1.38l-2.648 16.622c-.06.08-.123.148-.178.234L.834 73.976c-1.304 2.017-1.05 4.51.56 5.56 1.615 1.05 3.977.266 5.28-1.753L17.1 61.64c.328-.513.557-1.053.69-1.59.123-.285.226-.582.277-.902l1.965-12.34c.24.07.482.127.726.18.82.185 1.538.467 2.176.76l10.875 13.05 3.362 16.11c.427 2.043 2.3 3.38 4.18 2.986 1.88-.4 3.063-2.378 2.633-4.426L40.568 59.11c-.134-.646-.425-1.208-.803-1.682-.128-.223-.276-.443-.45-.65L27.973 43.17l3.095-14.108 2.694 5.57c.08.17.176.32.277.473.18.766.665 1.427 1.4 1.755l10.468 4.654c1.31.585 2.882-.105 3.512-1.538.63-1.433.082-3.065-1.23-3.65z"
+						></path>
+					</svg>
 					<span style={styles.value}>{distance} min</span>
 					<span>to destination</span>
 				</div>
