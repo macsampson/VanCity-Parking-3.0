@@ -245,6 +245,7 @@ const MeterInfo = ({ meter, expanded }) => {
 			id={meter.meterid}
 			style={styles.container}
 			ref={containerRef}
+			onClick={toggleExpand}
 		>
 			<div style={styles.titleBar}>
 				<div style={styles.address}>{meterAddress}</div>
@@ -264,13 +265,13 @@ const MeterInfo = ({ meter, expanded }) => {
 					<span>to destination</span>
 				</div>
 			</div>
-			<button style={styles.expandButton} onClick={toggleExpand}>
+			{/* <button style={styles.expandButton} onClick={toggleExpand}>
 				{isExpanded ? 'Hide details' : 'Show details'}
 				<FontAwesomeIcon
 					icon={isExpanded ? faChevronUp : faChevronDown}
 					style={styles.expandIcon}
 				/>
-			</button>
+			</button> */}
 			{isExpanded && (
 				<div>
 					<div style={styles.row}>

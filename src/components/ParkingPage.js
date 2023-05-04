@@ -28,7 +28,7 @@ export default function ParkingPage() {
 
 	// handle when a marker is clicked on the map
 	const handleMarkerClick = (marker) => {
-		console.log('marker clicked', marker.key)
+		// console.log('marker clicked', marker.key)
 		setClickedMarker(marker)
 	}
 

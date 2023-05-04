@@ -86,9 +86,9 @@ export default async function fetchParkingMeters(selectedPlace) {
 				duration: '',
 			}
 		} else {
-			newMeterInfo[record.fields.geom.coordinates].meterid.push(
-				record.fields.meterid
-			)
+			// newMeterInfo[record.fields.geom.coordinates].meterid.push(
+			// 	record.fields.meterid
+			// )
 
 			newMeterInfo[record.fields.geom.coordinates].count++
 		}

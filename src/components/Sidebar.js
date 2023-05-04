@@ -64,7 +64,10 @@ export default function Sidebar(props) {
 						Object.values(dataWithDirections).map((meter) => (
 							<MeterInfo
 								meter={meter}
-								expanded={meter.meterid === currentMeterId}
+								expanded={
+									// check if meter.id exists in currentmeterid array
+									currentMeterId && currentMeterId === meter.meterid
+								}
 								key={meter.meterid}
 								onClick={() => {
 									props.clickedMeter(meter)
@@ -84,7 +87,7 @@ export default function Sidebar(props) {
 	useEffect(() => {
 		// console.log('clicked')
 		if (props.clickedMarker) {
-			// console.log('clicked', props.clickedMarker)
+			console.log('clicked', props.clickedMarker)
 			setCurrentMeterId(props.clickedMarker.key)
 			// expandMeterInfo(props.clickedMarker.key)
 		}
@@ -95,18 +98,24 @@ export default function Sidebar(props) {
 		// console.log(rawMeterInfo);
 
 		if (currentMeterId) {
+			console.log('current meter id', currentMeterId)
 			meterInfoRef.current = document.getElementById(currentMeterId)
-		}
-	}, [currentMeterId])
-
-	// useffect to scroll to meter when meterinfo ref changes
-	useEffect(() => {
-		if (meterInfoRef.current) {
 			setTimeout(() => {
 				meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })
 			}, 50)
 		}
-	}, [meterInfoRef.current])
+	}, [currentMeterId])
+
+	// useffect to scroll to meter when meterinfo ref changes
+	// useEffect(() => {
+	// 	if (meterInfoRef.current) {
+	// 		setTimeout(() => {
+	// 			meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })
+	// 		}, 50)
+	// 		// expand the meter info when it is scrolled to
+	// 		console.log(meterInfoRef.current)
+	// 	}
+	// }, [meterInfoRef.current])
 
 	const styles = {
 		container: {
