@@ -33,7 +33,7 @@ const streetViewStyle = {
   bottom: '0%',
 }
 
-const clickedIcon = ''
+const clickedIcon = '/images/clicked-meter.png'
 const parkingIcon = '/images/parking-meter.png'
 
 function Map(props) {
@@ -65,10 +65,10 @@ function Map(props) {
 
   // use effect to console log when meter prop changes
   useEffect(() => {
-    console.log('meter changed', props.clickedMeter)
+    // console.log('meter changed', props.clickedMeter)
     // console.log('markers', markers)
     if (props.clickedMeter) {
-      handleMarkerClick(markers[props.clickedMeter[0]])
+      handleMarkerClick(props.clickedMeter[0])
     }
   }, [props.clickedMeter])
 
@@ -80,13 +80,21 @@ function Map(props) {
   }, [props.markers])
 
   // function to zoom map and pan smoothly to marker when clicked
-  function handleMarkerClick(marker) {
-    setClickedMarker(marker)
+  function handleMarkerClick(markerId) {
+    setClickedMarker(markerId)
+    const marker = markers[markerId]
     const newPosition = { lat: marker.lat, lng: marker.lng }
     map.panTo(newPosition)
 
     map.setZoom(20)
     // props.onMarkerClicked(marker)
+  }
+
+  // function to get correct icon image depending if marker is clicked or not
+  const getIcon = (key) => {
+    console.log('clicked marker is ', clickedMarker)
+    console.log('key is ', key)
+    return key == clickedMarker ? clickedIcon : parkingIcon
   }
 
   // Memoize the renderMarkers function to avoid unnecessary re-renders
@@ -108,8 +116,8 @@ function Map(props) {
         <Marker
           key={key}
           position={position}
-          icon={marker.clicked ? clickedIcon : parkingIcon}
-          onClick={() => handleMarkerClick(marker)}
+          icon={parkingIcon}
+          onClick={() => handleMarkerClick(key)}
         />
       )
     })
@@ -164,7 +172,7 @@ function Map(props) {
               {/* onyl show streetview if theres a clicked marker */}
 
               <StreetViewPanorama
-                position={clickedMarker}
+                position={markers[clickedMarker]}
                 visible={true}
                 options={{
                   zoom: 1,
