@@ -21,7 +21,8 @@ export default function Sidebar(props) {
   // function to handle meter click
   const handleMeterClick = (meter) => {
     // console.log("meter clicked", meter);
-    props.clickedMeter(meter)
+    props.clickedMeter(meter[0])
+    setCurrentMeterId(meter[0])
   }
 
   // use effect to set selected place from props
@@ -56,7 +57,7 @@ export default function Sidebar(props) {
             firstApiCall: true,
             secondApiCall: true,
           })
-          console.log(rawMeterInfo.data)
+          //   console.log(rawMeterInfo.data)
           const newMarkers = {}
           Object.keys(dataWithDirections).map((key) => {
             const meter = dataWithDirections[key]
@@ -71,6 +72,7 @@ export default function Sidebar(props) {
             //   }
           })
           setMarkers(newMarkers)
+          //   console.log('new data:', dataWithDirections)
           setCurrentMeters(
             Object.values(dataWithDirections).map((meter) => (
               <MeterInfo
@@ -96,7 +98,7 @@ export default function Sidebar(props) {
   useEffect(() => {
     // console.log('clicked')
     if (props.clickedMarker) {
-      console.log('clicked', props.clickedMarker)
+      //   console.log('clicked', props.clickedMarker)
       setCurrentMeterId(props.clickedMarker.key)
       // expandMeterInfo(props.clickedMarker.key)
     }
@@ -107,7 +109,7 @@ export default function Sidebar(props) {
     // console.log(rawMeterInfo);
 
     if (currentMeterId) {
-      console.log('current meter id', currentMeterId)
+      //   console.log('current meter id', currentMeterId)
       meterInfoRef.current = document.getElementById(currentMeterId)
       setTimeout(() => {
         meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })

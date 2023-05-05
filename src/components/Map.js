@@ -68,7 +68,7 @@ function Map(props) {
     // console.log('meter changed', props.clickedMeter)
     // console.log('markers', markers)
     if (props.clickedMeter) {
-      handleMarkerClick(props.clickedMeter[0])
+      handleMarkerClick(props.clickedMeter)
     }
   }, [props.clickedMeter])
 
