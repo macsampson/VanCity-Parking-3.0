@@ -23,7 +23,8 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
   const [opacity, setOpacity] = useState(1)
 
   // state object for holding distance to destination
-  const [distance, setDistance] = useState(null)
+  const [distance, setDistance] = useState(0)
+  const [duration, setDuration] = useState(0)
 
   const containerRef = useRef(null)
 
@@ -55,7 +56,8 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
     paymentTypes.push({ creditCard: meter.credit_card === 'Yes' })
     paymentTypes.push({ payByPhone: meter.pay_by_phone !== null })
     setPaymentTypes(paymentTypes)
-    setDistance(Math.floor(meter.duration / 60))
+    setDuration(Math.floor(meter.duration / 60))
+    console.log(meter.duration)
   }, [meter])
 
   const styles = {
@@ -283,7 +285,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 
         <div className='distance' style={styles.distance}>
           <FontAwesomeIcon icon={faPersonWalking} size='2xl' />
-          <span style={styles.value}>{distance} min</span>
+          <span style={styles.value}>{duration} min</span>
           <span>to destination</span>
         </div>
       </div>

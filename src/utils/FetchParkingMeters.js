@@ -42,61 +42,61 @@
 // }
 
 export default async function fetchParkingMeters(selectedPlace) {
-	// create a url with the lat and lng of the place prop and the radius of 500m
-	const url = new URL(
-		'https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parking-meters'
-	)
-	// add the lat and lng of the place prop to the url
-	url.searchParams.append(
-		'geofilter.distance',
-		`${selectedPlace.lat},${selectedPlace.lng},500`
-	)
-	// add the number of rows to the url
-	url.searchParams.append('rows', '50')
+  // create a url with the lat and lng of the place prop and the radius of 500m
+  const url = new URL(
+    'https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parking-meters'
+  )
+  // add the lat and lng of the place prop to the url
+  url.searchParams.append(
+    'geofilter.distance',
+    `${selectedPlace.lat},${selectedPlace.lng},500`
+  )
+  // add the number of rows to the url
+  url.searchParams.append('rows', '50')
 
-	const response = await fetch(url)
-	const data = await response.json()
-	const newMeterInfo = {}
+  const response = await fetch(url)
+  const data = await response.json()
+  const newMeterInfo = {}
 
-	data.records.forEach((record) => {
-		if (!newMeterInfo[record.fields.geom.coordinates]) {
-			newMeterInfo[record.fields.geom.coordinates] = {
-				meterid: [record.fields.meterid],
-				location: {
-					lat: record.fields.geom.coordinates[1],
-					lng: record.fields.geom.coordinates[0],
-				},
-				meter_type: record.fields.meterhead,
-				weekdays_early_rate: record.fields.r_mf_9a_6p,
-				weekdays_early_limit: record.fields.t_mf_9a_6p.replace(/[a-zA-Z]/g, ''),
-				weekdays_late_rate: record.fields.r_mf_6p_10,
-				weekdays_late_limit: record.fields.t_mf_6p_10.replace(/[a-zA-Z]/g, ''),
-				saturdays_early_rate: record.fields.r_sa_9a_6p,
-				saturdays_early_limit: record.fields.t_sa_9a_6p.replace(
-					/[a-zA-Z]/g,
-					''
-				),
-				saturdays_late_rate: record.fields.r_sa_6p_10,
-				saturdays_late_limit: record.fields.t_sa_6p_10.replace(/[a-zA-Z]/g, ''),
-				sunday_early_rate: record.fields.r_su_9a_6p,
-				sunday_early_limit: record.fields.t_su_9a_6p.replace(/[a-zA-Z]/g, ''),
-				sunday_late_rate: record.fields.r_su_6p_10,
-				sunday_late_limit: record.fields.t_su_6p_10.replace(/[a-zA-Z]/g, ''),
-				pay_by_phone: record.fields.pay_phone,
-				credit_card: record.fields.creditcard,
-				count: 1,
-				distance: '',
-				duration: '',
-			}
-		} else {
-			// newMeterInfo[record.fields.geom.coordinates].meterid.push(
-			// 	record.fields.meterid
-			// )
+  data.records.forEach((record) => {
+    if (!newMeterInfo[record.fields.geom.coordinates]) {
+      newMeterInfo[record.fields.geom.coordinates] = {
+        meterid: [record.fields.meterid],
+        location: {
+          lat: record.fields.geom.coordinates[1],
+          lng: record.fields.geom.coordinates[0],
+        },
+        meter_type: record.fields.meterhead,
+        weekdays_early_rate: record.fields.r_mf_9a_6p,
+        weekdays_early_limit: record.fields.t_mf_9a_6p.replace(/[a-zA-Z]/g, ''),
+        weekdays_late_rate: record.fields.r_mf_6p_10,
+        weekdays_late_limit: record.fields.t_mf_6p_10.replace(/[a-zA-Z]/g, ''),
+        saturdays_early_rate: record.fields.r_sa_9a_6p,
+        saturdays_early_limit: record.fields.t_sa_9a_6p.replace(
+          /[a-zA-Z]/g,
+          ''
+        ),
+        saturdays_late_rate: record.fields.r_sa_6p_10,
+        saturdays_late_limit: record.fields.t_sa_6p_10.replace(/[a-zA-Z]/g, ''),
+        sunday_early_rate: record.fields.r_su_9a_6p,
+        sunday_early_limit: record.fields.t_su_9a_6p.replace(/[a-zA-Z]/g, ''),
+        sunday_late_rate: record.fields.r_su_6p_10,
+        sunday_late_limit: record.fields.t_su_6p_10.replace(/[a-zA-Z]/g, ''),
+        pay_by_phone: record.fields.pay_phone,
+        credit_card: record.fields.creditcard,
+        count: 1,
+        distance: 0,
+        duration: 0,
+      }
+    } else {
+      // newMeterInfo[record.fields.geom.coordinates].meterid.push(
+      // 	record.fields.meterid
+      // )
 
-			newMeterInfo[record.fields.geom.coordinates].count++
-		}
-		// return newMeterInfo
-	})
+      newMeterInfo[record.fields.geom.coordinates].count++
+    }
+    // return newMeterInfo
+  })
 
-	return newMeterInfo
+  return newMeterInfo
 }
