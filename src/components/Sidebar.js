@@ -32,6 +32,10 @@ export default function Sidebar(props) {
 			sortedCurrentMeters.sort((a, b) => {
 				return a.duration - b.duration
 			})
+		} else if (sortType === 'rate') {
+			sortedCurrentMeters.sort((a, b) => {
+				return a.current_rate - b.current_rate
+			})
 		}
 		setCurrentMeters(sortedCurrentMeters)
 	}
