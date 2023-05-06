@@ -85,6 +85,7 @@ export default function ParkingPage() {
           markers={markers}
           onMarkerClicked={handleMarkerClick}
           clickedMeter={meter}
+          selectedPlace={selectedPlace}
         />
       </div>
     </LoadScript>
