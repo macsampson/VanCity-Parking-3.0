@@ -1,25 +1,24 @@
 export default async function getDirections(rawMeterInfo, selectedPlace) {
   const meters = Object.values(rawMeterInfo)
-  let updatedMeterInfo = { ...rawMeterInfo }
+  const promises = []
+  const durations = []
 
   meters.forEach((meter) => {
     const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${meter.location.lng},${meter.location.lat};${selectedPlace.lng},${selectedPlace.lat}?geometries=geojson&access_token=${process.env.REACT_APP_MAPBOX_KEY}`
-    fetch(url)
+    const promise = fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        let newMeterInfo = {
-          ...updatedMeterInfo,
+        durations[meter.location.lng + ',' + meter.location.lat] = {
+          distance: Number(data.routes[0].distance.toFixed(0)),
+          duration: Number(data.routes[0].duration.toFixed(0)),
         }
-        // get each meter using the coordinates as the key and update the distance and duration using whole numbers
-        newMeterInfo[meter.location.lng + ',' + meter.location.lat].distance =
-          data.routes[0].distance.toFixed(0)
-        newMeterInfo[meter.location.lng + ',' + meter.location.lat].duration =
-          data.routes[0].duration.toFixed(0)
-        updatedMeterInfo = newMeterInfo
       })
       .catch((error) => {
         console.log(error)
       })
+    promises.push(promise)
   })
-  return updatedMeterInfo
+
+  await Promise.all(promises)
+  return durations
 }

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
+// import { Link } from 'react-router-dom'
 import SearchBar from './Searchbar'
 import { LoadScript } from '@react-google-maps/api'
 import { useNavigate } from 'react-router-dom'
 import '../styles/Homepage.css'
-import Mapbox from './Mapbox'
+// import Mapbox from './Mapbox'
 
 const dotenv = require('dotenv')
 dotenv.config()
@@ -50,7 +50,10 @@ function Homepage() {
         }}
       >
         <h1 style={styles.title}>
-          Vancouver Parking <span role={'img'}>🅿️</span>
+          Vancouver Parking{' '}
+          <span role={'img'} aria-label={'parking icon'}>
+            🅿️
+          </span>
         </h1>
         <p style={styles.subtitle}>Find parking near you</p>
         <div

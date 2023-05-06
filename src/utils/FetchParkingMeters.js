@@ -85,8 +85,6 @@ export default async function fetchParkingMeters(selectedPlace) {
         pay_by_phone: record.fields.pay_phone,
         credit_card: record.fields.creditcard,
         count: 1,
-        distance: 0,
-        duration: 0,
       }
     } else {
       // newMeterInfo[record.fields.geom.coordinates].meterid.push(

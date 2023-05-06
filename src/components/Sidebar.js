@@ -5,13 +5,13 @@ import fetchParkingMeters from '../utils/FetchParkingMeters'
 import getDirections from '../utils/GetDirections'
 
 export default function Sidebar(props) {
-  const [meterType, setMeterType] = useState('Any')
+  //   const [meterType, setMeterType] = useState('Any')
   const [selectedPlace, setSelectedPlace] = useState(null)
   const [markers, setMarkers] = useState({})
   const [rawMeterInfo, setRawMeterInfo] = useState({})
   const [currentMeterId, setCurrentMeterId] = useState(null)
   const [currentMeters, setCurrentMeters] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  // const [isLoading, setIsLoading] = useState(true)
   // reference to meter info to scroll to
   const meterInfoRef = useRef(null)
 
@@ -21,6 +21,36 @@ export default function Sidebar(props) {
     props.clickedMeter(meter[0])
     setCurrentMeterId(meter[0])
   }
+
+  useEffect(() => {
+    if (rawMeterInfo) {
+      // console.log(rawMeterInfo)
+      const newMarkers = {}
+      const newMeters = []
+      for (const key in rawMeterInfo) {
+        const meter = rawMeterInfo[key]
+        console.log(meter.count)
+        newMarkers[meter.meterid] = {
+          lng: meter.location.lng,
+          lat: meter.location.lat,
+        }
+
+        newMeters.push(
+          <MeterInfo
+            meter={meter}
+            expanded={
+              // check if meter.id exists in currentmeterid array
+              currentMeterId && currentMeterId === meter.meterid
+            }
+            key={meter.meterid}
+            meterClicked={handleMeterClick}
+          />
+        )
+      }
+      setMarkers(newMarkers)
+      setCurrentMeters(newMeters)
+    }
+  }, [rawMeterInfo])
 
   // use effect to set selected place from props
   useEffect(() => {
@@ -33,71 +63,34 @@ export default function Sidebar(props) {
       props.onMarkersChange(markers)
     }
   }, [markers])
+
   // call the fetchParkingMeters function when place prop changes
-
-  useEffect(() => {
-    if (!isLoading) {
-      //   console.log('setting meters with: ', rawMeterInfo)
-
-      setCurrentMeters(
-        Object.values(rawMeterInfo).map((meter) => (
-          <MeterInfo
-            meter={meter}
-            expanded={
-              // check if meter.id exists in currentmeterid array
-              currentMeterId && currentMeterId === meter.meterid
-            }
-            key={meter.meterid}
-            meterClicked={handleMeterClick}
-          />
-        ))
-      )
-    }
-  }, [isLoading])
-
   useEffect(() => {
     // console.log('selected place changed', selectedPlace)
     if (selectedPlace) {
       const fetchMeterInfo = async () => {
         setRawMeterInfo(null)
         try {
-          const res = await fetchParkingMeters(selectedPlace)
+          const meterData = await fetchParkingMeters(selectedPlace)
           // console.log(data[0])
-          const dataWithDirections = await getDirections(res, selectedPlace)
+          const durations = await getDirections(meterData, selectedPlace)
+
+          // iterate through meter data and add duration to each meter
+          const dataWithDirections = {}
+          for (const key in meterData) {
+            const meter = meterData[key]
+            meter.duration =
+              durations[meter.location.lng + ',' + meter.location.lat].duration
+            dataWithDirections[meter.location.lng + ',' + meter.location.lat] =
+              meter
+          }
 
           setRawMeterInfo(dataWithDirections)
           //   console.log(rawMeterInfo.data)
-          const newMarkers = {}
-          Object.keys(dataWithDirections).map((key) => {
-            const meter = dataWithDirections[key]
-            newMarkers[meter.meterid] = {
-              lng: meter.location.lng,
-              lat: meter.location.lat,
-            }
-            //   return {
-            //     lng: meter.location.lng,
-            //     lat: meter.location.lat,
-            //     key: meter.meterid,
-            //   }
-          })
-          setMarkers(newMarkers)
-          //   setCurrentMeters(
-          //     Object.values(dataWithDirections).map((meter) => (
-          //       <MeterInfo
-          //         meter={meter}
-          //         expanded={
-          //           // check if meter.id exists in currentmeterid array
-          //           currentMeterId && currentMeterId === meter.meterid
-          //         }
-          //         key={meter.meterid}
-          //         meterClicked={handleMeterClick}
-          //       />
-          //     ))
-          //   )
         } catch (error) {
           console.error(error)
         } finally {
-          setIsLoading(false)
+          // setIsLoading(false)
           console.log('finally returned')
         }
       }
@@ -172,7 +165,6 @@ export default function Sidebar(props) {
           style={{
             flex: '0 0 100%',
             overflow: 'scroll',
-            padding: '10px',
             padding: '10px',
           }}
         >

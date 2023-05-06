@@ -4,27 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCreditCard,
   faMobileAlt,
-  faClock,
-  faSpinner,
-  faChevronUp,
-  faChevronDown,
   faPersonWalking,
-  faDollarSign,
 } from '@fortawesome/free-solid-svg-icons'
 
 const MeterInfo = ({ meter, expanded, meterClicked }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [meterType, setMeterType] = useState([])
   const [paymentTypes, setPaymentTypes] = useState([{ String: Boolean }])
-  const [currentRate, setCurrentRate] = useState(null)
-  // state to hold meter address
-  const [meterAddress, setMeterAddress] = useState(null)
-  // state object for opacity
-  const [opacity, setOpacity] = useState(1)
+  const [duration, setDuration] = useState(null)
 
-  // state object for holding distance to destination
-  const [distance, setDistance] = useState(0)
-  const [duration, setDuration] = useState(0)
+  // state to hold meter address
+  //   const [meterAddress, setMeterAddress] = useState(null)
 
   const containerRef = useRef(null)
 
@@ -57,7 +47,6 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
     paymentTypes.push({ payByPhone: meter.pay_by_phone !== null })
     setPaymentTypes(paymentTypes)
     setDuration(Math.floor(meter.duration / 60))
-    console.log(meter.duration)
   }, [meter])
 
   const styles = {
@@ -72,7 +61,6 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
       width: '100%',
       marginBottom: '8px',
       // marginTop: '15px',
-      opacity: opacity,
 
       transition: 'transform 0.2s ease-in-out',
       ':hover': {
@@ -271,7 +259,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
       onClick={handleClick}
     >
       <div style={styles.titleBar}>
-        <div style={styles.address}>{meterAddress}</div>
+        {/* <div style={styles.address}>{meterAddress}</div> */}
         <div style={styles.spots}>
           {meter.count}
           {meter.count > 1 ? ' spots' : ' spot'}
@@ -289,13 +277,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
           <span>to destination</span>
         </div>
       </div>
-      {/* <button style={styles.expandButton} onClick={toggleExpand}>
-				{isExpanded ? 'Hide details' : 'Show details'}
-				<FontAwesomeIcon
-					icon={isExpanded ? faChevronUp : faChevronDown}
-					style={styles.expandIcon}
-				/>
-			</button> */}
+
       {isExpanded && (
         <div>
           <div style={styles.row}>
@@ -358,18 +340,6 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
             <div style={styles.label}>Payment Types:</div>
             {getPaymentIcons()}
           </div>
-          {/* <div style={styles.row}>
-						<div style={styles.label}>In Effect:</div>
-						<div style={styles.value}>
-							{meter.in_effect}
-							<FontAwesomeIcon icon={faClock} style={styles.icon} /> 
-						</div>
-					</div>
-					<div style={styles.row}>
-						<div style={styles.label}>Updated:</div>
-						<div style={styles.value}>{meter.updated}</div>
-						 <FontAwesomeIcon icon={faSpinner} style={styles.icon}/>
-					</div> */}
         </div>
       )}
     </div>

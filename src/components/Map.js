@@ -4,26 +4,26 @@ import {
   useLoadScript,
   Marker,
   StreetViewPanorama,
-  DistanceMatrixService,
+  //   DistanceMatrixService,
 } from '@react-google-maps/api'
-import { CloseFullscreen } from '@mui/icons-material'
+// import { CloseFullscreen } from '@mui/icons-material'
 
 const center = {
   lat: 49.2827,
   lng: -123.1207,
 }
 
-const dividerStyle = {
-  position: 'absolute',
+// const dividerStyle = {
+//   position: 'absolute',
 
-  width: '100%',
-  height: '2px',
-  top: 'calc(80%)',
-  left: '0px',
-  right: '0px',
-  backgroundColor: 'black',
-  cursor: 'ns-resize',
-}
+//   width: '100%',
+//   height: '2px',
+//   top: 'calc(80%)',
+//   left: '0px',
+//   right: '0px',
+//   backgroundColor: 'black',
+//   cursor: 'ns-resize',
+// }
 
 const streetViewStyle = {
   position: 'absolute',
@@ -33,7 +33,7 @@ const streetViewStyle = {
   bottom: '0%',
 }
 
-const clickedIcon = '/images/clicked-meter.png'
+// const clickedIcon = '/images/clicked-meter.png'
 const parkingIcon = '/images/parking-meter.png'
 
 function Map(props) {
@@ -51,7 +51,7 @@ function Map(props) {
   const [clickedMarker, setClickedMarker] = useState(null)
 
   // state for location marker
-  const [locationMarker, setLocationMarker] = useState(null)
+  //   const [locationMarker, setLocationMarker] = useState(null)
 
   const mapStyle = {
     width: 'auto',
@@ -91,11 +91,11 @@ function Map(props) {
   }
 
   // function to get correct icon image depending if marker is clicked or not
-  const getIcon = (key) => {
-    console.log('clicked marker is ', clickedMarker)
-    console.log('key is ', key)
-    return key == clickedMarker ? clickedIcon : parkingIcon
-  }
+  //   const getIcon = (key) => {
+  //     console.log('clicked marker is ', clickedMarker)
+  //     console.log('key is ', key)
+  //     return key == clickedMarker ? clickedIcon : parkingIcon
+  //   }
 
   // Memoize the renderMarkers function to avoid unnecessary re-renders
   const renderMarkers = useMemo(() => {
@@ -171,7 +171,7 @@ function Map(props) {
             >
               {/* onyl show streetview if theres a clicked marker */}
 
-              <StreetViewPanorama
+              {/* <StreetViewPanorama
                 position={markers[clickedMarker]}
                 visible={true}
                 options={{
@@ -187,7 +187,7 @@ function Map(props) {
                   bestGuess: true,
                   source: window.google.maps.StreetViewSource.OUTDOOR,
                 }}
-              />
+              /> */}
             </GoogleMap>
           </div>
         )}
