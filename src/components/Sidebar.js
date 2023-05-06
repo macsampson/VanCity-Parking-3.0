@@ -29,7 +29,6 @@ export default function Sidebar(props) {
       const newMeters = []
       for (const key in rawMeterInfo) {
         const meter = rawMeterInfo[key]
-        console.log(meter.count)
         newMarkers[meter.meterid] = {
           lng: meter.location.lng,
           lat: meter.location.lat,

@@ -33,7 +33,7 @@ const streetViewStyle = {
   bottom: '0%',
 }
 
-// const clickedIcon = '/images/clicked-meter.png'
+const clickedIcon = '/images/clicked-meter.png'
 const parkingIcon = '/images/parking-meter.png'
 
 function Map(props) {
@@ -46,9 +46,11 @@ function Map(props) {
   const [map, setMap] = useState(null)
 
   // create state to hold markers
-  const [markers, setMarkers] = useState([])
+  const [markersData, setMarkersData] = useState([])
   // state to hold clicked marker
   const [clickedMarker, setClickedMarker] = useState(null)
+  // state to hold markers
+  const [markers, setMarkers] = useState([]) // probably dont need
 
   // state for location marker
   //   const [locationMarker, setLocationMarker] = useState(null)
@@ -75,14 +77,14 @@ function Map(props) {
   // update markers when props change
   useEffect(() => {
     // console.log('props changed', props.markers)
-    setMarkers(props.markers)
+    setMarkersData(props.markers)
     // console.log('markers in map: ', markers)
   }, [props.markers])
 
   // function to zoom map and pan smoothly to marker when clicked
   function handleMarkerClick(markerId) {
     setClickedMarker(markerId)
-    const marker = markers[markerId]
+    const marker = markersData[markerId]
     const newPosition = { lat: marker.lat, lng: marker.lng }
     map.panTo(newPosition)
 
@@ -100,32 +102,35 @@ function Map(props) {
   // Memoize the renderMarkers function to avoid unnecessary re-renders
   const renderMarkers = useMemo(() => {
     const bounds = new window.google.maps.LatLngBounds()
-    if (markers.length === 0) {
+    if (markersData.length === 0) {
       console.log('no markers')
       return null
     }
     // iterate through markers object and create a marker for each
 
     console.log('rendering markers')
-    const markersWithBounds = Object.keys(markers).map((key) => {
-      const marker = markers[key]
+    const markersWithBounds = []
+    Object.keys(markersData).map((key) => {
+      const marker = markersData[key]
       const position = { lat: marker.lat, lng: marker.lng }
       //   console.log('position', position)
       bounds.extend(position)
-      return (
-        <Marker
-          key={key}
-          position={position}
-          icon={parkingIcon}
-          onClick={() => handleMarkerClick(key)}
-        />
-      )
+      markersWithBounds.push({
+        key: (
+          <Marker
+            key={key}
+            position={position}
+            icon={key === props.clickedMeter ? clickedIcon : parkingIcon}
+            onClick={() => handleMarkerClick(key)}
+          />
+        ),
+      })
     })
     if (map) {
       map.fitBounds(bounds)
     }
-    return markersWithBounds
-  }, [markers, map])
+    setMarkers(markersWithBounds)
+  }, [markersData, map])
 
   // set the map state object to the map argument
   const onLoad = useCallback(function callback(map) {
@@ -159,7 +164,17 @@ function Map(props) {
               ],
             }}
           >
-            {renderMarkers}
+            {Object.keys(markersData).map((key) => (
+              <Marker
+                key={key}
+                position={{
+                  lat: markersData[key].lat,
+                  lng: markersData[key].lng,
+                }}
+                icon={key === props.clickedMeter ? clickedIcon : parkingIcon}
+                onClick={() => handleMarkerClick(key)}
+              />
+            ))}
           </GoogleMap>
         </div>
 
