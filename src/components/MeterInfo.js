@@ -20,10 +20,10 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			icon: 'images/disability.png',
 			label: 'Disability',
 		},
-		motorcycle: {
+		motorbike: {
 			status: false,
-			icon: 'images/motorcycle.png',
-			label: 'Motorcycle',
+			icon: 'images/motorbike.png',
+			label: 'Motorbike',
 		},
 		ev: { status: false, icon: 'images/ev.png', label: 'EV' },
 		single: { status: false, icon: 'images/single.png', label: 'Single' },
