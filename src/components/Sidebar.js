@@ -5,6 +5,8 @@ import fetchParkingMeters from '../utils/FetchParkingMeters'
 import getDirections from '../utils/GetDirections'
 import { Button, ButtonGroup } from '@mui/material'
 import { render } from 'react-dom'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 
 export default function Sidebar(props) {
 	const [selectedPlace, setSelectedPlace] = useState(null)
@@ -13,6 +15,7 @@ export default function Sidebar(props) {
 	const [currentMeterId, setCurrentMeterId] = useState(null)
 	const [currentMeters, setCurrentMeters] = useState([])
 	const [currentMeterComps, setCurrentMeterComps] = useState([])
+	const [sortOrder, setSortOrder] = useState({ rate: 'asc', distance: 'asc' })
 
 	const meterInfoRef = useRef(null) // reference to meter info card to scroll to
 
@@ -28,11 +31,20 @@ export default function Sidebar(props) {
 		const sortedCurrentMeters = [...currentMeters]
 		if (sortType === 'distance') {
 			sortedCurrentMeters.sort((a, b) => {
-				return a.duration - b.duration
+				// if sortOrder is 'asc', return a.duration - b.duration
+				// if sortOrder is 'desc', return b.duration - a.duration
+				return (
+					(sortOrder[sortType] === 'asc' ? 1 : -1) * (a.duration - b.duration)
+				)
 			})
 		} else if (sortType === 'rate') {
 			sortedCurrentMeters.sort((a, b) => {
-				return a.current_rate - b.current_rate
+				// if sortOrder is 'asc', return a.current_rate - b.current_rate
+				// if sortOrder is 'desc', return b.current_rate - a.current_rate
+				return (
+					(sortOrder[sortType] === 'asc' ? 1 : -1) *
+					(a.current_rate - b.current_rate)
+				)
 			})
 		}
 		setCurrentMeterId(null)
@@ -41,6 +53,11 @@ export default function Sidebar(props) {
 		// get reference to the sidebar and scroll to top
 		const sidebar = document.getElementById('meter-container')
 		sidebar.scrollTop = 0
+
+		setSortOrder((prev) => ({
+			...prev,
+			[sortType]: prev[sortType] === 'asc' ? 'desc' : 'asc',
+		}))
 	}
 
 	// function to render meter info
@@ -189,6 +206,7 @@ export default function Sidebar(props) {
 			flex: '1 1 auto',
 			fontSize: '1.2rem',
 			marginBottom: '0px',
+			color: 'gray',
 		},
 		button: {
 			flex: '1',
@@ -208,12 +226,29 @@ export default function Sidebar(props) {
 							width: '300px',
 						}}
 					>
-						<Button style={styles.button} onClick={() => handleSort('rate')}>
+						<Button
+							style={styles.button}
+							onClick={() => handleSort('rate')}
+							endIcon={
+								sortOrder.rate === 'asc' ? (
+									<ArrowUpwardIcon />
+								) : (
+									<ArrowDownwardIcon />
+								)
+							}
+						>
 							Rate
 						</Button>
 						<Button
 							style={styles.button}
 							onClick={() => handleSort('distance')}
+							endIcon={
+								sortOrder.distance === 'asc' ? (
+									<ArrowUpwardIcon />
+								) : (
+									<ArrowDownwardIcon />
+								)
+							}
 						>
 							Distance
 						</Button>
