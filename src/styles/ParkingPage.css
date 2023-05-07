@@ -14,3 +14,12 @@
 .mapboxgl-control-container {
 	display: none;
 }
+
+.meter-info {
+	transition: transform 0.2s ease-in-out;
+}
+
+.meter-info:hover {
+	transform: scale(1.01);
+	cursor: pointer;
+}
