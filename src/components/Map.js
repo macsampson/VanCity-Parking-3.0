@@ -13,18 +13,6 @@ const center = {
 	lng: -123.1207,
 }
 
-// const dividerStyle = {
-//   position: 'absolute',
-
-//   width: '100%',
-//   height: '2px',
-//   top: 'calc(80%)',
-//   left: '0px',
-//   right: '0px',
-//   backgroundColor: 'black',
-//   cursor: 'ns-resize',
-// }
-
 const streetViewStyle = {
 	position: 'absolute',
 	top: '75%',
@@ -207,23 +195,23 @@ function Map(props) {
 						>
 							{/* onyl show streetview if theres a clicked marker */}
 
-							{/* <StreetViewPanorama
-                position={markers[clickedMarker]}
-                visible={true}
-                options={{
-                  zoom: 1,
-                  addressControl: false,
-                  fullscreenControl: false,
-                  motionTracking: false,
-                  linksControl: false,
-                  panControl: false,
-                  enableCloseButton: false,
-                  scrollwheel: false,
-                  showRoadLabels: false,
-                  bestGuess: true,
-                  source: window.google.maps.StreetViewSource.OUTDOOR,
-                }}
-              /> */}
+							<StreetViewPanorama
+								position={markersData[clickedMarker]}
+								visible={true}
+								options={{
+									zoom: 1,
+									addressControl: false,
+									fullscreenControl: false,
+									motionTracking: false,
+									linksControl: false,
+									panControl: false,
+									enableCloseButton: false,
+									scrollwheel: false,
+									showRoadLabels: false,
+									bestGuess: true,
+									source: window.google.maps.StreetViewSource.OUTDOOR,
+								}}
+							/>
 						</GoogleMap>
 					</div>
 				)}
