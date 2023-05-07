@@ -43,7 +43,11 @@
 
 // function to strip out all non-numeric characters from a string
 const stripNonNumeric = (string) => {
-	return parseFloat(string.replace(/[^0-9.]/g, ''))
+	let stripped = parseFloat(string.replace(/[^0-9.]/g, ''))
+	if (isNaN(stripped)) {
+		stripped = 'Unlimited'
+	}
+	return stripped
 }
 
 // functiuon to get current rate and limit
@@ -51,53 +55,45 @@ const getRateAndLimit = (meter) => {
 	const now = new Date()
 	const day = now.getDay()
 	const hour = now.getHours()
+	let rate, limit
 
-	if (day === 0) {
-		// Sunday
-		if (hour < 18) {
-			// Early
-			return {
-				rate: stripNonNumeric(meter.r_su_9a_6p),
-				limit: stripNonNumeric(meter.t_su_9a_6p),
-			}
+	if (hour >= 9 && hour < 18) {
+		// Early
+		if (day === 0) {
+			// Sunday
+			rate = stripNonNumeric(meter.r_su_9a_6p)
+			limit = stripNonNumeric(meter.t_su_9a_6p)
+		} else if (day === 6) {
+			// Saturday
+			rate = stripNonNumeric(meter.r_sa_9a_6p)
+			limit = stripNonNumeric(meter.t_sa_9a_6p)
 		} else {
-			// Late
-			return {
-				rate: stripNonNumeric(meter.r_su_6p_10),
-				limit: stripNonNumeric(meter.t_su_6p_10),
-			}
+			// Weekdays
+			rate = stripNonNumeric(meter.r_mf_9a_6p)
+			limit = stripNonNumeric(meter.t_mf_9a_6p)
 		}
-	} else if (day === 6) {
-		// Saturday
-		if (hour < 18) {
-			// Early
-			return {
-				rate: stripNonNumeric(meter.r_sa_9a_6p),
-				limit: stripNonNumeric(meter.t_sa_9a_6p),
-			}
+	} else if (hour >= 18 && hour < 22) {
+		// Late
+		if (day === 0) {
+			// Sunday
+			rate = stripNonNumeric(meter.r_su_6p_10)
+			limit = stripNonNumeric(meter.t_su_6p_10)
+		} else if (day === 6) {
+			// Saturday
+			rate = stripNonNumeric(meter.r_sa_6p_10)
+			limit = stripNonNumeric(meter.t_sa_6p_10)
 		} else {
-			// Late
-			return {
-				rate: stripNonNumeric(meter.r_sa_6p_10),
-				limit: stripNonNumeric(meter.t_sa_6p_10),
-			}
+			// Weekdays
+			rate = stripNonNumeric(meter.r_mf_6p_10)
+			limit = stripNonNumeric(meter.t_mf_6p_10)
 		}
 	} else {
-		// Weekdays
-		if (hour < 18) {
-			// Early
-			return {
-				rate: stripNonNumeric(meter.r_mf_9a_6p),
-				limit: stripNonNumeric(meter.t_mf_9a_6p),
-			}
-		} else {
-			// Late
-			return {
-				rate: stripNonNumeric(meter.r_mf_6p_10),
-				limit: stripNonNumeric(meter.t_mf_6p_10),
-			}
-		}
+		// Outside of business hours
+		rate = 0
+		limit = 24 - hour + 9
 	}
+
+	return { rate, limit }
 }
 
 export default async function fetchParkingMeters(selectedPlace) {
@@ -127,21 +123,27 @@ export default async function fetchParkingMeters(selectedPlace) {
 					lat: record.fields.geom.coordinates[1],
 					lng: record.fields.geom.coordinates[0],
 				},
-				meter_type: record.fields.meterhead,
+				// split meterhead on spaces unless its equal to 'pay station' or 'single/disabilty'
+				meter_types:
+					record.fields.meterhead === 'Pay Station'
+						? ['Pay Station']
+						: record.fields.meterhead.split(' '),
+				// meter_type: record.fields.meterhead,
 				current_rate: currentInfo.rate,
 				current_limit: currentInfo.limit,
-				weekdays_early_rate: record.fields.r_mf_9a_6p,
-				weekdays_early_limit: record.fields.t_mf_9a_6p,
-				weekdays_late_rate: record.fields.r_mf_6p_10,
-				weekdays_late_limit: record.fields.t_mf_6p_10,
-				saturdays_early_rate: record.fields.r_sa_9a_6p,
-				saturdays_early_limit: record.fields.t_sa_9a_6p,
-				saturdays_late_rate: record.fields.r_sa_6p_10,
-				saturdays_late_limit: record.fields.t_sa_6p_10,
-				sunday_early_rate: record.fields.r_su_9a_6p,
-				sunday_early_limit: record.fields.t_su_9a_6p,
-				sunday_late_rate: record.fields.r_su_6p_10,
-				sunday_late_limit: record.fields.t_su_6p_10,
+				weekdays_early_rate: stripNonNumeric(record.fields.r_mf_9a_6p),
+				weekdays_early_limit: stripNonNumeric(record.fields.t_mf_9a_6p),
+				weekdays_late_rate: stripNonNumeric(record.fields.r_mf_6p_10),
+				weekdays_late_limit: stripNonNumeric(record.fields.t_mf_6p_10),
+				saturdays_early_rate: stripNonNumeric(record.fields.r_sa_9a_6p),
+				saturdays_early_limit: stripNonNumeric(record.fields.t_sa_9a_6p),
+				saturdays_late_rate: stripNonNumeric(record.fields.r_sa_6p_10),
+				saturdays_late_limit: stripNonNumeric(record.fields.t_sa_6p_10),
+				sunday_early_rate: stripNonNumeric(record.fields.r_su_9a_6p),
+				sunday_early_limit: stripNonNumeric(record.fields.t_su_9a_6p),
+				sunday_late_rate: stripNonNumeric(record.fields.r_su_6p_10),
+				sunday_late_limit: stripNonNumeric(record.fields.t_su_6p_10),
+
 				pay_by_phone: record.fields.pay_phone,
 				credit_card: record.fields.creditcard,
 				count: 1,
