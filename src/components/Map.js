@@ -32,10 +32,11 @@ const streetViewStyle = {
 	right: '0%',
 	bottom: '0%',
 }
-
 const clickedIcon = '/images/clicked-meter.png'
+const clickedIcon2 = '/images/clicked-meter2.png'
 const parkingIcon = '/images/parking-meter.png'
 const destinationIcon = '/images/destination.png'
+const flagIcon = '/images/flag.png'
 
 function Map(props) {
 	const { isLoaded, loadError } = useLoadScript({
@@ -191,8 +192,8 @@ function Map(props) {
 									lat: markersData[key].lat,
 									lng: markersData[key].lng,
 								}}
-								icon={key === props.clickedMeter ? clickedIcon : parkingIcon}
-								onClick={() => handleMarkerClick(key)}
+								icon={key === props.clickedMeter ? clickedIcon2 : parkingIcon}
+								// onClick={() => handleMarkerClick(key)}
 							/>
 						))}
 					</GoogleMap>
