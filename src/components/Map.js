@@ -95,15 +95,15 @@ function Map(props) {
 
 	// function to zoom map and pan smoothly to marker when clicked
 	function handleMarkerClick(markerId) {
-		const bounds = new window.google.maps.LatLngBounds()
+		// const bounds = new window.google.maps.LatLngBounds()
 
 		setClickedMarker(markerId)
-		const marker = markersData[markerId]
-		const newPosition = { lat: marker.lat, lng: marker.lng }
-		bounds.extend(newPosition)
-		map.panTo(newPosition)
+		// const marker = markersData[markerId]
+		// const newPosition = { lat: marker.lat, lng: marker.lng }
+		// bounds.extend(newPosition)
+		// map.panTo(newPosition)
 
-		map.setZoom(19)
+		// map.setZoom(19)
 		// props.onMarkerClicked(marker)
 	}
 
