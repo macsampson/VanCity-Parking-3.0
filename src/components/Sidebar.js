@@ -173,7 +173,7 @@ export default function Sidebar(props) {
 			flex: '0 0 auto',
 			minWidth: '400px',
 			maxWidth: '400px',
-			background: '#e6e6e6',
+			background: 'white',
 		},
 		search: {
 			// flex: '0 0 auto',

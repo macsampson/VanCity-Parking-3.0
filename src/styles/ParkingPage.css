@@ -16,10 +16,33 @@
 }
 
 .meter-info {
-	transition: transform 0.2s ease-in-out;
+	/* your custom styles here */
 }
 
-.meter-info:hover {
-	transform: scale(1.01);
+.meter-info.hover {
+	/* apply the hover animation effect only to the elements with the hover class */
+	transition: transform 0.3s ease-in-out; /* specify the duration and easing of the transition */
 	cursor: pointer;
 }
+
+.meter-info.hover:hover {
+	/* change the transform property when the element is hovered */
+	transform: scale(1.02); /* scale up the element by 5% */
+}
+
+/* .meter-times div {
+	display: table;
+}
+.meter-times div span {
+	display: table-cell;
+}
+
+.meter-times span:first-child:after {
+
+	content: '';
+
+	bottom: 0.5em; 
+	margin-left: 0.5em; 
+	width: 100%;
+	border-bottom: 1px dashed #000;
+} */

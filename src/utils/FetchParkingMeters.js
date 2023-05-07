@@ -123,11 +123,12 @@ export default async function fetchParkingMeters(selectedPlace) {
 					lat: record.fields.geom.coordinates[1],
 					lng: record.fields.geom.coordinates[0],
 				},
-				// split meterhead on spaces unless its equal to 'pay station' or 'single/disabilty'
-				meter_types:
-					record.fields.meterhead === 'Pay Station'
-						? ['Pay Station']
-						: record.fields.meterhead.split(' '),
+				// make meterheads lowercase and split into array on space or slash, unless meterhead equal 'pay station', then make one word
+				meter_types: record.fields.meterhead
+					.toLowerCase()
+					.replace('pay station', 'paystation')
+					.replace('single / disability', 'single/disability')
+					.split(/\/| /),
 				// meter_type: record.fields.meterhead,
 				current_rate: currentInfo.rate,
 				current_limit: currentInfo.limit,

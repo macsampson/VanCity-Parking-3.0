@@ -9,8 +9,31 @@ import {
 
 const MeterInfo = ({ meter, expanded, meterClicked }) => {
 	const [isExpanded, setIsExpanded] = useState(false)
-	const [meterTypes, setMeterTypes] = useState([])
-	const [paymentTypes, setPaymentTypes] = useState([{ String: Boolean }])
+	const [meterTypes, setMeterTypes] = useState({
+		paystation: {
+			status: false,
+			icon: 'images/pay-station.png',
+			label: 'Pay Station',
+		},
+		disability: {
+			status: false,
+			icon: 'images/disability.png',
+			label: 'Disability',
+		},
+		motorcycle: {
+			status: false,
+			icon: 'images/motorcycle.png',
+			label: 'Motorcycle',
+		},
+		ev: { status: false, icon: 'images/ev.png', label: 'EV' },
+		single: { status: false, icon: 'images/single.png', label: 'Single' },
+		twin: { status: false, icon: 'images/twin.png', label: 'Twin' },
+		bay: { status: false, icon: 'images/bay.png', label: 'Bay' },
+	})
+	const [paymentTypes, setPaymentTypes] = useState({
+		creditCard: { status: false, icon: faCreditCard, label: 'Credit Card' },
+		payByPhone: { status: false, icon: faMobileAlt, label: 'Pay By Phone' },
+	})
 	const [duration, setDuration] = useState(null)
 
 	// state to hold meter address
@@ -35,16 +58,29 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 
 	// set meter type state object
 	useEffect(() => {
-		const meterTypes = []
-		meter.meter_types.forEach((type) => {
-			meterTypes.push(type)
-		})
-		setMeterTypes(meterTypes)
+		// iterate through meter.meter_types and set meterType state status to true if meter has that type
+		let tempTypes = { ...meterTypes }
+		for (const [key, type] of Object.entries(meter.meter_types)) {
+			// console.log(type, tempTypes[type])
+			tempTypes[type] = {
+				...tempTypes[type],
+				status: true,
+			}
+		}
+		setMeterTypes(tempTypes)
 
-		const paymentTypes = []
-		paymentTypes.push({ creditCard: meter.credit_card === 'Yes' })
-		paymentTypes.push({ payByPhone: meter.pay_by_phone !== null })
-		setPaymentTypes(paymentTypes)
+		setPaymentTypes({
+			...paymentTypes,
+			creditCard: {
+				...paymentTypes.creditCard,
+				status: meter.credit_card === 'Yes',
+			},
+			payByPhone: {
+				...paymentTypes.payByPhone,
+				status: meter.pay_by_phone !== null,
+			},
+		})
+
 		setDuration(Math.floor(meter.duration / 60))
 	}, [meter])
 
@@ -75,29 +111,26 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 	const styles = {
 		container: {
 			display: 'block',
-			// flexDirection: 'column',
-			// alignItems: 'flex-start',
-			backgroundColor: '#F9F9F9',
-			// padding: '16px',
+			backgroundColor: 'white',
 			borderRadius: '8px',
 			boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
 			width: '100%',
 			marginBottom: '8px',
-			// marginTop: '15px',
-
-			// transition: 'transform 0.5s ease-in-out',
-			// ':hover': {
-			// 	transform: 'scale(1.01)',
-			// 	cursor: 'pointer',
-			// },
+			position: 'relative',
 		},
 		row: {
 			display: 'flex',
 			justifyContent: 'space-between',
-			alignItems: 'center',
+			width: '100%',
+			padding: '8px 0px',
+		},
+		basic: {
+			display: 'flex',
+			justifyContent: 'space-between',
+			// alignItems: 'center',
 			width: '100%',
 			// marginBottom: '8px',
-			padding: '8px',
+			padding: '15px 0px 15px 0px',
 		},
 		info: {
 			display: 'flex',
@@ -112,9 +145,20 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 		label: {
 			fontSize: '1.2rem',
 			fontWeight: 'bold',
-			marginRight: '8px',
+			marginRight: '0px 0px 0px 8px',
 		},
-		value: {
+
+		icons: {
+			fontSize: '1rem',
+			// color: 'black',
+			display: 'block',
+			alignItems: 'center',
+			display: 'flex',
+			justifyContent: 'space-between',
+			flexDirection: 'row',
+			padding: '10px 0px 0px 0px',
+		},
+		minutes: {
 			fontSize: '1rem',
 			color: '#333',
 			display: 'block',
@@ -134,7 +178,13 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 		},
 		icon: {
 			fontSize: '1.5rem',
-			// marginLeft: '8px',
+			alignItems: 'center',
+		},
+		iconLabel: {
+			display: 'flex',
+			fontSize: '1em',
+			color: 'gray',
+			position: 'relative',
 		},
 		expandButton: {
 			border: 'none',
@@ -157,12 +207,51 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 		set expandContent(value) {
 			this._expandContent = value
 		},
+		days: {
+			display: 'inline-block',
+			position: 'relative',
+			clip: 'auto',
+			overflow: 'hidden',
+			zoom: '1',
+		},
+		timeFrame: {
+			display: 'flex',
+			justifyContent: 'space-between',
+			width: '100%',
+			// padding: '8px 0px',
+			position: 'relative',
+			textAlign: 'right',
+			whiteSpace: 'nowrap',
+		},
 		subLabel: {
+			display: 'flex',
+			fontSize: '1em',
+			color: 'gray',
+			float: 'left',
+			position: 'relative',
+			backgroundColor: 'white',
+			padding: '10px 0px',
+		},
+		value: {
+			fontSize: '1rem',
+			color: '#333',
+			position: 'relative',
+			backgroundColor: 'white',
+		},
+		times: {
 			display: 'block',
 			fontSize: '1em',
-			// marginLeft: '8px',
 			color: 'gray',
+			width: '100%',
 		},
+		filler: {
+			position: 'absolute',
+			left: '0',
+			right: '0',
+			borderBottom: '1px dashed lightgray',
+			height: '50%',
+		},
+
 		titleBar: {
 			display: 'flex',
 			justifyContent: 'space-between',
@@ -176,14 +265,18 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 		rateLimit: {
 			flex: '1',
 			textAlign: 'center',
+			margin: 'auto',
 		},
 		distance: {
 			flex: '1',
 			textAlign: 'center',
 		},
-		paymentType: {
+		iconContainer: {
 			textAlign: 'center',
-			// flex: '1',
+			display: 'flex',
+			flexDirection: 'column',
+			flex: '1',
+			alignItems: 'center',
 		},
 		spots: {
 			flex: '1',
@@ -196,43 +289,52 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 
 	// get icons for payment types
 	const getPaymentIcons = () => {
-		const icons = []
-		paymentTypes.forEach((type) => {
-			if (type.creditCard) {
-				icons.push(
+		const payments = []
+		// iterate through paymentTypes state object and add icons for each payment type
+		for (const [key, value] of Object.entries(paymentTypes)) {
+			// console.log(paymentTypes[key])
+			if (value.status) {
+				payments.push(
 					<div
 						className="paymentType"
-						style={styles.paymentType}
-						key={meter.meterid + 'creditCard'}
+						style={styles.iconContainer}
+						key={meter.meterid + key}
 					>
-						<FontAwesomeIcon
-							icon={faCreditCard}
-							style={styles.icon}
-							// make key value 'creditCard' appended to meterid to avoid duplicate keys
-						/>
-						<span style={styles.subLabel}>Credit Card</span>
+						<FontAwesomeIcon icon={value.icon} style={styles.icon} />
+						<span style={styles.iconLabel}>{value.label}</span>
 					</div>
 				)
 			}
-			if (type.payByPhone) {
-				icons.push(
+		}
+		return payments
+	}
+
+	// get meter types and icons
+	const getMeterTypes = () => {
+		const types = []
+		// iterate through paymentTypes state object and if status is true, add associated icon image with size 32px x 32px
+		for (const [key, value] of Object.entries(meterTypes)) {
+			if (value.status) {
+				// console.log(value)
+				types.push(
 					<div
-						className="paymentType"
-						style={styles.paymentType}
-						key={meter.meterid + 'payByPhone'}
+						className="meterType"
+						style={styles.iconContainer}
+						key={meter.meterid + key}
 					>
-						<FontAwesomeIcon icon={faMobileAlt} style={styles.icon} />
-						<span style={styles.subLabel}>Phone</span>
+						<img src={value.icon} style={styles.icon} alt={value.label} />
+						<span style={styles.iconLabel}>{value.label}</span>
 					</div>
 				)
 			}
-		})
-		return icons
+		}
+
+		return types
 	}
 
 	return (
 		<div
-			className="meter-info"
+			className={`meter-info ${isExpanded ? '' : 'hover'}`}
 			id={meter.meterid}
 			style={styles.container}
 			ref={containerRef}
@@ -245,7 +347,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 					{meter.count > 1 ? ' spots' : ' spot'}
 				</div>
 			</div>
-			<div style={styles.row}>
+			<div style={styles.basic}>
 				<div className="rate-limit" style={styles.rateLimit}>
 					<span style={styles.rate}>${meter.current_rate}/hr</span>
 					<span style={styles.limit}>{meter.current_limit} hours</span>
@@ -253,7 +355,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 
 				<div className="distance" style={styles.distance}>
 					<FontAwesomeIcon icon={faPersonWalking} size="2xl" />
-					<span style={styles.value}>{duration} min</span>
+					<span style={styles.minutes}>{duration} min</span>
 					<span>to destination</span>
 				</div>
 			</div>
@@ -261,24 +363,39 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			{isExpanded && (
 				<div>
 					<div style={styles.info}>
-						<div style={styles.label}>Meter Type:</div>
-						<div style={styles.subLabel}>{meterTypes.join(', ')}</div>
+						<div style={styles.label}>Meter Types</div>
+						<div style={styles.icons}>{getMeterTypes()}</div>
 					</div>
 					{daysOfWeek.map((day) => (
 						<div style={styles.info} key={day.label}>
 							<div style={styles.label}>{day.label}</div>
-							<div style={styles.value}>
-								<div style={styles.row}>
-									<div style={styles.subLabel}>9am-6pm rate:</div>
-									<div style={styles.value}>${meter[day.earlyRate]}</div>
-									<div style={styles.subLabel}>9am-6pm limit:</div>
-									<div style={styles.value}>{meter[day.earlyLimit]} hours</div>
+							<div style={styles.days}>
+								<div className="meter-times" style={styles.timeFrame}>
+									<div style={styles.filler} />
+									<span style={styles.subLabel}>
+										9am - 6pm (
+										{meter[day.earlyLimit] != 'Unlimited'
+											? meter[day.earlyLimit]
+											: 'No'}{' '}
+										hour limit )
+									</span>
+									<span style={styles.value}>${meter[day.earlyRate]}/hr</span>
 								</div>
-								<div style={styles.row}>
-									<div style={styles.subLabel}>6pm-10pm rate:</div>
-									<div style={styles.value}>${meter[day.lateRate]}</div>
-									<div style={styles.subLabel}>6pm-10pm limit:</div>
-									<div style={styles.value}>{meter[day.lateLimit]} hours</div>
+								<div className="meterTimes" style={styles.timeFrame}>
+									<span style={styles.filler} />
+									<span style={styles.subLabel}>
+										6pm - 10pm (
+										{meter[day.lateLimit] != 'Unlimited'
+											? meter[day.lateLimit]
+											: 'No'}{' '}
+										hour limit )
+									</span>
+									<span style={styles.value}>${meter[day.lateRate]}/hr</span>
+								</div>
+								<div className="meterTimes" style={styles.timeFrame}>
+									<span style={styles.filler} />
+									<span style={styles.subLabel}>10pm - 9am</span>
+									<span style={styles.value}>Free</span>
 								</div>
 							</div>
 						</div>
@@ -286,7 +403,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 
 					<div style={styles.info}>
 						<div style={styles.label}>Payment Types</div>
-						<div style={styles.value}>{getPaymentIcons()}</div>
+						<div style={styles.icons}>{getPaymentIcons()}</div>
 					</div>
 				</div>
 			)}
