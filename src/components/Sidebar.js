@@ -7,26 +7,24 @@ import { Button, ButtonGroup } from '@mui/material'
 import { render } from 'react-dom'
 
 export default function Sidebar(props) {
-	//   const [meterType, setMeterType] = useState('Any')
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [markers, setMarkers] = useState({})
 	const [rawMeterInfo, setRawMeterInfo] = useState([])
 	const [currentMeterId, setCurrentMeterId] = useState(null)
 	const [currentMeters, setCurrentMeters] = useState([])
-	// const [isLoading, setIsLoading] = useState(true)
-	// reference to meter info to scroll to
-	const meterInfoRef = useRef(null)
+	const [currentMeterComps, setCurrentMeterComps] = useState([])
+
+	const meterInfoRef = useRef(null) // reference to meter info card to scroll to
 
 	// function to handle meter click
 	const handleMeterClick = (meter) => {
-		// console.log("meter clicked", meter);
+		// console.log('meter clicked', meter)
 		props.clickedMeter(meter[0])
 		setCurrentMeterId(meter[0])
 	}
 
 	// function to handle sorting of meters
 	const handleSort = (sortType) => {
-		console.log(sortType)
 		const sortedCurrentMeters = [...currentMeters]
 		if (sortType === 'distance') {
 			sortedCurrentMeters.sort((a, b) => {
@@ -37,27 +35,31 @@ export default function Sidebar(props) {
 				return a.current_rate - b.current_rate
 			})
 		}
+		setCurrentMeterId(null)
+		props.clickedMeter(null)
 		setCurrentMeters(sortedCurrentMeters)
+		// get reference to the sidebar and scroll to top
+		const sidebar = document.getElementById('meter-container')
+		sidebar.scrollTop = 0
 	}
 
 	// function to render meter info
-	const renderMeterInfo = () => {
+	useEffect(() => {
+		console.log('rendering meter info', currentMeterId)
 		if (currentMeters) {
-			return currentMeters.map((meter) => {
+			const newCurrentMeterComps = currentMeters.map((meter) => {
 				return (
 					<MeterInfo
 						key={meter.meterid}
 						meter={meter}
-						expanded={
-							// check if meter.id exists in currentmeterid array
-							currentMeterId && currentMeterId === meter.meterid
-						}
+						expanded={meter.meterid == currentMeterId}
 						meterClicked={handleMeterClick}
 					/>
 				)
 			})
+			setCurrentMeterComps(newCurrentMeterComps)
 		}
-	}
+	}, [currentMeters, currentMeterId])
 
 	useEffect(() => {
 		if (rawMeterInfo) {
@@ -120,7 +122,7 @@ export default function Sidebar(props) {
 					console.error(error)
 				} finally {
 					// setIsLoading(false)
-					console.log('finally returned')
+					// console.log('finally returned')
 				}
 			}
 			fetchMeterInfo()
@@ -128,42 +130,29 @@ export default function Sidebar(props) {
 	}, [selectedPlace])
 
 	// call findmeterinfo when marker is clicked
-	useEffect(() => {
-		// console.log('clicked')
-		if (props.clickedMarker) {
-			//   console.log('clicked', props.clickedMarker)
-			setCurrentMeterId(props.clickedMarker.key)
-			// expandMeterInfo(props.clickedMarker.key)
-		}
-	}, [props.clickedMarker])
+	// useEffect(() => {
+	// 	// console.log('clicked')
+	// 	if (props.clickedMarker) {
+	// 		//   console.log('clicked', props.clickedMarker)
+	// 		setCurrentMeterId(props.clickedMarker.key)
+	// 		// expandMeterInfo(props.clickedMarker.key)
+	// 	}
+	// }, [props.clickedMarker])
 
 	// useffect to update currentmeters when rawmeterinfo changes
 	useEffect(() => {
 		// console.log(rawMeterInfo);
-
 		if (currentMeterId) {
-			//   console.log('current meter id', currentMeterId)
 			meterInfoRef.current = document.getElementById(currentMeterId)
 			setTimeout(() => {
 				meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })
-			}, 50)
+			}, 100)
 		}
 	}, [currentMeterId])
 
-	// useffect to scroll to meter when meterinfo ref changes
-	// useEffect(() => {
-	// 	if (meterInfoRef.current) {
-	// 		setTimeout(() => {
-	// 			meterInfoRef.current.scrollIntoView({ behavior: 'smooth' })
-	// 		}, 50)
-	// 		// expand the meter info when it is scrolled to
-	// 		console.log(meterInfoRef.current)
-	// 	}
-	// }, [meterInfoRef.current])
-
 	const styles = {
 		container: {
-			height: '92vh',
+			height: '87vh',
 			flex: '0 0 auto',
 			minWidth: '400px',
 			maxWidth: '400px',
@@ -197,8 +186,13 @@ export default function Sidebar(props) {
 		},
 		sortText: {
 			alignSelf: 'center',
-			marginRight: '10px',
 			flex: '1 1 auto',
+			fontSize: '1.2rem',
+			marginBottom: '0px',
+		},
+		button: {
+			flex: '1',
+			backgroundColor: 'rgb(81, 209, 251)',
 		},
 	}
 
@@ -210,9 +204,19 @@ export default function Sidebar(props) {
 					<ButtonGroup
 						variant="contained"
 						aria-label="contained primary button group"
+						style={{
+							width: '300px',
+						}}
 					>
-						<Button onClick={() => handleSort('rate')}>Rate</Button>
-						<Button onClick={() => handleSort('distance')}>Distance</Button>
+						<Button style={styles.button} onClick={() => handleSort('rate')}>
+							Rate
+						</Button>
+						<Button
+							style={styles.button}
+							onClick={() => handleSort('distance')}
+						>
+							Distance
+						</Button>
 					</ButtonGroup>
 				</div>
 			</div>
@@ -225,13 +229,14 @@ export default function Sidebar(props) {
 				}}
 			>
 				<Box
+					id="meter-container"
 					style={{
 						flex: '0 0 100%',
 						overflow: 'scroll',
 						padding: '10px',
 					}}
 				>
-					{renderMeterInfo()}
+					{currentMeterComps}
 				</Box>
 			</div>
 		</div>
