@@ -90,7 +90,8 @@ const getRateAndLimit = (meter) => {
 	} else {
 		// Outside of business hours
 		rate = 0
-		limit = 24 - hour + 9
+		// get the number of hours until 9am the next day
+		limit = (24 + 9 - hour) % 24
 	}
 
 	return { rate, limit }
