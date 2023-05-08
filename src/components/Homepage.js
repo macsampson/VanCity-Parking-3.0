@@ -54,7 +54,8 @@ function Homepage() {
 					height: '100vh',
 				}}
 			>
-				<h1 style={styles.title}>ParkSmart </h1>
+				<img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="logo" />
+				<h1 style={styles.title}>ParkSmart</h1>
 				<p style={styles.subtitle}>Find parking in Vancouver</p>
 				<div
 					style={{

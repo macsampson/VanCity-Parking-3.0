@@ -84,9 +84,10 @@ export default function ParkingPage() {
 				style={{ backgroundColor: 'rgb(81, 209, 251)', zIndex: '1' }}
 			>
 				<Toolbar style={{ display: 'flex', justifyContent: 'left' }}>
-					<h1 style={{ color: 'white', cursor: 'pointer' }} onClick={goHome}>
-						ParkSmart
-					</h1>
+					<span style={{ cursor: 'pointer' }} onClick={goHome}>
+						{/* <img src="/images/logo.png" alt="logo" width="50px" /> */}
+						<h1 style={{ color: 'white' }}>ParkSmart</h1>
+					</span>
 				</Toolbar>
 			</AppBar>
 			<div style={{ display: 'flex', flexDirection: 'row' }}>
