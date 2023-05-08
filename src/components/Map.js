@@ -21,7 +21,7 @@ const streetViewStyle = {
 	bottom: '0%',
 }
 const clickedIcon = '/images/clicked-meter.png'
-const clickedIcon2 = '/images/clicked-meter2.png'
+const clickedIcon2 = '/images/selected-meter.png'
 const parkingIcon = '/images/parking-meter.png'
 const destinationIcon = '/images/destination.png'
 const flagIcon = '/images/flag.png'
