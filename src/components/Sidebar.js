@@ -15,7 +15,10 @@ export default function Sidebar(props) {
 	const [currentMeterId, setCurrentMeterId] = useState(null)
 	const [currentMeters, setCurrentMeters] = useState([])
 	const [currentMeterComps, setCurrentMeterComps] = useState([])
-	const [sortOrder, setSortOrder] = useState({ rate: 'asc', distance: 'asc' })
+	const [sortOrder, setSortOrder] = useState({
+		rate: 'asc',
+		distance: 'asc',
+	})
 
 	const meterInfoRef = useRef(null) // reference to meter info card to scroll to
 
@@ -60,6 +63,14 @@ export default function Sidebar(props) {
 			[sortType]: prev[sortType] === 'asc' ? 'desc' : 'asc',
 		}))
 	}
+
+	// call findmeterinfo when marker is clicked
+	useEffect(() => {
+		if (props.clickedMarker) {
+			setCurrentMeterId(props.clickedMarker)
+			props.clickedMeter(props.clickedMarker)
+		}
+	}, [props.clickedMarker])
 
 	// function to render meter info
 	useEffect(() => {
@@ -146,16 +157,6 @@ export default function Sidebar(props) {
 			fetchMeterInfo()
 		}
 	}, [selectedPlace])
-
-	// call findmeterinfo when marker is clicked
-	// useEffect(() => {
-	// 	// console.log('clicked')
-	// 	if (props.clickedMarker) {
-	// 		//   console.log('clicked', props.clickedMarker)
-	// 		setCurrentMeterId(props.clickedMarker.key)
-	// 		// expandMeterInfo(props.clickedMarker.key)
-	// 	}
-	// }, [props.clickedMarker])
 
 	// useffect to update currentmeters when rawmeterinfo changes
 	useEffect(() => {

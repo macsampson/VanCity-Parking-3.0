@@ -239,11 +239,17 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			float: 'left',
 			position: 'relative',
 			backgroundColor: 'white',
-			padding: '0px 0px 10px 5px',
+			padding: '0px 0px 10px 0px',
 		},
 		value: {
 			fontSize: '1rem',
 			color: '#333',
+			position: 'relative',
+			backgroundColor: 'white',
+		},
+		free: {
+			fontSize: '1rem',
+			color: 'green',
 			position: 'relative',
 			backgroundColor: 'white',
 		},
@@ -352,7 +358,9 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			</div>
 			<div style={styles.basic}>
 				<div className="rate-limit" style={styles.rateLimit}>
-					<span style={styles.rate}>${meter.current_rate}/hr</span>
+					<span style={styles.rate}>
+						{meter.current_rate ? '$' + meter.current_rate + '/hr' : 'Free'}
+					</span>
 					<span style={styles.limit}>{meter.current_limit} hours</span>
 				</div>
 
@@ -408,7 +416,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 								<div className="meterTimes" style={styles.timeFrame}>
 									<span style={styles.filler} />
 									<span style={styles.times}>10pm - 9am</span>
-									<span style={styles.value}>Free</span>
+									<span style={styles.free}>Free</span>
 								</div>
 							</div>
 						</div>
