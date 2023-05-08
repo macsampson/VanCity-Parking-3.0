@@ -30,12 +30,12 @@ function Homepage() {
 		title: {
 			color: 'white',
 			fontSize: '5rem',
-			fontFamily: 'Roboto',
+			fontFamily: 'Nunito',
 		},
 		subtitle: {
 			color: 'white',
 			fontSize: '1.5rem',
-			fontFamily: 'Roboto',
+			fontFamily: 'Nunito',
 		},
 	}
 

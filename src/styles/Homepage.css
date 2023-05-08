@@ -1,7 +1,8 @@
 .pac-container {
 	z-index: 1;
 	border-radius: 15px;
-	font-family: 'Roboto', sans-serif;
+	/* font-family: 'Roboto', sans-serif; */
+	font-family: 'Nunito', sans-serif;
 	width: 50vw;
 	box-shadow: 0px 15px 15px 0px rgba(0, 0, 0, 0.3);
 }
