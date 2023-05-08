@@ -24,6 +24,7 @@ potential/
 .env.test.local
 .env.production.local
 .swp
+.kra
 package-lock.json
 
 npm-debug.log*

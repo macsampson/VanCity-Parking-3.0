@@ -310,7 +310,14 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 						key={meter.meter_id + key}
 					>
 						<FontAwesomeIcon icon={value.icon} style={styles.icon} />
-						<span style={styles.iconLabel}>{value.label}</span>
+
+						{key === 'payByPhone' ? (
+							<span style={styles.iconLabel}>
+								{value.label}: {meter.pay_by_phone}
+							</span>
+						) : (
+							<span style={styles.iconLabel}>{value.label}</span>
+						)}
 					</div>
 				)
 			}
@@ -358,9 +365,11 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			</div>
 			<div style={styles.basic}>
 				<div className="rate-limit" style={styles.rateLimit}>
-					<span style={styles.rate}>
-						{meter.current_rate ? '$' + meter.current_rate + '/hr' : 'Free'}
-					</span>
+					{meter.current_rate ? (
+						<span style={styles.rate}>{'$' + meter.current_rate + '/hr'}</span>
+					) : (
+						<span style={{ ...styles.rate, color: 'green' }}>Free</span>
+					)}
 					<span style={styles.limit}>{meter.current_limit} hours</span>
 				</div>
 
