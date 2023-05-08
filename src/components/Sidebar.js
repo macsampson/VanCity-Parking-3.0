@@ -68,9 +68,9 @@ export default function Sidebar(props) {
 			const newCurrentMeterComps = currentMeters.map((meter) => {
 				return (
 					<MeterInfo
-						key={meter.meterid}
+						key={meter.meter_id}
 						meter={meter}
-						expanded={meter.meterid == currentMeterId}
+						expanded={meter.meter_id == currentMeterId}
 						meterClicked={handleMeterClick}
 					/>
 				)
@@ -129,7 +129,7 @@ export default function Sidebar(props) {
 					const newMarkers = {}
 					for (const key in dataWithDirections) {
 						const meter = dataWithDirections[key]
-						newMarkers[meter.meterid] = {
+						newMarkers[meter.meter_id] = {
 							lng: meter.location.lng,
 							lat: meter.location.lat,
 						}

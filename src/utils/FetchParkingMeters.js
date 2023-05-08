@@ -118,7 +118,7 @@ export default async function fetchParkingMeters(selectedPlace) {
 			const currentInfo = getRateAndLimit(record.fields)
 
 			newMeterInfo[record.fields.geom.coordinates] = {
-				meterid: [record.fields.meterid],
+				meter_id: [record.fields.meterid],
 				location: {
 					lat: record.fields.geom.coordinates[1],
 					lng: record.fields.geom.coordinates[0],

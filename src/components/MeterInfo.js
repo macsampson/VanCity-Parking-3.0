@@ -48,7 +48,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 	// handleclick function that calls toggleExpand and passes meter id to parent
 	const handleClick = () => {
 		// toggleExpand()
-		meterClicked(meter.meterid)
+		meterClicked(meter.meter_id)
 	}
 
 	// toggle expanded meterInfo when expanded prop changes
@@ -175,7 +175,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 		},
 		limit: {
 			fontSize: '1rem',
-			color: '#555',
+			color: 'orange',
 			display: 'block',
 			alignItems: 'center',
 		},
@@ -232,26 +232,20 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			textAlign: 'right',
 			whiteSpace: 'nowrap',
 		},
-		subLabel: {
+		times: {
 			display: 'flex',
 			fontSize: '1em',
 			color: 'gray',
 			float: 'left',
 			position: 'relative',
 			backgroundColor: 'white',
-			padding: '0px 0px 10px 0px',
+			padding: '0px 0px 10px 5px',
 		},
 		value: {
 			fontSize: '1rem',
 			color: '#333',
 			position: 'relative',
 			backgroundColor: 'white',
-		},
-		times: {
-			display: 'block',
-			fontSize: '1em',
-			color: 'gray',
-			width: '100%',
 		},
 		filler: {
 			position: 'absolute',
@@ -307,7 +301,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 					<div
 						className="paymentType"
 						style={styles.iconContainer}
-						key={meter.meterid + key}
+						key={meter.meter_id + key}
 					>
 						<FontAwesomeIcon icon={value.icon} style={styles.icon} />
 						<span style={styles.iconLabel}>{value.label}</span>
@@ -329,7 +323,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 					<div
 						className="meterType"
 						style={styles.iconContainer}
-						key={meter.meterid + key}
+						key={meter.meter_id + key}
 					>
 						<img src={value.icon} style={styles.icon} alt={value.label} />
 						<span style={styles.iconLabel}>{value.label}</span>
@@ -344,7 +338,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 	return (
 		<div
 			className={`meter-info ${isExpanded ? '' : 'hover'}`}
-			id={meter.meterid}
+			id={meter.meter_id}
 			style={styles.container}
 			ref={containerRef}
 			onClick={handleClick}
@@ -381,29 +375,39 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 							<div style={styles.days}>
 								<div className="meter-times" style={styles.timeFrame}>
 									<div style={styles.filler} />
-									<span style={styles.subLabel}>
-										9am - 6pm (
-										{meter[day.earlyLimit] != 'Unlimited'
-											? meter[day.earlyLimit]
-											: 'No'}{' '}
-										hour limit )
+									<span style={styles.times}>
+										9am - 6pm&nbsp;
+										<span style={styles.limit}>
+											(
+											{meter[day.earlyLimit] != 'Unlimited'
+												? meter[day.earlyLimit]
+												: 'No'}{' '}
+											hour limit)
+										</span>
 									</span>
-									<span style={styles.value}>${meter[day.earlyRate]}/hr</span>
+									<span style={styles.value}>
+										${meter[day.earlyRate]} per hour
+									</span>
 								</div>
 								<div className="meterTimes" style={styles.timeFrame}>
 									<span style={styles.filler} />
-									<span style={styles.subLabel}>
-										6pm - 10pm (
-										{meter[day.lateLimit] != 'Unlimited'
-											? meter[day.lateLimit]
-											: 'No'}{' '}
-										hour limit )
+									<span style={styles.times}>
+										6pm - 10pm&nbsp;
+										<span style={styles.limit}>
+											(
+											{meter[day.lateLimit] != 'Unlimited'
+												? meter[day.lateLimit]
+												: 'No'}{' '}
+											hour limit)
+										</span>
 									</span>
-									<span style={styles.value}>${meter[day.lateRate]}/hr</span>
+									<span style={styles.value}>
+										${meter[day.lateRate]} per hour
+									</span>
 								</div>
 								<div className="meterTimes" style={styles.timeFrame}>
 									<span style={styles.filler} />
-									<span style={styles.subLabel}>10pm - 9am</span>
+									<span style={styles.times}>10pm - 9am</span>
 									<span style={styles.value}>Free</span>
 								</div>
 							</div>
