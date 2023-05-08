@@ -359,7 +359,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			<div style={styles.titleBar}>
 				{/* <div style={styles.address}>{meterAddress}</div> */}
 				<div style={styles.spots}>
-					{meter.count}
+					{meter.meter_types.includes('twin') ? meter.count * 2 : meter.count}
 					{meter.count > 1 ? ' spots' : ' spot'}
 				</div>
 			</div>

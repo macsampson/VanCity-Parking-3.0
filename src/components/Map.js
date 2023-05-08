@@ -198,14 +198,14 @@ function Map(props) {
 								position={markersData[clickedMarker]}
 								visible={true}
 								options={{
-									zoom: 1,
+									zoom: 0,
 									addressControl: false,
 									fullscreenControl: false,
 									motionTracking: false,
 									linksControl: false,
 									panControl: false,
 									enableCloseButton: false,
-									scrollwheel: false,
+									scrollwheel: true,
 									showRoadLabels: false,
 									bestGuess: true,
 									source: window.google.maps.StreetViewSource.OUTDOOR,
