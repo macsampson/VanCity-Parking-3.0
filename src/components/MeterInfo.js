@@ -139,6 +139,15 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			// alignItems: 'center',
 			width: '100%',
 			// marginBottom: '8px',
+			padding: '15px',
+		},
+		subInfo: {
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'space-between',
+			// alignItems: 'center',
+			width: '100%',
+			// marginBottom: '8px',
 			padding: '8px',
 		},
 
@@ -230,7 +239,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			float: 'left',
 			position: 'relative',
 			backgroundColor: 'white',
-			padding: '10px 0px',
+			padding: '0px 0px 10px 0px',
 		},
 		value: {
 			fontSize: '1rem',
@@ -361,13 +370,13 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 			</div>
 
 			{isExpanded && (
-				<div>
-					<div style={styles.info}>
+				<div style={styles.info}>
+					<div style={styles.subInfo}>
 						<div style={styles.label}>Meter Types</div>
 						<div style={styles.icons}>{getMeterTypes()}</div>
 					</div>
 					{daysOfWeek.map((day) => (
-						<div style={styles.info} key={day.label}>
+						<div style={styles.subInfo} key={day.label}>
 							<div style={styles.label}>{day.label}</div>
 							<div style={styles.days}>
 								<div className="meter-times" style={styles.timeFrame}>
@@ -401,7 +410,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 						</div>
 					))}
 
-					<div style={styles.info}>
+					<div style={styles.subInfo}>
 						<div style={styles.label}>Payment Types</div>
 						<div style={styles.icons}>{getPaymentIcons()}</div>
 					</div>

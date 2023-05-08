@@ -36,6 +36,7 @@ function Homepage() {
 			color: 'white',
 			fontSize: '1.5rem',
 			fontFamily: 'Nunito',
+			paddingBottom: '2rem',
 		},
 	}
 
