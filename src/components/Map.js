@@ -70,9 +70,8 @@ function Map(props) {
 	useEffect(() => {
 		// console.log('meter changed', props.clickedMeter)
 		// console.log('markers', markers)
-		if (props.clickedMeter) {
-			handleMarkerClick(props.clickedMeter)
-		}
+
+		handleMarkerClick(props.clickedMeter)
 	}, [props.clickedMeter])
 
 	// update markers when props change
@@ -93,7 +92,7 @@ function Map(props) {
 		// map.panTo(newPosition)
 
 		// map.setZoom(19)
-		// props.onMarkerClicked(marker)
+		props.onMarkerClicked(markerId)
 	}
 
 	// function to get correct icon image depending if marker is clicked or not
@@ -181,7 +180,7 @@ function Map(props) {
 									lng: markersData[key].lng,
 								}}
 								icon={key === props.clickedMeter ? clickedIcon2 : parkingIcon}
-								// onClick={() => handleMarkerClick(key)}
+								onClick={() => handleMarkerClick(key)}
 							/>
 						))}
 					</GoogleMap>

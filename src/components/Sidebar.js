@@ -49,6 +49,7 @@ export default function Sidebar(props) {
 		}
 		setCurrentMeterId(null)
 		props.clickedMeter(null)
+		// props.clickedMarker(null)
 		setCurrentMeters(sortedCurrentMeters)
 		// get reference to the sidebar and scroll to top
 		const sidebar = document.getElementById('meter-container')
@@ -203,9 +204,8 @@ export default function Sidebar(props) {
 		},
 		sortText: {
 			alignSelf: 'center',
-			flex: '1 1 auto',
+			flex: '0',
 			fontSize: '1.2rem',
-			marginBottom: '0px',
 			color: 'gray',
 		},
 		button: {
