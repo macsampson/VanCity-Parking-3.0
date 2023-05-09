@@ -9,6 +9,8 @@ import '../styles/ParkingPage.css'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import { useNavigate } from 'react-router-dom'
+import Button from '@mui/material/Button'
+import ButtonGroup from '@mui/material/ButtonGroup'
 
 const dotenv = require('dotenv')
 dotenv.config()
@@ -23,14 +25,26 @@ export default function ParkingPage() {
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [meter, setMeter] = useState(null)
 
+	const [listOrMap, setListOrMap] = useState('map-views')
+
 	const location = useLocation()
 	const { state } = location
 
 	const navigate = useNavigate()
+	const goHome = () => {
+		navigate('/')
+	}
 
 	useEffect(() => {
 		registerServiceWorker()
 	}, [])
+
+	// use effect to set selected place when it changes
+	useEffect(() => {
+		if (state) {
+			setSelectedPlace(state)
+		}
+	}, [state])
 
 	// handle when a marker is clicked on the map
 	const handleMarkerClick = (marker) => {
@@ -41,6 +55,13 @@ export default function ParkingPage() {
 	const handleMeterClick = (meter) => {
 		// console.log("meter clicked", meter);
 		setMeter(meter)
+	}
+	const handleListButtonClick = () => {
+		setListOrMap('list')
+	}
+
+	const handleMapButtonClick = () => {
+		setListOrMap('map-views')
 	}
 
 	// handle selected place from searchbar
@@ -55,58 +76,62 @@ export default function ParkingPage() {
 		}
 	}
 
-	const goHome = () => {
-		navigate('/')
-	}
-
-	// use effect to set selected place when it changes
-	useEffect(() => {
-		if (state) {
-			setSelectedPlace(state)
-		}
-	}, [state])
-
-	const styles = {
-		search: {
-			// flex: '0 0 auto',
-			padding: '10px',
-			zIndex: 1,
-			position: 'absolute',
-			right: '0px',
-			width: '50vw',
-		},
-	}
-
 	return (
 		<LoadScript googleMapsApiKey={key} libraries={libraries}>
 			<AppBar
-				position="static"
-				style={{ backgroundColor: 'rgb(81, 209, 251)', zIndex: '1' }}
+				className="app-bar"
+				position="fixed"
+				style={{
+					backgroundColor: 'rgb(81, 209, 251)',
+					zIndex: '1',
+				}}
 			>
-				<Toolbar style={{ display: 'flex', justifyContent: 'left' }}>
+				<Toolbar
+					style={{
+						display: 'flex',
+						justifyContent: 'left',
+					}}
+				>
 					<span style={{ cursor: 'pointer' }} onClick={goHome}>
 						{/* <img src="/images/logo.png" alt="logo" width="50px" /> */}
 						<h1 style={{ color: 'white' }}>ParkSmart</h1>
 					</span>
 				</Toolbar>
 			</AppBar>
-			<div style={{ display: 'flex', flexDirection: 'row' }}>
-				{/* <SearchBar onSelectedPlace={setSelectedPlace} /> */}{' '}
-				<div className="searchbar-container" style={styles.search}>
-					<Searchbar onSelectPlace={handleSelectedPlace} />
-				</div>
+
+			<div className="body-container">
+				<Searchbar
+					className={
+						listOrMap === 'map-views'
+							? 'searchbar-container'
+							: 'searchbar-container-hidden'
+					}
+					onSelectPlace={handleSelectedPlace}
+				/>
 				<Sidebar
+					className={listOrMap === 'list' ? 'sidebar' : 'sidebar-hidden'}
 					onMarkersChange={setMarkers}
 					clickedMarker={clickedMarker}
 					clickedMeter={handleMeterClick}
 					selectedPlace={selectedPlace}
 				></Sidebar>
 				<Map
+					className={
+						listOrMap === 'map-views' ? 'map-views' : 'map-views-hidden'
+					}
 					markers={markers}
 					onMarkerClicked={handleMarkerClick}
 					clickedMeter={meter}
 					selectedPlace={selectedPlace}
 				/>
+				<ButtonGroup
+					className="mobile-views"
+					variant="contained"
+					aria-label="outlined button group"
+				>
+					<Button onClick={handleListButtonClick}>{'List'}</Button>
+					<Button onClick={handleMapButtonClick}>{'Map'}</Button>
+				</ButtonGroup>
 			</div>
 		</LoadScript>
 	)

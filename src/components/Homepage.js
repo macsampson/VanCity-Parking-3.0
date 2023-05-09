@@ -26,20 +26,6 @@ function Homepage() {
 		})
 	}
 
-	const styles = {
-		title: {
-			color: 'white',
-			fontSize: '5rem',
-			fontFamily: 'Nunito',
-		},
-		subtitle: {
-			color: 'white',
-			fontSize: '1.5rem',
-			fontFamily: 'Nunito',
-			paddingBottom: '2rem',
-		},
-	}
-
 	return (
 		<LoadScript googleMapsApiKey={key} libraries={libraries}>
 			<div
@@ -47,18 +33,22 @@ function Homepage() {
 				style={{
 					// use bg.jpg image from images folder as background
 					backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg.jpg)`,
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'center',
-					alignItems: 'center',
 					height: '100vh',
 				}}
 			>
-				<img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="logo" />
-				<h1 style={styles.title}>ParkSmart</h1>
-				<p style={styles.subtitle}>Find parking in Vancouver</p>
-				<div style={{ width: '95%', maxWidth: '500px' }}>
-					<SearchBar onSelectPlace={handleSelectedPlace} />
+				<div className="content">
+					<img
+						className="logo"
+						src={`${process.env.PUBLIC_URL}/images/logo.png`}
+						alt="logo"
+					/>
+					<h1 className="title">ParkSmart</h1>
+					<p className="subtitle">Find parking in Vancouver</p>
+
+					<SearchBar
+						className="searchBar"
+						onSelectPlace={handleSelectedPlace}
+					/>
 				</div>
 			</div>
 		</LoadScript>

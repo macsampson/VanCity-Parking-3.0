@@ -7,19 +7,13 @@ import {
 	//   DistanceMatrixService,
 } from '@react-google-maps/api'
 // import { CloseFullscreen } from '@mui/icons-material'
+import '../styles/Map.css'
 
 const center = {
 	lat: 49.2827,
 	lng: -123.1207,
 }
 
-const streetViewStyle = {
-	position: 'absolute',
-	top: '75%',
-	left: '400px',
-	right: '0%',
-	bottom: '0%',
-}
 const clickedIcon = '/images/clicked-meter.png'
 const clickedIcon2 = '/images/selected-meter.png'
 const parkingIcon = '/images/parking-meter.png'
@@ -50,11 +44,20 @@ function Map(props) {
 	const mapStyle = {
 		width: 'auto',
 		position: 'absolute',
-		// maxHeight: '75%',
 		top: '64px',
 		left: '400px',
 		right: '0px',
+		flex: '1 1 auto',
 		bottom: clickedMarker ? '25%' : '0%',
+	}
+
+	const streetViewStyle = {
+		position: 'absolute',
+		top: '75%',
+		left: '400px',
+		right: '0%',
+		bottom: '0%',
+		flex: '1 1 25%',
 	}
 
 	// useffect to update selected place when it changes
@@ -150,71 +153,64 @@ function Map(props) {
 	if (!isLoaded) return <p>Loading map</p>
 
 	return (
-		<div style={{ flex: '1' }}>
-			<div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-				<div style={{ flex: '1 1 auto' }}>
-					<GoogleMap
-						mapContainerStyle={mapStyle}
-						center={center}
-						zoom={15}
-						onLoad={onLoad}
-						options={{
-							streetViewControl: false,
-							mapTypeControl: false,
-							fullscreenControl: false,
-							styles: [
-								{
-									featureType: 'poi',
-									elementType: 'labels',
-									stylers: [{ visibility: 'off' }],
-								},
-							],
+		<div className={props.className}>
+			<GoogleMap
+				mapContainerClassName="map"
+				mapContainerStyle={mapStyle}
+				center={center}
+				zoom={15}
+				onLoad={onLoad}
+				options={{
+					streetViewControl: false,
+					mapTypeControl: false,
+					fullscreenControl: false,
+					styles: [
+						{
+							featureType: 'poi',
+							elementType: 'labels',
+							stylers: [{ visibility: 'off' }],
+						},
+					],
+				}}
+			>
+				{selectedPlace}
+				{Object.keys(markersData).map((key) => (
+					<Marker
+						key={key}
+						position={{
+							lat: markersData[key].lat,
+							lng: markersData[key].lng,
 						}}
-					>
-						{selectedPlace}
-						{Object.keys(markersData).map((key) => (
-							<Marker
-								key={key}
-								position={{
-									lat: markersData[key].lat,
-									lng: markersData[key].lng,
-								}}
-								icon={key === props.clickedMeter ? clickedIcon2 : parkingIcon}
-								onClick={() => handleMarkerClick(key)}
-							/>
-						))}
-					</GoogleMap>
-				</div>
+						icon={key === props.clickedMeter ? clickedIcon2 : parkingIcon}
+						onClick={() => handleMarkerClick(key)}
+					/>
+				))}
+			</GoogleMap>
 
-				{clickedMarker && (
-					<div className="streetview" style={{ flex: '1 1 25%' }}>
-						<GoogleMap
-							// add mapcontainerstyle to for 20% height starting from the bottom
-							mapContainerStyle={streetViewStyle}
-						>
-							{/* onyl show streetview if theres a clicked marker */}
-
-							<StreetViewPanorama
-								position={markersData[clickedMarker]}
-								visible={true}
-								options={{
-									zoom: 0,
-									addressControl: false,
-									fullscreenControl: false,
-									motionTracking: false,
-									linksControl: false,
-									panControl: false,
-									enableCloseButton: false,
-									scrollwheel: true,
-									showRoadLabels: false,
-									bestGuess: true,
-									source: window.google.maps.StreetViewSource.OUTDOOR,
-								}}
-							/>
-						</GoogleMap>
-					</div>
-				)}
-			</div>
+			{clickedMarker && (
+				<GoogleMap
+					mapContainerClassName="street-view"
+					mapContainerStyle={streetViewStyle}
+				>
+					<StreetViewPanorama
+						position={markersData[clickedMarker]}
+						visible={true}
+						options={{
+							zoom: 0,
+							addressControl: false,
+							fullscreenControl: false,
+							motionTracking: false,
+							linksControl: false,
+							panControl: false,
+							enableCloseButton: false,
+							scrollwheel: true,
+							showRoadLabels: false,
+							bestGuess: true,
+							source: window.google.maps.StreetViewSource.OUTDOOR,
+						}}
+					/>
+				</GoogleMap>
+			)}
 		</div>
 	)
 }

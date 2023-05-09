@@ -16,19 +16,136 @@
 	display: none;
 }
 
-.meter-info {
-	/* your custom styles here */
+.MuiButtonGroup-root.mobile-views {
+	display: none;
 }
 
-.meter-info.hover {
-	/* apply the hover animation effect only to the elements with the hover class */
-	transition: transform 0.3s ease-in-out; /* specify the duration and easing of the transition */
-	cursor: pointer;
+.app-bar {
+	position: fixed;
+	top: 0px;
 }
 
-.meter-info.hover:hover {
-	/* change the transform property when the element is hovered */
-	transform: scale(1.02); /* scale up the element by 5% */
+.searchbar-container,
+.searchbar-container-hidden {
+	padding: 10px;
+	z-index: 1;
+	position: absolute;
+	right: 0px;
+	width: 100%;
+	top: 13px;
+	max-width: 500px;
+	left: 420px;
+}
+
+.search {
+	position: absolute;
+	border-radius: 15px;
+	background-color: rgba(255, 255, 255, 0.15);
+	width: 100%;
+	border: 1px solid transparent;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.search:hover {
+	background-color: rgba(255, 255, 255, 0.25);
+}
+
+.body-container {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+}
+
+.map-views-hidden,
+.map-views {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+@media (max-width: 930px) {
+	.searchbar-container,
+	.searchbar-container-hidden {
+		left: 50%;
+		right: 5%;
+		width: 45vw;
+	}
+
+	.map {
+		inset: 64px 0px 0% 50% !important;
+	}
+
+	.street-view {
+		opacity: 0;
+	}
+}
+
+@media (max-width: 750px) {
+	.searchbar-container {
+		width: 95%;
+		position: fixed;
+		top: 64px;
+		left: 2.5%;
+		z-index: 2;
+	}
+
+	.sorting-container {
+		position: fixed;
+		top: 56px;
+		width: 100vw;
+	}
+
+	.pac-container {
+		width: 100%;
+	}
+
+	.MuiButtonGroup-root.mobile-views {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: 10px;
+		display: flex;
+		justify-content: space-between;
+		background-color: white;
+	}
+
+	.sidebar-hidden {
+		opacity: 0;
+		z-index: -1;
+	}
+
+	.map-views-hidden {
+		opacity: 0;
+		z-index: -1;
+	}
+
+	.sidebar {
+		opacity: 1;
+		z-index: 1;
+	}
+
+	.map-views {
+		opacity: 1;
+		z-index: 1;
+	}
+
+	.map {
+		position: absolute;
+		top: 56px !important;
+		bottom: 56px !important;
+		left: 0 !important;
+		right: 0;
+	}
+
+	.MuiFormControl-root.searchbar-container-hidden {
+		display: none;
+	}
+
+	.street-view {
+		opacity: 0;
+	}
 }
 
 /* .meter-times div {

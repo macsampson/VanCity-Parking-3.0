@@ -1,9 +1,8 @@
-# Vancouver Parking
+# ParkSmart
 
 TODO
 
 - Search meters in current location
-- Add toast notis
+- Add toast noti when no meters
 - Add crime overlay
-- Add EV search
-- mobile friendly
+- Add EV locations

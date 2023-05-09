@@ -7,6 +7,7 @@ import { Button, ButtonGroup } from '@mui/material'
 import { render } from 'react-dom'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import '../styles/Sidebar.css'
 
 export default function Sidebar(props) {
 	const [selectedPlace, setSelectedPlace] = useState(null)
@@ -169,57 +170,11 @@ export default function Sidebar(props) {
 		}
 	}, [currentMeterId])
 
-	const styles = {
-		container: {
-			height: '87vh',
-			flex: '0 0 auto',
-			minWidth: '400px',
-			maxWidth: '400px',
-			background: 'white',
-		},
-		search: {
-			// flex: '0 0 auto',
-			padding: '10px',
-			zIndex: 1,
-			position: 'absolute',
-			right: '0px',
-			width: '25%',
-			// width: '100%',
-		},
-		sorting: {
-			display: 'flex',
-			flexDirection: 'column',
-			// alignItems: 'center',
-			padding: '10px',
-			zIndex: 1,
-			// position: 'absolute',
-			left: '0px',
-			// width: '25%',
-			height: '8vh',
-			// width: '100%',
-		},
-		sortButtons: {
-			// flex: '1 1 auto',
-			justifyContent: 'center',
-			display: 'flex',
-		},
-		sortText: {
-			alignSelf: 'center',
-			flex: '0',
-			fontSize: '1.2rem',
-			color: 'gray',
-		},
-		button: {
-			flex: '1',
-			backgroundColor: 'rgb(81, 209, 251)',
-		},
-	}
-
 	return (
-		<div className="sidebar-container" style={styles.container}>
-			<div className="sorting-container" style={styles.sorting}>
-				<p style={styles.sortText}>Sort by:</p>
-				<div style={styles.sortButtons}>
+		<div className={props.className}>
+			<div className="sorting-container">
+				<p className="sort-text">Sort by:</p>
+				<div className="sort-buttons">
 					<ButtonGroup
 						variant="contained"
 						aria-label="contained primary button group"
@@ -228,7 +183,6 @@ export default function Sidebar(props) {
 						}}
 					>
 						<Button
-							style={styles.button}
 							onClick={() => handleSort('rate')}
 							endIcon={
 								sortOrder.rate === 'asc' ? (
@@ -241,7 +195,6 @@ export default function Sidebar(props) {
 							Rate
 						</Button>
 						<Button
-							style={styles.button}
 							onClick={() => handleSort('distance')}
 							endIcon={
 								sortOrder.distance === 'asc' ? (
@@ -264,14 +217,7 @@ export default function Sidebar(props) {
 					//   paddingBottom: "10px",
 				}}
 			>
-				<Box
-					id="meter-container"
-					style={{
-						flex: '0 0 100%',
-						overflow: 'scroll',
-						padding: '10px',
-					}}
-				>
+				<Box id="meter-container" className="meter-container">
 					{currentMeterComps}
 				</Box>
 			</div>

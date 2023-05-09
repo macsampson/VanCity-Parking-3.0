@@ -11,3 +11,62 @@
 	background-image: none;
 	height: 0px;
 }
+
+.homepage {
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 85vh;
+}
+
+.title {
+	color: white;
+	font-size: 80px;
+	font-family: Nunito;
+}
+
+.subtitle {
+	color: white;
+	font-size: 22px;
+	font-family: Nunito;
+	padding-bottom: 10px;
+}
+
+.searchBar {
+	width: 50vw;
+	max-width: 100%;
+}
+
+.logo {
+	/* width: 100%;
+	max-width: 100%; */
+}
+
+@media (max-width: 600px) {
+	.title {
+		font-family: 'Nunito', sans-serif;
+		font-size: 50px;
+		font-weight: 700;
+	}
+
+	.subtitle {
+		color: white;
+		font-size: 15px;
+		font-family: Nunito;
+		padding-bottom: 10px;
+	}
+
+	.searchBar {
+		width: 90vw;
+		max-width: 100%;
+	}
+
+	.logo {
+		width: 50%;
+		max-width: 100%;
+	}
+}
