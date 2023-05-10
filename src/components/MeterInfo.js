@@ -227,7 +227,7 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
 								</div>
 								<div className="time-frame">
 									<span className="filler" />
-									<span className="times">10pm - 9am</span>
+									<span className="times">10pm - 9am&nbsp;</span>
 									<span className="free">Free</span>
 								</div>
 							</div>

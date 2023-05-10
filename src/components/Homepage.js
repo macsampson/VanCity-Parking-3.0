@@ -3,10 +3,9 @@ import { LoadScript } from '@react-google-maps/api'
 import { useNavigate } from 'react-router-dom'
 import SearchBar from './Searchbar'
 import '../styles/Homepage.css'
-
 import dotenv from 'dotenv'
-dotenv.config()
 
+dotenv.config()
 const key = process.env.REACT_APP_MAPS_API
 const libraries = ['places']
 
@@ -24,13 +23,7 @@ function Homepage() {
 
 	return (
 		<LoadScript googleMapsApiKey={key} libraries={libraries}>
-			<div
-				className="homepage"
-				style={{
-					backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg.jpg)`,
-					height: '100vh',
-				}}
-			>
+			<div className="homepage">
 				<div className="content">
 					<img
 						className="logo"
