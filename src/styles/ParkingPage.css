@@ -9,6 +9,7 @@
 .app-bar {
 	position: fixed;
 	top: 0px;
+	z-index: 3 !important;
 }
 
 .searchbar-container,
@@ -21,6 +22,7 @@
 	top: 13px;
 	max-width: 500px;
 	left: 420px;
+	z-index: 3;
 }
 
 .search {
