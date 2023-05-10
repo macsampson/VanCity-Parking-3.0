@@ -75,7 +75,7 @@ export default function Sidebar(props) {
 
 	// function to render meter info
 	useEffect(() => {
-		console.log('rendering meter info', currentMeterId)
+		// console.log('rendering meter info', currentMeterId)
 		if (currentMeters) {
 			const newCurrentMeterComps = currentMeters.map((meter) => {
 				return (
