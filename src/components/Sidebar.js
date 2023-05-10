@@ -4,10 +4,12 @@ import MeterInfo from './MeterInfo'
 import fetchParkingMeters from '../utils/FetchParkingMeters'
 import getDirections from '../utils/GetDirections'
 import { Button, ButtonGroup } from '@mui/material'
-import { render } from 'react-dom'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import '../styles/Sidebar.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+	faArrowUpWideShort,
+	faArrowDownShortWide,
+} from '@fortawesome/free-solid-svg-icons'
 
 export default function Sidebar(props) {
 	const [selectedPlace, setSelectedPlace] = useState(null)
@@ -150,9 +152,6 @@ export default function Sidebar(props) {
 					setMarkers(newMarkers)
 				} catch (error) {
 					console.error(error)
-				} finally {
-					// setIsLoading(false)
-					// console.log('finally returned')
 				}
 			}
 			fetchMeterInfo()
@@ -186,21 +185,21 @@ export default function Sidebar(props) {
 							onClick={() => handleSort('rate')}
 							endIcon={
 								sortOrder.rate === 'asc' ? (
-									<ArrowUpwardIcon />
+									<FontAwesomeIcon icon={faArrowUpWideShort} />
 								) : (
-									<ArrowDownwardIcon />
+									<FontAwesomeIcon icon={faArrowDownShortWide} />
 								)
 							}
 						>
-							Rate
+							$ Rate
 						</Button>
 						<Button
 							onClick={() => handleSort('distance')}
 							endIcon={
 								sortOrder.distance === 'asc' ? (
-									<ArrowUpwardIcon />
+									<FontAwesomeIcon icon={faArrowUpWideShort} />
 								) : (
-									<ArrowDownwardIcon />
+									<FontAwesomeIcon icon={faArrowDownShortWide} />
 								)
 							}
 						>
