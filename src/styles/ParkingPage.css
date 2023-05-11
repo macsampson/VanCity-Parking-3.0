@@ -1,3 +1,10 @@
+.parking-page {
+	display: flex;
+	/* justify-content: center; */
+	align-items: center;
+	flex-direction: column;
+}
+
 .mapboxgl-control-container {
 	display: none;
 }
@@ -6,17 +13,27 @@
 	display: none;
 }
 
-.app-bar {
-	position: fixed;
-	top: 0px;
-	z-index: 3 !important;
+.title {
+	/* position: fixed; */
+	/* top: 0px; */
+	/* z-index: 3 !important; */
+	/* display: none; */
+	flex: 0 0 10%;
+	cursor: pointer;
+}
+
+.title h1 {
+	font-family: 'Nunito', sans-serif;
+	font-size: 3rem;
+	color: #51d1fb;
+	margin: 0;
 }
 
 .searchbar-container,
 .searchbar-container-hidden {
 	padding: 10px;
 	z-index: 1;
-	position: absolute;
+	position: absolute !important;
 	right: 0px;
 	width: 100%;
 	top: 13px;
@@ -38,18 +55,43 @@
 	background-color: rgba(255, 255, 255, 0.25);
 }
 
-.body-container {
+/* .body-container {
 	display: flex;
 	flex-direction: row;
 	height: 100%;
+} */
+
+.body-container {
+	display: flex;
+	flex-direction: row;
+	height: 90vh;
+	width: 90vw;
+	max-width: 1300px;
+	position: relative;
+	justify-content: center;
+	/* top: 75px; */
+	/* bottom: 0; */
 }
 
-.map-views-hidden,
+/* .map-views-hidden,
 .map-views {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	left: 10px;
+} */
+
+.map-views-hidden,
+.map-views {
+	flex: 1 1 80%;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	left: 10px;
+	/* top: 75px; */
+	position: relative;
+	bottom: 0px;
 }
 
 @media (max-width: 930px) {

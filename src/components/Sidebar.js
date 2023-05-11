@@ -208,18 +208,10 @@ export default function Sidebar(props) {
 					</ButtonGroup>
 				</div>
 			</div>
-			<div
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					height: '100%',
-					//   paddingBottom: "10px",
-				}}
-			>
-				<Box id="meter-container" className="meter-container">
-					{currentMeterComps}
-				</Box>
-			</div>
+
+			<Box id="meter-container" className="meter-container">
+				{currentMeterComps}
+			</Box>
 		</div>
 	)
 }

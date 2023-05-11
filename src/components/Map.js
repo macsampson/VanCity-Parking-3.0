@@ -43,21 +43,28 @@ function Map(props) {
 
 	const mapStyle = {
 		width: 'auto',
-		position: 'absolute',
-		top: '64px',
-		left: '400px',
-		right: '0px',
-		flex: '1 1 auto',
-		bottom: clickedMarker ? '25%' : '0%',
+		position: 'relative',
+		// top: '75px',
+		// left: '410px',
+		// right: '11px',
+		borderRadius: '12px',
+		flex: '1 1 70%',
+		boxShadow: '0px 5px 16px rgba(0, 0, 0, 0.25)',
+		// bottom: clickedMarker ? '0%' : '0px',
+		overflow: 'hidden',
+		// marginBottom: '10px',
 	}
 
 	const streetViewStyle = {
-		position: 'absolute',
-		top: '75%',
-		left: '400px',
-		right: '0%',
-		bottom: '0%',
-		flex: '1 1 25%',
+		position: 'relative',
+		// top: '75%',
+		// left: '410px',
+		// right: '11px',
+		// bottom: '11px',
+		borderRadius: '12px',
+		flex: '1 1 30%',
+		overflow: 'hidden',
+		marginTop: '10px',
 	}
 
 	// useffect to update selected place when it changes

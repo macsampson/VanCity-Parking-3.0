@@ -67,59 +67,47 @@ export default function ParkingPage() {
 
 	return (
 		<LoadScript googleMapsApiKey={key} libraries={libraries}>
-			<AppBar
-				className="app-bar"
-				position="fixed"
-				style={{
-					backgroundColor: 'rgb(81, 209, 251)',
-					zIndex: '1',
-				}}
-			>
-				<Toolbar
-					style={{
-						display: 'flex',
-						justifyContent: 'left',
-					}}
-				>
-					<span style={{ cursor: 'pointer' }} onClick={goHome}>
-						<h1 style={{ color: 'white' }}>ParkSmart</h1>
+			<div className="parking-page">
+				<div className="title">
+					<span onClick={goHome}>
+						<h1>ParkSmart</h1>
 					</span>
-				</Toolbar>
-			</AppBar>
+				</div>
 
-			<div className="body-container">
-				<Searchbar
-					className={
-						listOrMap === 'map-views'
-							? 'searchbar-container'
-							: 'searchbar-container-hidden'
-					}
-					onSelectPlace={handleSelectedPlace}
-				/>
-				<Sidebar
-					className={listOrMap === 'list' ? 'sidebar' : 'sidebar-hidden'}
-					onMarkersChange={setMarkers}
-					clickedMarker={clickedMarker}
-					clickedMeter={handleMeterClick}
-					selectedPlace={selectedPlace}
-				></Sidebar>
-				<Map
-					className={
-						listOrMap === 'map-views' ? 'map-views' : 'map-views-hidden'
-					}
-					markers={markers}
-					onMarkerClicked={handleMarkerClick}
-					clickedMeter={meter}
-					selectedPlace={selectedPlace}
-				/>
-				<ButtonGroup
-					className="mobile-views"
-					variant="contained"
-					aria-label="outlined button group"
-				>
-					<Button onClick={handleListButtonClick}>List</Button>
-					<Button onClick={handleMapButtonClick}>Map</Button>
-				</ButtonGroup>
+				<div className="body-container">
+					<Searchbar
+						className={
+							listOrMap === 'map-views'
+								? 'searchbar-container'
+								: 'searchbar-container-hidden'
+						}
+						onSelectPlace={handleSelectedPlace}
+					/>
+					<Sidebar
+						className={listOrMap === 'list' ? 'sidebar' : 'sidebar-hidden'}
+						onMarkersChange={setMarkers}
+						clickedMarker={clickedMarker}
+						clickedMeter={handleMeterClick}
+						selectedPlace={selectedPlace}
+					></Sidebar>
+					<Map
+						className={
+							listOrMap === 'map-views' ? 'map-views' : 'map-views-hidden'
+						}
+						markers={markers}
+						onMarkerClicked={handleMarkerClick}
+						clickedMeter={meter}
+						selectedPlace={selectedPlace}
+					/>
+					<ButtonGroup
+						className="mobile-views"
+						variant="contained"
+						aria-label="outlined button group"
+					>
+						<Button onClick={handleListButtonClick}>List</Button>
+						<Button onClick={handleMapButtonClick}>Map</Button>
+					</ButtonGroup>
+				</div>
 			</div>
 		</LoadScript>
 	)
