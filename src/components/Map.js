@@ -1,225 +1,164 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import {
-	GoogleMap,
-	useLoadScript,
-	Marker,
-	StreetViewPanorama,
-	//   DistanceMatrixService,
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  StreetViewPanorama,
+  //   DistanceMatrixService,
 } from '@react-google-maps/api'
-// import { CloseFullscreen } from '@mui/icons-material'
+
 import '../styles/Map.css'
 
+const key = process.env.REACT_APP_MAPS_API
+const libraries = ['places']
+
 const center = {
-	lat: 49.2827,
-	lng: -123.1207,
+  lat: 49.2827,
+  lng: -123.1207,
 }
 
-const clickedIcon = '/images/clicked-meter.png'
+// const clickedIcon = '/images/clicked-meter.png'
 const clickedIcon2 = '/images/selected-meter.png'
 const parkingIcon = '/images/parking-meter.png'
 const destinationIcon = '/images/destination.png'
-const flagIcon = '/images/flag.png'
+// const flagIcon = '/images/flag.png'
 
 function Map(props) {
-	const { isLoaded, loadError } = useLoadScript({
-		googleMapsApiKey: process.env.REACT_APP_MAPS_API,
-		libraries: props.libraries,
-	})
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: key,
+    libraries: libraries,
+  })
 
-	// create a state object to hold the map
-	const [map, setMap] = useState(null)
+  const [map, setMap] = useState(null)
+  const [markersData, setMarkersData] = useState([])
+  const [clickedMarker, setClickedMarker] = useState(null)
+  // const [markers, setMarkers] = useState([]) // probably dont need
+  const [selectedPlace, setSelectedPlace] = useState(null)
+  const [locationMarker, setLocationMarker] = useState(null)
 
-	// create state to hold markers
-	const [markersData, setMarkersData] = useState([])
-	// state to hold clicked marker
-	const [clickedMarker, setClickedMarker] = useState(null)
-	// state to hold markers
-	const [markers, setMarkers] = useState([]) // probably dont need
-	// state to hold selected place
-	const [selectedPlace, setSelectedPlace] = useState(null)
+  // useffect to update selected place when it changes
 
-	// state for location marker
-	//   const [locationMarker, setLocationMarker] = useState(null)
+  useEffect(() => {
+    if (props.selectedPlace) {
+      setLocationMarker(
+        <Marker position={props.selectedPlace} icon={destinationIcon} />
+      )
+      setSelectedPlace(props.selectedPlace)
+      setClickedMarker(null)
+    }
+  }, [props.selectedPlace])
 
-	const mapStyle = {
-		width: 'auto',
-		position: 'relative',
-		// top: '75px',
-		// left: '410px',
-		// right: '11px',
-		borderRadius: '12px',
-		flex: '1 1 70%',
-		boxShadow: '0px 5px 16px rgba(0, 0, 0, 0.25)',
-		// bottom: clickedMarker ? '0%' : '0px',
-		overflow: 'hidden',
-		// marginBottom: '10px',
-	}
+  // use effect to console log when meter prop changes
+  useEffect(() => {
+    // console.log('meter changed', props.clickedMeter)
+    // console.log('markers', markers)
+    if (props.clickedMeter) {
+      handleMarkerClick(props.clickedMeter)
+    }
+  }, [props.clickedMeter])
 
-	const streetViewStyle = {
-		position: 'relative',
-		// top: '75%',
-		// left: '410px',
-		// right: '11px',
-		// bottom: '11px',
-		borderRadius: '12px',
-		flex: '1 1 30%',
-		overflow: 'hidden',
-		marginTop: '10px',
-	}
+  // update markers when props change
+  useEffect(() => {
+    // console.log('props changed', props.markers)
+    setMarkersData(props.markers)
+    // console.log('markers in map: ', markers)
+  }, [props.markers])
 
-	// useffect to update selected place when it changes
-	useEffect(() => {
-		if (props.selectedPlace) {
-			setSelectedPlace(
-				<Marker position={props.selectedPlace} icon={destinationIcon} />
-			)
-		}
-	}, [props.selectedPlace])
+  // function to zoom map and pan smoothly to marker when clicked
+  function handleMarkerClick(markerId) {
+    setClickedMarker(markerId)
+    const marker = markersData[markerId]
+    const newPosition = { lat: marker.lat, lng: marker.lng }
+    map.panTo(newPosition)
+    // map.setZoom(19)
+    props.onMarkerClicked(markerId)
+  }
 
-	// use effect to console log when meter prop changes
-	useEffect(() => {
-		// console.log('meter changed', props.clickedMeter)
-		// console.log('markers', markers)
+  const renderMarkers =
+    (() => {
+      if (map) {
+        const bounds = new window.google.maps.LatLngBounds()
+        let markers = []
+        console.log('rendering markers')
+        // iteraate through markersData object and create markers
+        Object.entries(markersData).forEach(([key, marker]) => {
+          const position = { lat: marker.lat, lng: marker.lng }
+          bounds.extend(position)
+          markers.push(
+            <Marker
+              key={key}
+              position={position}
+              icon={key === clickedMarker ? clickedIcon2 : parkingIcon}
+              onClick={() => handleMarkerClick(key)}
+            />
+          )
+        })
+        bounds.extend(selectedPlace)
+        markers.push(locationMarker)
+        map.fitBounds(bounds)
+        return markers
+      }
+    })() || []
 
-		handleMarkerClick(props.clickedMeter)
-	}, [props.clickedMeter])
+  // set the map state object to the map argument
+  const onLoad = useCallback((map) => {
+    setMap(map)
+  }, [])
 
-	// update markers when props change
-	useEffect(() => {
-		// console.log('props changed', props.markers)
-		setMarkersData(props.markers)
-		// console.log('markers in map: ', markers)
-	}, [props.markers])
+  if (loadError) return <p>Error loading map</p>
+  if (!isLoaded) return <p>Loading map</p>
 
-	// function to zoom map and pan smoothly to marker when clicked
-	function handleMarkerClick(markerId) {
-		// const bounds = new window.google.maps.LatLngBounds()
+  return (
+    isLoaded && (
+      <div className={props.className}>
+        <GoogleMap
+          mapContainerClassName='map'
+          // mapContainerStyle={mapStyle}
+          center={center}
+          // zoom={15}
+          onLoad={onLoad}
+          options={{
+            streetViewControl: false,
+            mapTypeControl: false,
+            fullscreenControl: false,
+            zoomControl: false,
+            styles: [
+              {
+                featureType: 'poi',
+                elementType: 'labels',
+                stylers: [{ visibility: 'off' }],
+              },
+            ],
+          }}
+        >
+          {renderMarkers}
+        </GoogleMap>
 
-		setClickedMarker(markerId)
-		// const marker = markersData[markerId]
-		// const newPosition = { lat: marker.lat, lng: marker.lng }
-		// bounds.extend(newPosition)
-		// map.panTo(newPosition)
-
-		// map.setZoom(19)
-		props.onMarkerClicked(markerId)
-	}
-
-	// function to get correct icon image depending if marker is clicked or not
-	//   const getIcon = (key) => {
-	//     console.log('clicked marker is ', clickedMarker)
-	//     console.log('key is ', key)
-	//     return key == clickedMarker ? clickedIcon : parkingIcon
-	//   }
-
-	// Memoize the renderMarkers function to avoid unnecessary re-renders
-	const renderMarkers = useMemo(() => {
-		const bounds = new window.google.maps.LatLngBounds()
-		if (markersData.length === 0) {
-			// console.log('no markers')
-			return null
-		}
-		// iterate through markers object and create a marker for each
-
-		// console.log('rendering markers')
-		// const markersWithBounds = []
-		Object.keys(markersData).map(
-			(key) => {
-				const marker = markersData[key]
-				const position = { lat: marker.lat, lng: marker.lng }
-				//   console.log('position', position)
-				bounds.extend(position)
-				// 	markersWithBounds.push({
-				// 		key: (
-				// 			<Marker
-				// 				key={key}
-				// 				position={position}
-				// 				icon={key === props.clickedMeter ? clickedIcon : parkingIcon}
-				// 				// onClick={() => handleMarkerClick(key)}
-				// 			/>
-				// 		),
-				// 	})
-				// })
-				if (map) {
-					map.fitBounds(bounds)
-				}
-				// setMarkers(markersWithBounds)
-			},
-			[markersData]
-		)
-	})
-
-	// set the map state object to the map argument
-	const onLoad = useCallback(function callback(map) {
-		// const bounds = new window.google.maps.LatLngBounds()
-		// map.fitBounds(bounds)
-		setMap(map)
-	}, [])
-
-	if (loadError) return <p>Error loading map</p>
-	if (!isLoaded) return <p>Loading map</p>
-
-	return (
-		<div className={props.className}>
-			<GoogleMap
-				mapContainerClassName="map"
-				mapContainerStyle={mapStyle}
-				center={center}
-				zoom={15}
-				onLoad={onLoad}
-				options={{
-					streetViewControl: false,
-					mapTypeControl: false,
-					fullscreenControl: false,
-					styles: [
-						{
-							featureType: 'poi',
-							elementType: 'labels',
-							stylers: [{ visibility: 'off' }],
-						},
-					],
-				}}
-			>
-				{selectedPlace}
-				{Object.keys(markersData).map((key) => (
-					<Marker
-						key={key}
-						position={{
-							lat: markersData[key].lat,
-							lng: markersData[key].lng,
-						}}
-						icon={key === props.clickedMeter ? clickedIcon2 : parkingIcon}
-						onClick={() => handleMarkerClick(key)}
-					/>
-				))}
-			</GoogleMap>
-
-			{clickedMarker && (
-				<GoogleMap
-					mapContainerClassName="street-view"
-					mapContainerStyle={streetViewStyle}
-				>
-					<StreetViewPanorama
-						position={markersData[clickedMarker]}
-						visible={true}
-						options={{
-							zoom: 0,
-							addressControl: false,
-							fullscreenControl: false,
-							motionTracking: false,
-							linksControl: false,
-							panControl: false,
-							enableCloseButton: false,
-							scrollwheel: true,
-							showRoadLabels: false,
-							bestGuess: true,
-							source: window.google.maps.StreetViewSource.OUTDOOR,
-						}}
-					/>
-				</GoogleMap>
-			)}
-		</div>
-	)
+        {clickedMarker && (
+          <GoogleMap mapContainerClassName='street-view'>
+            <StreetViewPanorama
+              position={markersData[clickedMarker]}
+              visible={true}
+              options={{
+                zoom: 0,
+                addressControl: false,
+                fullscreenControl: false,
+                motionTracking: false,
+                zoomControl: false,
+                linksControl: false,
+                panControl: false,
+                enableCloseButton: false,
+                scrollwheel: true,
+                showRoadLabels: false,
+                bestGuess: true,
+                source: window.google.maps.StreetViewSource.OUTDOOR,
+              }}
+            />
+          </GoogleMap>
+        )}
+      </div>
+    )
+  )
 }
 
 export default Map

@@ -7,18 +7,21 @@ import Homepage from './components/Homepage'
 import ParkingPage from './components/ParkingPage'
 // import 'typeface-roboto'
 import './styles/App.css'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export default function App() {
-	useEffect(() => {
-		registerServiceWorker()
-	}, [])
+  useEffect(() => {
+    registerServiceWorker()
+  }, [])
 
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route exact path="/" element={<Homepage />} />
-				<Route path="/parking" element={<ParkingPage />} />
-			</Routes>
-		</BrowserRouter>
-	)
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route exact path='/' element={<Homepage />} />
+        <Route path='/parking' element={<ParkingPage />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
