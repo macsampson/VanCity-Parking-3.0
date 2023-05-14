@@ -1,79 +1,118 @@
 .parking-page {
-  display: flex;
-  /* justify-content: center; */
-  align-items: center;
-  flex-direction: column;
+	display: flex;
+	/* justify-content: center; */
+	align-items: center;
+	flex-direction: column;
 }
 
 .MuiButtonGroup-root.mobile-views {
-  display: none;
+	display: none;
 }
 
 .title {
-  /* position: fixed; */
-  /* top: 0px; */
-  /* z-index: 3 !important; */
-  /* display: none; */
-  flex: 0 0 10%;
-  cursor: pointer;
+	/* position: fixed; */
+	/* top: 0px; */
+	/* z-index: 3 !important; */
+	/* display: none; */
+	flex: 0 0 10%;
+	cursor: pointer;
 }
 
 .title h1 {
-  font-family: 'Nunito', sans-serif;
-  font-size: 3rem;
-  color: #51d1fb;
-  margin: 0;
+	font-family: 'Nunito', sans-serif;
+	font-size: 3rem;
+	color: #51d1fb;
+	margin: 0;
 }
 
 .body-container {
-  display: flex;
-  flex-direction: row;
-  height: 90vh;
-  width: 90vw;
-  max-width: 1300px;
-  position: relative;
-  justify-content: center;
-  /* top: 75px; */
-  /* bottom: 0; */
+	display: flex;
+	flex-direction: row;
+	height: 90vh;
+	width: 90vw;
+	max-width: 1300px;
+	position: relative;
+	justify-content: center;
+	/* top: 75px; */
+	/* bottom: 0; */
+}
+
+.map-container,
+.map-container-hidden {
+	display: flex;
+	flex: 1 1 80%;
+	position: relative;
+	left: 10px;
+}
+
+.searchbar-container,
+.searchbar-container-hidden {
+	padding: 10px;
+	z-index: 1;
+	position: absolute !important;
+	right: 0px;
+	left: 25px;
+	width: 90%;
+	top: 13px;
+	max-width: 500px;
+	/* left: 420px; */
+	z-index: 3;
 }
 
 @media (max-width: 930px) {
 }
 
 @media (max-width: 780px) {
-  .parking-page {
-    height: 100vh;
-  }
+	.parking-page {
+		height: 100vh;
+	}
 
-  .title {
-    flex: 1 1 5%;
-  }
+	.parking-page .title {
+		flex: 1 1 5%;
+	}
 
-  .body-container {
-    flex-direction: column;
-    width: 100vw;
-    flex: 1 1 95%;
-  }
+	.body-container {
+		flex-direction: column;
+		width: 100vw;
+		flex: 1 1 95%;
+	}
 
-  .pac-container {
-    width: 100%;
-  }
+	.map-container {
+		display: flex;
+		flex: 1 1 80%;
+		position: relative;
+		left: 0px;
+	}
 
-  .MuiButtonGroup-root.mobile-views {
-    /* position: fixed; */
-    /* bottom: 0; */
-    /* left: 0; */
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    flex: 0 0 8%;
-    justify-content: space-between;
-    background-color: white;
-  }
+	.map-container-hidden {
+		display: none;
+	}
 
-  .MuiFormControl-root.searchbar-container-hidden {
-    display: none;
-  }
+	.pac-container {
+		width: 100%;
+	}
+
+	.MuiButtonGroup-root.mobile-views {
+		/* position: fixed; */
+		/* bottom: 0; */
+		/* left: 0; */
+		width: 100%;
+		padding: 10px;
+		display: flex;
+		flex: 0 0 8%;
+		justify-content: space-between;
+		background-color: white;
+	}
+
+	.searchbar-container {
+		width: 95%;
+		left: 2.5%;
+		z-index: 2;
+	}
+
+	.MuiFormControl-root.searchbar-container-hidden {
+		display: none;
+	}
 }
 
 /* .meter-times div {
