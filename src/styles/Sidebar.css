@@ -90,21 +90,21 @@
 }
 
 @media (max-width: 930px) {
-	.sidebar-hidden,
 	.sidebar {
 		flex: 1 1 auto;
 		min-width: 350px;
 		max-width: 50%;
 		width: 50vw;
 	}
+
+	.sidebar-hidden {
+		display: none;
+	}
 }
 
 @media (max-width: 780px) {
 	.sidebar-hidden {
-		flex: 1 1 0%;
-		opacity: 0;
-		z-index: -1;
-		/* display: none; */
+		display: none;
 	}
 
 	.sidebar {
