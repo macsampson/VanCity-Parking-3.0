@@ -1,60 +1,79 @@
 .homepage {
-	height: 100vh;
-	background-image: url('/images/bg.jpg');
+  height: 100vh;
+  background-image: url('/images/bg.jpg');
 }
 
 .content {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
 }
 
 .title {
-	color: white;
-	font-size: 80px;
-	font-family: Nunito;
+  color: white;
+  font-size: 80px;
+  font-family: Nunito;
 }
 
 .subtitle {
-	color: white;
-	font-size: 22px;
-	font-family: Nunito;
-	padding-bottom: 10px;
+  color: white;
+  font-size: 22px;
+  font-family: Nunito;
+  padding-bottom: 10px;
 }
 
 .searchBar {
-	width: 50vw;
-	max-width: 550px;
+  width: 50vw;
+  max-width: 550px;
+  height: 37px;
+}
+
+.MuiButtonBase-root.location-button {
+  background-color: #fff !important;
+  border-radius: 12px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  font-family: Nunito;
+  font-weight: 700;
+  color: #595959;
+  text-transform: none;
+  flex: 1 1 auto;
+  min-width: 40px;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: row;
 }
 
 .logo {
-	/* width: 100%;
+  /* width: 100%;
 	max-width: 100%; */
 }
 
 @media (max-width: 600px) {
-	.title {
-		font-family: 'Nunito', sans-serif;
-		font-size: 50px;
-		font-weight: 700;
-	}
+  .title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+  }
 
-	.subtitle {
-		color: white;
-		font-size: 15px;
-		font-family: Nunito;
-		padding-bottom: 10px;
-	}
+  .subtitle {
+    color: white;
+    font-size: 15px;
+    font-family: Nunito;
+    padding-bottom: 10px;
+  }
 
-	.searchBar {
-		width: 90vw;
-		max-width: 100%;
-	}
+  .searchBar {
+    width: 75vw;
+    max-width: 100%;
+  }
 
-	.logo {
-		width: 50%;
-		max-width: 100%;
-	}
+  .logo {
+    width: 50%;
+    max-width: 100%;
+  }
 }
