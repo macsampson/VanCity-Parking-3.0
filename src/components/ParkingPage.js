@@ -40,6 +40,7 @@ export default function ParkingPage() {
 
   const handleMarkerClick = useCallback((marker) => {
     setClickedMarker(marker)
+    setListOrMap('list')
   }, [])
 
   const handleMeterClick = useCallback((meter) => {
@@ -92,6 +93,7 @@ export default function ParkingPage() {
             clickedMarker={clickedMarker}
             clickedMeter={handleMeterClick}
             selectedPlace={selectedPlace}
+            onClosed={(prev) => setListOrMap(prev)}
           ></Sidebar>
           <div
             className={

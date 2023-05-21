@@ -54,6 +54,10 @@
   padding: 8px;
 }
 
+.close {
+  padding: 10px;
+}
+
 .label {
   font-size: 1.2rem;
   font-weight: bold;
@@ -204,9 +208,25 @@
 
 .spots {
   flex: 1;
-  text-align: right;
+  /* text-align: right; */
+  padding: 10px;
 }
 
 .address {
   flex: 1;
+}
+
+/* media query */
+@media (max-width: 768px) {
+  .meter-info-expanded .title-bar {
+    position: fixed;
+    top: 0;
+  }
+
+  .meter-info-expanded {
+    position: absolute;
+    overflow: auto;
+    background: white;
+    inset: 0;
+  }
 }

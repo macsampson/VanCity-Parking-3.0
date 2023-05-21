@@ -5,10 +5,11 @@ import {
   faCreditCard,
   faMobileAlt,
   faPersonWalking,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import '../styles/MeterInfo.css'
 
-const MeterInfo = ({ meter, expanded, meterClicked }) => {
+const MeterInfo = ({ meter, expanded, meterClicked, onClosed }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [meterTypes, setMeterTypes] = useState({
     paystation: {
@@ -152,96 +153,142 @@ const MeterInfo = ({ meter, expanded, meterClicked }) => {
     return types
   }
 
-  return (
-    <div
-      className={`meter-info ${isExpanded ? '' : 'hover'}`}
-      id={meter.meter_id}
-      ref={containerRef}
-      onClick={handleClick}
-    >
-      <div className='title-bar'>
-        {/* <div className="address">{meterAddress}</div> */}
-        <div className='spots'>
-          {meter.meter_types.includes('twin') ? meter.count * 2 : meter.count}
-          {meter.count > 1 ? ' spots' : ' spot'}
-        </div>
-      </div>
-      <div className='basic'>
-        <div className='rate-limit'>
-          {meter.current_rate ? (
-            <span className='rate'>{'$' + meter.current_rate + '/hr'}</span>
-          ) : (
-            <span className='rate' style={{ color: 'green' }}>
-              Free
-            </span>
-          )}
-          <span className='limit'>{meter.current_limit} hours</span>
-        </div>
+  // if expanded, render all the meter info, otherwise just render the title bar and basic info
+  if (isExpanded) {
+    return (
+      <div
+        className={`meter-info-expanded`}
+        id={meter.meter_id}
+        ref={containerRef}
+        onClick={handleClick}
+      >
+        <div className='title-bar'>
+          {/* <div className="address">{meterAddress}</div> */}
+          {/* x that sets prop.closed */}
 
-        <div className='distance'>
-          <FontAwesomeIcon icon={faPersonWalking} size='2xl' />
-          <span className='minutes'>{duration} min</span>
-          <span>to destination</span>
-        </div>
-      </div>
-
-      {isExpanded && (
-        <div className='info'>
-          <div className='sub-info'>
-            <div className='label'>Meter Types</div>
-            <div className='icons'>{getMeterTypes()}</div>
+          <div className='spots'>
+            {meter.meter_types.includes('twin') ? meter.count * 2 : meter.count}
+            {meter.count > 1 ? ' spots' : ' spot'}
           </div>
-          {daysOfWeek.map((day) => (
-            <div className='sub-info' key={day.label}>
-              <div className='label'>{day.label}</div>
-              <div className='days'>
-                <div className='time-frame'>
-                  <div className='filler' />
-                  <span className='times'>
-                    9am - 6pm&nbsp;
-                    <span className='limit'>
-                      (
-                      {meter[day.earlyLimit] !== 'Unlimited'
-                        ? meter[day.earlyLimit]
-                        : 'No'}{' '}
-                      hour limit)
+          <FontAwesomeIcon
+            icon={faXmark}
+            className='close'
+            onClick={onClosed}
+          />
+        </div>
+        <div className='body'>
+          <div className='basic'>
+            <div className='rate-limit'>
+              {meter.current_rate ? (
+                <span className='rate'>{'$' + meter.current_rate + '/hr'}</span>
+              ) : (
+                <span className='rate' style={{ color: 'green' }}>
+                  Free
+                </span>
+              )}
+              <span className='limit'>{meter.current_limit} hours</span>
+            </div>
+
+            <div className='distance'>
+              <FontAwesomeIcon icon={faPersonWalking} size='2xl' />
+              <span className='minutes'>{duration} min</span>
+              <span>to destination</span>
+            </div>
+          </div>
+          <div className='info'>
+            <div className='sub-info'>
+              <div className='label'>Meter Types</div>
+              <div className='icons'>{getMeterTypes()}</div>
+            </div>
+            {daysOfWeek.map((day) => (
+              <div className='sub-info' key={day.label}>
+                <div className='label'>{day.label}</div>
+                <div className='days'>
+                  <div className='time-frame'>
+                    <div className='filler' />
+                    <span className='times'>
+                      9am - 6pm&nbsp;
+                      <span className='limit'>
+                        (
+                        {meter[day.earlyLimit] !== 'Unlimited'
+                          ? meter[day.earlyLimit]
+                          : 'No'}{' '}
+                        hour limit)
+                      </span>
                     </span>
-                  </span>
-                  <span className='value'>
-                    ${meter[day.earlyRate]} per hour
-                  </span>
-                </div>
-                <div className='time-frame'>
-                  <span className='filler' />
-                  <span className='times'>
-                    6pm - 10pm&nbsp;
-                    <span className='limit'>
-                      (
-                      {meter[day.lateLimit] !== 'Unlimited'
-                        ? meter[day.lateLimit]
-                        : 'No'}{' '}
-                      hour limit)
+                    <span className='value'>
+                      ${meter[day.earlyRate]} per hour
                     </span>
-                  </span>
-                  <span className='value'>${meter[day.lateRate]} per hour</span>
-                </div>
-                <div className='time-frame'>
-                  <span className='filler' />
-                  <span className='times'>10pm - 9am&nbsp;</span>
-                  <span className='free'>Free</span>
+                  </div>
+                  <div className='time-frame'>
+                    <span className='filler' />
+                    <span className='times'>
+                      6pm - 10pm&nbsp;
+                      <span className='limit'>
+                        (
+                        {meter[day.lateLimit] !== 'Unlimited'
+                          ? meter[day.lateLimit]
+                          : 'No'}{' '}
+                        hour limit)
+                      </span>
+                    </span>
+                    <span className='value'>
+                      ${meter[day.lateRate]} per hour
+                    </span>
+                  </div>
+                  <div className='time-frame'>
+                    <span className='filler' />
+                    <span className='times'>10pm - 9am&nbsp;</span>
+                    <span className='free'>Free</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          <div className='sub-info'>
-            <div className='label'>Payment Types</div>
-            <div className='icons'>{getPaymentIcons()}</div>
+            <div className='sub-info'>
+              <div className='label'>Payment Types</div>
+              <div className='icons'>{getPaymentIcons()}</div>
+            </div>
           </div>
         </div>
-      )}
-    </div>
-  )
+      </div>
+    )
+  } else {
+    return (
+      <div
+        className={`meter-info ${isExpanded ? '' : 'hover'}`}
+        id={meter.meter_id}
+        ref={containerRef}
+        onClick={handleClick}
+      >
+        <div className='title-bar'>
+          {/* <div className="address">{meterAddress}</div> */}
+          <div className='spots'>
+            {meter.meter_types.includes('twin') ? meter.count * 2 : meter.count}
+            {meter.count > 1 ? ' spots' : ' spot'}
+          </div>
+        </div>
+        <div className='basic'>
+          <div className='rate-limit'>
+            {meter.current_rate ? (
+              <span className='rate'>{'$' + meter.current_rate + '/hr'}</span>
+            ) : (
+              <span className='rate' style={{ color: 'green' }}>
+                Free
+              </span>
+            )}
+            <span className='limit'>{meter.current_limit} hours</span>
+          </div>
+
+          <div className='distance'>
+            <FontAwesomeIcon icon={faPersonWalking} size='2xl' />
+            <span className='minutes'>{duration} min</span>
+            <span>to destination</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default MeterInfo
