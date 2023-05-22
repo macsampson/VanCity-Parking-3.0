@@ -221,6 +221,7 @@
   .meter-info-expanded .title-bar {
     position: fixed;
     top: 0;
+    border-radius: 0px;
   }
 
   .meter-info-expanded {
